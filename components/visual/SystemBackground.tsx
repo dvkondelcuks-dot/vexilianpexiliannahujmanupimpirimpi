@@ -9,7 +9,7 @@ export function SystemBackground() {
         inset: 0,
         zIndex: -1,
         background:
-          "linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px), radial-gradient(circle at 72% 12%, rgba(182,255,59,0.1), transparent 32%), radial-gradient(circle at 18% 78%, rgba(143,209,138,0.05), transparent 28%), var(--bg)",
+          "linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px), radial-gradient(circle at 72% 12%, rgba(59,255,124,0.1), transparent 32%), radial-gradient(circle at 18% 78%, rgba(143,209,138,0.05), transparent 28%), var(--bg)",
         backgroundSize: "42px 42px, 42px 42px, auto, auto, auto"
       }}
     />

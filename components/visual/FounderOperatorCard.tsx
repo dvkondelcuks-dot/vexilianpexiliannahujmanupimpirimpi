@@ -22,7 +22,7 @@ export function FounderOperatorCard({ founder }: { founder: Founder }) {
         minHeight: { xs: 540, md: 580, lg: 620 },
         transition: "border-color 180ms ease, transform 180ms ease",
         "&:hover": {
-          borderColor: "rgba(182,255,59,0.32)",
+          borderColor: "rgba(59,255,124,0.32)",
           transform: "translateY(-2px)"
         }
       }}

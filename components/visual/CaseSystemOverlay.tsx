@@ -75,7 +75,7 @@ export function CaseSystemOverlay({ item }: { item: CaseItem }) {
       </Stack>
 
       {/* Live panel, bottom right */}
-      <Stack className="industrial-card" sx={{ position: "relative", zIndex: 1, alignSelf: "flex-end", width: { xs: 190, md: 240 }, m: { xs: 1.5, md: 2 }, mt: 0, border: "1px solid rgba(182,255,59,0.24)", borderRadius: "var(--radius)", background: "rgba(7,9,11,0.86)", p: 1.2 }} spacing={0.8}>
+      <Stack className="industrial-card" sx={{ position: "relative", zIndex: 1, alignSelf: "flex-end", width: { xs: 190, md: 240 }, m: { xs: 1.5, md: 2 }, mt: 0, border: "1px solid rgba(59,255,124,0.24)", borderRadius: "var(--radius)", background: "rgba(7,9,11,0.86)", p: 1.2 }} spacing={0.8}>
         {item.panel.map((signal, index) => (
           <Stack key={signal} direction="row" justifyContent="space-between" spacing={1}>
             <Typography sx={{ fontFamily: "var(--mono)", fontSize: 10.5, color: "var(--text-2)" }}>{signal}</Typography>

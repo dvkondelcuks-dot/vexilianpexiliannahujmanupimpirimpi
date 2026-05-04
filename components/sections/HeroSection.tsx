@@ -18,10 +18,20 @@ export function HeroSection() {
               variant="h1"
               sx={{
                 fontSize: { xs: "2.5rem", sm: "3.25rem", md: "3.45rem", xl: "4.5rem" },
-                maxWidth: 720
+                maxWidth: 720,
+                textTransform: "uppercase",
+                letterSpacing: "-0.01em"
               }}
             >
-              {heroCopy.headline}
+              {(() => {
+                const [head, accent] = heroCopy.headline.includes("|") ? heroCopy.headline.split("|") : [heroCopy.headline, ""];
+                return (
+                  <>
+                    {head.trim()}
+                    {accent ? <Box component="span" sx={{ color: "var(--signal-blue)", display: "block" }}>{accent.trim()}</Box> : null}
+                  </>
+                );
+              })()}
             </Typography>
             <Stack spacing={1.5} sx={{ maxWidth: 620 }}>
               {heroCopy.body.map((paragraph) => (

@@ -167,7 +167,7 @@ function AttributionGap() {
           const y = CHART_BOX.y + si * cellH + 4;
           const w = cellW - 8;
           const h = cellH - 8;
-          const tone = v >= 0.85 ? CHART.lime : v >= 0.45 ? "rgba(182,255,59,0.45)" : v > 0 ? CHART.amber : "rgba(217,108,95,0.6)";
+          const tone = v >= 0.85 ? CHART.lime : v >= 0.45 ? "rgba(59,255,124,0.45)" : v > 0 ? CHART.amber : "rgba(217,108,95,0.6)";
           const text = v >= 0.85 ? "OK" : v >= 0.45 ? "PARTIAL" : v > 0 ? "WEAK" : "MISS";
           return (
             <g key={`${ci}-${si}`} className="inc-fade" opacity={0}>

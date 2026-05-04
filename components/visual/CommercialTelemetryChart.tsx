@@ -107,7 +107,7 @@ export function CommercialTelemetryChart({ mode, variant = "area", height = 152 
   }, [reduced]);
 
   return (
-    <Box ref={rootRef} className="industrial-card" sx={{ border: "1px solid rgba(182,255,59,0.14)", borderRadius: "var(--radius)", background: "rgba(7,9,11,0.78)", p: 1.25, minHeight: height + 64 }}>
+    <Box ref={rootRef} className="industrial-card" sx={{ border: "1px solid rgba(59,255,124,0.14)", borderRadius: "var(--radius)", background: "rgba(7,9,11,0.78)", p: 1.25, minHeight: height + 64 }}>
       <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: 0.75 }}>
         <MetaLabel sx={{ color: "var(--signal-blue)" }}>{title.eyebrow}</MetaLabel>
         <Typography sx={{ color: "var(--text-3)", fontFamily: "var(--mono)", fontSize: 10, textTransform: "uppercase" }}>{title.title}</Typography>
@@ -120,8 +120,8 @@ export function CommercialTelemetryChart({ mode, variant = "area", height = 152 
                 <CartesianGrid stroke="rgba(255,255,255,0.055)" vertical={false} />
                 <XAxis dataKey="label" tick={{ fill: "#6D7782", fontSize: 10, fontFamily: "var(--mono)" }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill: "#6D7782", fontSize: 10, fontFamily: "var(--mono)" }} axisLine={false} tickLine={false} />
-                <Tooltip cursor={{ fill: "rgba(182,255,59,0.045)" }} contentStyle={{ background: "#101419", border: "1px solid rgba(182,255,59,0.2)", borderRadius: 6, color: "#F4F7FA", fontFamily: "var(--mono)", fontSize: 11 }} />
-                <Bar dataKey="visible" fill="#B6FF3B" radius={[3, 3, 0, 0]} isAnimationActive={!reduced} animationDuration={900} />
+                <Tooltip cursor={{ fill: "rgba(59,255,124,0.045)" }} contentStyle={{ background: "#101419", border: "1px solid rgba(59,255,124,0.2)", borderRadius: 6, color: "#F4F7FA", fontFamily: "var(--mono)", fontSize: 11 }} />
+                <Bar dataKey="visible" fill="#3BFF7C" radius={[3, 3, 0, 0]} isAnimationActive={!reduced} animationDuration={900} />
                 <Bar dataKey="revenue" fill="#8FD18A" radius={[3, 3, 0, 0]} isAnimationActive={!reduced} animationDuration={1100} />
               </BarChart>
             ) : variant === "line" ? (
@@ -129,16 +129,16 @@ export function CommercialTelemetryChart({ mode, variant = "area", height = 152 
                 <CartesianGrid stroke="rgba(255,255,255,0.055)" vertical={false} />
                 <XAxis dataKey="label" tick={{ fill: "#6D7782", fontSize: 10, fontFamily: "var(--mono)" }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill: "#6D7782", fontSize: 10, fontFamily: "var(--mono)" }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ background: "#101419", border: "1px solid rgba(182,255,59,0.2)", borderRadius: 6, color: "#F4F7FA", fontFamily: "var(--mono)", fontSize: 11 }} />
-                <Line type="monotone" dataKey="visible" stroke="#B6FF3B" strokeWidth={2} dot={{ r: 2, fill: "#B6FF3B" }} isAnimationActive={!reduced} animationDuration={1000} />
+                <Tooltip contentStyle={{ background: "#101419", border: "1px solid rgba(59,255,124,0.2)", borderRadius: 6, color: "#F4F7FA", fontFamily: "var(--mono)", fontSize: 11 }} />
+                <Line type="monotone" dataKey="visible" stroke="#3BFF7C" strokeWidth={2} dot={{ r: 2, fill: "#3BFF7C" }} isAnimationActive={!reduced} animationDuration={1000} />
                 <Line type="monotone" dataKey="recovered" stroke="#8FD18A" strokeWidth={1.6} dot={{ r: 2, fill: "#8FD18A" }} isAnimationActive={!reduced} animationDuration={1200} />
               </LineChart>
             ) : (
               <AreaChart data={data} margin={{ top: 8, right: 10, bottom: 0, left: -24 }}>
                 <defs>
                   <linearGradient id={`lime-area-${mode}`} x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#B6FF3B" stopOpacity={0.32} />
-                    <stop offset="100%" stopColor="#B6FF3B" stopOpacity={0.02} />
+                    <stop offset="0%" stopColor="#3BFF7C" stopOpacity={0.32} />
+                    <stop offset="100%" stopColor="#3BFF7C" stopOpacity={0.02} />
                   </linearGradient>
                   <linearGradient id={`amber-area-${mode}`} x1="0" x2="0" y1="0" y2="1">
                     <stop offset="0%" stopColor="#E6A84A" stopOpacity={0.28} />
@@ -148,15 +148,15 @@ export function CommercialTelemetryChart({ mode, variant = "area", height = 152 
                 <CartesianGrid stroke="rgba(255,255,255,0.055)" vertical={false} />
                 <XAxis dataKey="label" tick={{ fill: "#6D7782", fontSize: 10, fontFamily: "var(--mono)" }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill: "#6D7782", fontSize: 10, fontFamily: "var(--mono)" }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ background: "#101419", border: "1px solid rgba(182,255,59,0.2)", borderRadius: 6, color: "#F4F7FA", fontFamily: "var(--mono)", fontSize: 11 }} />
-                <Area type="monotone" dataKey="visible" stroke="#B6FF3B" fill={`url(#lime-area-${mode})`} strokeWidth={2} isAnimationActive={!reduced} animationDuration={1050} />
+                <Tooltip contentStyle={{ background: "#101419", border: "1px solid rgba(59,255,124,0.2)", borderRadius: 6, color: "#F4F7FA", fontFamily: "var(--mono)", fontSize: 11 }} />
+                <Area type="monotone" dataKey="visible" stroke="#3BFF7C" fill={`url(#lime-area-${mode})`} strokeWidth={2} isAnimationActive={!reduced} animationDuration={1050} />
                 <Area type="monotone" dataKey="lost" stroke="#E6A84A" fill={`url(#amber-area-${mode})`} strokeWidth={1.6} isAnimationActive={!reduced} animationDuration={1300} />
                 <Area type="monotone" dataKey="recovered" stroke="#8FD18A" fill="rgba(143,209,138,0.08)" strokeWidth={1.6} isAnimationActive={!reduced} animationDuration={1450} />
               </AreaChart>
             )}
           </ResponsiveContainer>
         ) : (
-          <Box sx={{ height: "100%", display: "grid", placeItems: "center", border: "1px dashed rgba(182,255,59,0.12)", borderRadius: "var(--radius)", color: "var(--text-3)", fontFamily: "var(--mono)", fontSize: 11, textTransform: "uppercase" }}>
+          <Box sx={{ height: "100%", display: "grid", placeItems: "center", border: "1px dashed rgba(59,255,124,0.12)", borderRadius: "var(--radius)", color: "var(--text-3)", fontFamily: "var(--mono)", fontSize: 11, textTransform: "uppercase" }}>
             telemetry waiting for viewport
           </Box>
         )}

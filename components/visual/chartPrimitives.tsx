@@ -5,13 +5,13 @@ import type { ReactNode } from "react";
 // illustrations read as part of the same enterprise telemetry surface.
 export const CHART = {
   bg: "rgba(7,9,11,0.78)",
-  border: "rgba(182,255,59,0.14)",
+  border: "rgba(59,255,124,0.14)",
   grid: "rgba(255,255,255,0.055)",
   gridStrong: "rgba(255,255,255,0.09)",
   axis: "#6D7782",
   axisStrong: "#A7B0BA",
   text: "#F4F7FA",
-  lime: "#B6FF3B",
+  lime: "#3BFF7C",
   green: "#8FD18A",
   amber: "#E6A84A",
   red: "#D96C5F",

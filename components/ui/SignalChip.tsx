@@ -3,7 +3,7 @@ import { Box, type BoxProps } from "@mui/material";
 type SignalChipTone = "blue" | "amber" | "green" | "muted" | "red";
 
 const toneMap: Record<SignalChipTone, { color: string; border: string; background: string }> = {
-  blue: { color: "var(--signal-blue)", border: "rgba(182,255,59,0.38)", background: "rgba(182,255,59,0.075)" },
+  blue: { color: "var(--signal-blue)", border: "rgba(59,255,124,0.38)", background: "rgba(59,255,124,0.075)" },
   amber: { color: "var(--signal-amber)", border: "rgba(230,168,74,0.34)", background: "rgba(230,168,74,0.08)" },
   green: { color: "var(--signal-green)", border: "rgba(143,209,138,0.34)", background: "rgba(143,209,138,0.08)" },
   red: { color: "var(--signal-red)", border: "rgba(217,108,95,0.34)", background: "rgba(217,108,95,0.08)" },

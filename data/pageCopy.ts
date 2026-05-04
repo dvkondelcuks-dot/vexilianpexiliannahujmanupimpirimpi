@@ -14,7 +14,7 @@ export const navItems = [
 
 export const heroCopy = {
   eyebrow: "VEX / 2026 · KOMERCIĀLĀS SISTĒMAS",
-  headline: "Lielākā daļa Latvijas uzņēmumu nezina, kur pazūd viņu klienti.",
+  headline: "Lielākā daļa Latvijas uzņēmumu nezina,|kur pazūd viņu klienti.",
   body: [
     "Vexilian uzbūvē komerciālo sistēmu Latvijas mazajiem un vidējiem uzņēmumiem — vienu savienotu plūsmu no pirmā kontakta līdz noslēgtam darījumam.",
     "Mēs neuztaisām tikai lapu. Mēs savienojam vietni, formas, CRM, atribūciju, atgūšanu un vadības skatu vienā sistēmā, kuru var redzēt, vadīt un uzlabot."
@@ -31,19 +31,19 @@ export const heroCopy = {
 export const sectionCopy = {
   diagnosis: {
     eyebrow: "01 · DIAGNOZE",
-    headline: "Pieci klusi lūzuma punkti, kur Latvijas MVU zaudē klientus.",
+    headline: "Pieci klusi lūzuma punkti,|kur Latvijas MVU zaudē klientus.",
     body:
       "Tie nav dramatiski notikumi. Tie notiek katru dienu: cilvēks nospiež reklāmu, atver lapu, uzraksta, pazūd, neatbild, atgriežas vēlāk vai nopērk citur. Problēma nav tikai tajā, ka klients pazuda. Problēma ir tajā, ka uzņēmums nezina, kur tas notika."
   },
   approach: {
     eyebrow: "02 · PIEEJA",
-    headline: "Mēs neuzlabojam fragmentus. Mēs savienojam plūsmu.",
+    headline: "Mēs neuzlabojam fragmentus.|Mēs savienojam plūsmu.",
     body:
       "Vexilian sāk tur, kur lielākā daļa projektu beidzas: pie jautājuma, kas notiek pēc tam, kad cilvēks ir izrādījis interesi."
   },
   founders: {
     eyebrow: "03 · FOUNDER-LED SYSTEMS",
-    headline: "Trīs cilvēki. Viena sistēmas galva. Atbildība bez slāņiem pa vidu.",
+    headline: "Trīs cilvēki. Viena sistēmas galva.|Atbildība bez slāņiem pa vidu.",
     body:
       "Vexilian nav liela aģentūra ar pieciem starpniekiem starp klientu un darbu. Sistēmu veido cilvēki, kuri saprot arhitektūru, analīzi, mārketingu, komunikāciju un izaugsmi kā vienu kopēju plūsmu.",
     closing:
@@ -51,31 +51,31 @@ export const sectionCopy = {
   },
   system: {
     eyebrow: "04 · SISTĒMA",
-    headline: "Seši slāņi, kas kopā kļūst par komerciālu sistēmu.",
+    headline: "Seši slāņi, kas|veido kodolu.",
     body:
       "Atsevišķi neviens slānis nav unikāls. Sistēma strādā tāpēc, ka visi seši slāņi ir savienoti vienā plūsmā un viena komanda ir atbildīga par to, ka tie turas kopā."
   },
   diagnostics: {
     eyebrow: "05 · SYSTEM-DIAGRAM",
-    headline: "Tā izskatās tava sistēma, kad mēs esam iekšā.",
+    headline: "Tā izskatās tava sistēma,|kad mēs esam iekšā.",
     body:
       "Pilnas arhitektūras shēma: no reklāmas avotiem līdz konversijai, no pazuduša kontakta līdz atgūšanas ciklam, no atsevišķām darbībām līdz vadības skatam. Tas nav dekoratīvs grafiks. Tā ir darba karte."
   },
   collaboration: {
     eyebrow: "06 · SADARBĪBA",
-    headline: "Skaidrs apjoms. Skaidra nodošana. Pēctecība, kas turpinās.",
+    headline: "Skaidrs apjoms. Skaidra nodošana.|Pēctecība, kas turpinās.",
     body:
       "Viens projekts. Trīs darba fāzes. Fiksēts apjoms, skaidrs grafiks, skaidra cena un sistēma, kas pēc nodošanas nepazūd."
   },
   process: {
     eyebrow: "07 · PROCESS",
-    headline: "No audita līdz redzamai sistēmai.",
+    headline: "No audita|līdz redzamai sistēmai.",
     body:
       "Process ir viena nepārtraukta plūsma. Sākumā mēs atrodam, kur sistēma plīst. Tad uzzīmējam arhitektūru, uzstādām slāņus, nododam komandai un turpinām uzlabot."
   },
   cases: {
     eyebrow: "08 · ATLASĪTI DARBI",
-    headline: "Sistēmas, kas jau strādā reālos uzņēmumos.",
+    headline: "Sistēmas, kas|jau strādā reālos uzņēmumos.",
     body:
       "Atšķirīgas nozares, viena pieeja: kartēt esošo plūsmu, identificēt lūzumus, uzbūvēt sistēmu un nodot to komandai."
   },
@@ -86,7 +86,7 @@ export const sectionCopy = {
   },
   audits: {
     eyebrow: "10 · AUDITS",
-    headline: "Sāksim ar redzamību.",
+    headline: "Sāksim|ar redzamību.",
     body:
       "30-min saruna un sākuma audits bez maksas. Mēs apskatām, kur šobrīd plīst tava klientu plūsma, un atklāti pasakām, vai sistēma ir risinājums tavam uzņēmumam."
   }

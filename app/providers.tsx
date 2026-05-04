@@ -12,7 +12,7 @@ export function Providers({ children }: { children: ReactNode }) {
         theme={{
           algorithm: antdTheme.darkAlgorithm,
           token: {
-            colorPrimary: "#B6FF3B",
+            colorPrimary: "#3BFF7C",
             colorBgBase: "#07090B",
             colorBgContainer: "#101419",
             colorBorder: "rgba(255,255,255,0.10)",

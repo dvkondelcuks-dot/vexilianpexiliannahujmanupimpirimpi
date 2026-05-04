@@ -57,7 +57,7 @@ export function Header() {
             sx={{
               display: { xs: "none", md: "flex" },
               p: 0.5,
-              border: "1px solid rgba(182,255,59,0.12)",
+              border: "1px solid rgba(59,255,124,0.12)",
               borderRadius: "999px",
               background: "rgba(16,20,25,0.72)",
               boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.02)"
@@ -78,10 +78,10 @@ export function Header() {
                   textTransform: "uppercase",
                   whiteSpace: "nowrap",
                   transition: "color 160ms ease, background 160ms ease",
-                  background: activeSection === item.id ? "rgba(182,255,59,0.08)" : "transparent",
+                  background: activeSection === item.id ? "rgba(59,255,124,0.08)" : "transparent",
                   "&:hover": {
                     color: "var(--text)",
-                    background: "rgba(182,255,59,0.075)"
+                    background: "rgba(59,255,124,0.075)"
                   }
                 }}
               >
@@ -90,7 +90,7 @@ export function Header() {
             ))}
           </Stack>
           <Stack direction="row" spacing={1.2} alignItems="center">
-            <Box sx={{ display: { xs: "none", lg: "block" }, border: "1px solid rgba(182,255,59,0.16)", borderRadius: "var(--radius)", px: 1.2, py: 0.8, color: "var(--signal-blue)", fontFamily: "var(--mono)", fontSize: 10, textTransform: "uppercase" }}>
+            <Box sx={{ display: { xs: "none", lg: "block" }, border: "1px solid rgba(59,255,124,0.16)", borderRadius: "var(--radius)", px: 1.2, py: 0.8, color: "var(--signal-blue)", fontFamily: "var(--mono)", fontSize: 10, textTransform: "uppercase" }}>
               FLOW / LIVE
             </Box>
             <VexButton href="#audits" size="small">Pieteikt auditu</VexButton>

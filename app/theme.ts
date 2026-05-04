@@ -12,7 +12,7 @@ export const vexTheme = createTheme({
       secondary: "#A7B0BA"
     },
     primary: {
-      main: "#B6FF3B"
+      main: "#3BFF7C"
     },
     warning: {
       main: "#E6A84A"

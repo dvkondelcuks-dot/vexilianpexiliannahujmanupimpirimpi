@@ -38,7 +38,7 @@ export function AuditSection() {
                 ))}
               </Stack>
             </Box>
-            <Box className="industrial-card" sx={{ border: "1px solid rgba(182,255,59,0.18)", borderRadius: "var(--radius)", background: "rgba(182,255,59,0.045)", p: 2.2 }}>
+            <Box className="industrial-card" sx={{ border: "1px solid rgba(59,255,124,0.18)", borderRadius: "var(--radius)", background: "rgba(59,255,124,0.045)", p: 2.2 }}>
               <MetaLabel>Diskrētums</MetaLabel>
               <Typography sx={{ color: "var(--text-2)", mt: 1, lineHeight: 1.65 }}>Viss, ko tu pasaki sarunā, paliek starp mums. NDA pēc pieprasījuma. Nekas netiek publicēts bez saskaņošanas.</Typography>
             </Box>

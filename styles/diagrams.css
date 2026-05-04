@@ -1,11 +1,11 @@
 .diagram-panel {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(182, 255, 59, 0.16);
+  border: 1px solid rgba(59, 255, 124, 0.16);
   border-radius: var(--radius);
   background:
-    linear-gradient(rgba(182, 255, 59, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(182, 255, 59, 0.022) 1px, transparent 1px),
+    linear-gradient(rgba(59, 255, 124, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 255, 124, 0.022) 1px, transparent 1px),
     var(--surface);
   background-size: 28px 28px;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025), 0 24px 90px rgba(0, 0, 0, 0.38);
@@ -34,7 +34,7 @@
 
 .svg-line {
   fill: none;
-  stroke: rgba(182, 255, 59, 0.42);
+  stroke: rgba(59, 255, 124, 0.42);
   stroke-width: 1.35;
 }
 

@@ -18,7 +18,7 @@ export function SixLayerStack() {
           <Typography sx={{ color: "var(--signal-blue)", fontFamily: "var(--mono)", fontSize: 13 }}>{signalStates[active + 1]}</Typography>
         </Stack>
         <Box sx={{ position: "relative", pl: { xs: 0, md: 3 } }}>
-          <Box aria-hidden="true" sx={{ display: { xs: "none", md: "block" }, position: "absolute", left: 22, top: 18, bottom: 18, width: 1, background: "linear-gradient(180deg, rgba(182,255,59,0.25), rgba(143,209,138,0.48))" }} />
+          <Box aria-hidden="true" sx={{ display: { xs: "none", md: "block" }, position: "absolute", left: 22, top: 18, bottom: 18, width: 1, background: "linear-gradient(180deg, rgba(59,255,124,0.25), rgba(143,209,138,0.48))" }} />
           {layers.map((layer, index) => {
             const isActive = active === index;
             const isComplete = index < active;
@@ -35,7 +35,7 @@ export function SixLayerStack() {
                   textAlign: "left",
                   color: "inherit",
                   border: "1px solid",
-                  borderColor: isActive ? "rgba(182,255,59,0.58)" : isComplete ? "rgba(143,209,138,0.26)" : "var(--border)",
+                  borderColor: isActive ? "rgba(59,255,124,0.58)" : isComplete ? "rgba(143,209,138,0.26)" : "var(--border)",
                   borderRadius: "var(--radius)",
                   background: isActive ? "linear-gradient(180deg, rgba(18,23,29,0.96), rgba(9,12,15,0.98))" : "rgba(16,20,25,0.72)",
                   minHeight: isActive ? { xs: 360, sm: 300, md: 260 } : { xs: 112, md: 92 },
@@ -85,7 +85,7 @@ function MiniLayerRoute({ items }: { items: readonly string[] }) {
       {items.map((item, index) => (
         <Stack key={`${item}-${index}`} direction="row" spacing={0.8} alignItems="center">
           <SignalChip tone={index === items.length - 1 ? "green" : "muted"}>{item}</SignalChip>
-          {index < items.length - 1 ? <Box sx={{ width: 18, height: 1, background: "rgba(182,255,59,0.42)" }} /> : null}
+          {index < items.length - 1 ? <Box sx={{ width: 18, height: 1, background: "rgba(59,255,124,0.42)" }} /> : null}
         </Stack>
       ))}
     </Stack>
