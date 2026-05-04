@@ -1,0 +1,20 @@
+:root {
+  --bg: #07090b;
+  --bg-2: #0b0e11;
+  --surface: #101419;
+  --surface-2: #151b22;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text: #f4f7fa;
+  --text-2: #a7b0ba;
+  --text-3: #6d7782;
+  --signal-blue: #b6ff3b;
+  --signal-lime: #b6ff3b;
+  --signal-amber: #e6a84a;
+  --signal-green: #8fd18a;
+  --signal-red: #d96c5f;
+  --grid-max: 1360px;
+  --radius: 8px;
+  --mono: var(--font-geist-mono), "IBM Plex Mono", Consolas, monospace;
+  --sans: var(--font-geist-sans), Inter, Arial, sans-serif;
+}

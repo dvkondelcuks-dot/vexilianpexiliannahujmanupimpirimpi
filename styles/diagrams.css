@@ -1,0 +1,71 @@
+.diagram-panel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(182, 255, 59, 0.16);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(rgba(182, 255, 59, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(182, 255, 59, 0.022) 1px, transparent 1px),
+    var(--surface);
+  background-size: 28px 28px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025), 0 24px 90px rgba(0, 0, 0, 0.38);
+}
+
+.diagram-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.018), transparent);
+  mix-blend-mode: screen;
+}
+
+.svg-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  fill: var(--text-2);
+}
+
+.svg-label-muted {
+  fill: var(--text-3);
+}
+
+.svg-line {
+  fill: none;
+  stroke: rgba(182, 255, 59, 0.42);
+  stroke-width: 1.35;
+}
+
+.svg-line-leak {
+  stroke: var(--signal-amber);
+  opacity: 0.88;
+}
+
+.svg-line-success {
+  stroke: var(--signal-green);
+  opacity: 0.85;
+}
+
+.svg-node {
+  fill: rgba(16, 20, 25, 0.92);
+  stroke: rgba(255, 255, 255, 0.14);
+  stroke-width: 1;
+  rx: 6;
+}
+
+.svg-node-active {
+  stroke: var(--signal-blue);
+  fill: rgba(126, 167, 255, 0.08);
+}
+
+.svg-node-leak {
+  stroke: rgba(230, 168, 74, 0.82);
+  fill: rgba(230, 168, 74, 0.08);
+}
+
+.svg-node-success {
+  stroke: rgba(143, 209, 138, 0.82);
+  fill: rgba(143, 209, 138, 0.08);
+}

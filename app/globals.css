@@ -1,0 +1,123 @@
+@import "../styles/tokens.css";
+@import "../styles/animations.css";
+@import "../styles/diagrams.css";
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  text-rendering: geometricPrecision;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(126, 167, 255, 0.28);
+  color: var(--text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal-blue);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ant-form-item .ant-form-item-label > label {
+  color: var(--text-2);
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.ant-input,
+.ant-select-selector,
+.ant-input-affix-wrapper {
+  background: rgba(7, 9, 11, 0.72) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: var(--text) !important;
+}
+
+.ant-input::placeholder,
+.ant-select-selection-placeholder {
+  color: var(--text-3) !important;
+}
+
+.ant-form-item-explain-error {
+  color: var(--signal-red) !important;
+  font-size: 12px;
+}
+
+.industrial-card {
+  position: relative;
+  isolation: isolate;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  background:
+    linear-gradient(180deg, rgba(18, 23, 29, 0.94), rgba(8, 11, 14, 0.98)),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.026), transparent 42%, rgba(182, 255, 59, 0.018));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025), 0 22px 70px rgba(0, 0, 0, 0.34);
+}
+
+.industrial-card::before,
+.industrial-card::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.industrial-card::before {
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.09), transparent 22%) top left / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, rgba(182, 255, 59, 0.09)) bottom right / 100% 1px no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px);
+  background-size: 100% 1px, 100% 1px, 18px 18px, 18px 18px;
+  opacity: 0.9;
+}
+
+.industrial-card::after {
+  top: 10px;
+  right: 10px;
+  width: 42px;
+  height: 42px;
+  border-top: 1px solid rgba(182, 255, 59, 0.28);
+  border-right: 1px solid rgba(182, 255, 59, 0.28);
+}
+
+.industrial-card:hover {
+  border-color: rgba(182, 255, 59, 0.28) !important;
+}
