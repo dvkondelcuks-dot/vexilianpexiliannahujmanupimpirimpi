@@ -39,10 +39,10 @@ export function ApproachSection() {
         <Stack spacing={1.5}>
           {panels.map((panel) => (
             <Grid key={panel.title} className="industrial-card" container spacing={{ xs: 2, md: 3 }} alignItems="center" sx={{ border: "1px solid var(--border)", borderRadius: "var(--radius)", background: "rgba(16,20,25,0.66)", p: { xs: 1.6, md: 2.6 } }}>
-              <Grid size={{ xs: 12, md: 5 }}>
+              <Grid size={{ xs: 12, md: 7 }}>
                 <DoctrineDiagram mode={panel.mode} />
               </Grid>
-              <Grid size={{ xs: 12, md: 7 }}>
+              <Grid size={{ xs: 12, md: 5 }}>
                 <Stack spacing={1.4}>
                   <Typography component="h3" variant="h3">{panel.title}</Typography>
                   {panel.text.map((line) => <Typography key={line} sx={{ color: "var(--text-2)", lineHeight: 1.7 }}>{line}</Typography>)}

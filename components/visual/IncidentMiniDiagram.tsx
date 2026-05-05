@@ -1,273 +1,294 @@
 "use client";
 
 import { Box } from "@mui/material";
-import anime from "animejs";
-import { useAnimeInView } from "@/hooks/useAnimeInView";
-import { AreaGradient, Bar, CHART, HGrid, LegendChip, XAxis, YAxis, barLayout, plotPoints, smoothPath } from "./chartPrimitives";
 
-// Each diagnosis card renders one of these "incident telemetry" mini-panels.
-// They follow the same visual grammar as Recharts (axes + grid + lime / amber
-// series) so the diagnosis row feels like a cockpit of forensic readouts
-// rather than five different cartoons.
+// Five hand-built incident illustrations matching the diagnosis screenshots.
 
 type IncidentVisual = "postClickUnknown" | "leadSilence" | "attributionGap" | "noRecovery" | "pageBlindness";
 
-const VIEW_W = 520;
-const VIEW_H = 172;
-const CHART_BOX = { x: 36, y: 38, w: 460, h: 96 };
+const ACCENT = "#3BFF7C";
+const DIM = "rgba(59,255,124,0.45)";
+const TEXT = "#F4F7FA";
+const MUTED = "#A7B0BA";
+const W = 760;
+const H = 320;
 
-export function IncidentMiniDiagram({ visual }: { visual: IncidentVisual }) {
-  const ref = useAnimeInView<HTMLDivElement>((node) => {
-    anime({
-      targets: node.querySelectorAll(".inc-fade"),
-      opacity: [0, 1],
-      translateY: [6, 0],
-      delay: anime.stagger(28),
-      duration: 480,
-      easing: "easeOutQuad"
-    });
-
-    const bars = node.querySelectorAll<SVGRectElement>(".inc-bar");
-    anime.set(bars, { transformOrigin: "center bottom" });
-    anime({
-      targets: bars,
-      scaleY: [0, 1],
-      delay: anime.stagger(48, { start: 220 }),
-      duration: 560,
-      easing: "easeOutCubic"
-    });
-
-    const lines = node.querySelectorAll<SVGPathElement>(".inc-line");
-    lines.forEach((p) => {
-      const len = p.getTotalLength();
-      p.style.strokeDasharray = `${len}`;
-      p.style.strokeDashoffset = `${len}`;
-    });
-    anime({
-      targets: lines,
-      strokeDashoffset: 0,
-      delay: anime.stagger(140, { start: 260 }),
-      duration: 1100,
-      easing: "easeInOutSine"
-    });
-  }, 0.6);
-
-  const Visual = VISUALS[visual];
-
+function Defs() {
   return (
-    <Box ref={ref} sx={{ width: "100%" }}>
-      <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} aria-label={LABELS[visual]} role="img" style={{ width: "100%", height: VIEW_H }}>
-        <rect x={6} y={6} width={VIEW_W - 12} height={VIEW_H - 12} rx={8} fill={CHART.bg} stroke={CHART.border} />
-        <Visual />
-      </svg>
-    </Box>
+    <defs>
+      <pattern id="inc-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+        <path d="M32 0H0V32" fill="none" stroke="rgba(59,255,124,0.04)" strokeWidth="1" />
+      </pattern>
+      <radialGradient id="inc-glow" cx="50%" cy="50%">
+        <stop offset="0%" stopColor="rgba(59,255,124,0.18)" />
+        <stop offset="100%" stopColor="rgba(59,255,124,0)" />
+      </radialGradient>
+      <marker id="arr-lime" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+        <path d="M0 0 L10 5 L0 10 Z" fill={ACCENT} />
+      </marker>
+    </defs>
   );
 }
 
-const LABELS: Record<IncidentVisual, string> = {
-  postClickUnknown: "Post-klikšķa redzamības līkne uz lapas",
-  leadSilence: "Lead atbildes laika sadalījums",
-  attributionGap: "Avota izšķirtspējas matrica",
-  noRecovery: "Atgūšanas mēģinājumu kavēkšanas profils",
-  pageBlindness: "Sesiju notikumu blīvums lapā"
-};
-
-// ─── 01 · Post-click unknown ────────────────────────────────────────────────
-// Visible signal collapses after page load: ad signal high, page signal mid,
-// owner insight near zero. Stacked bar group + decay curve.
 function PostClickUnknown() {
-  const data = [
-    { label: "AD",     value: 92, lost: 4 },
-    { label: "CLICK",  value: 88, lost: 8 },
-    { label: "LOAD",   value: 76, lost: 18 },
-    { label: "VIEW",   value: 56, lost: 38 },
-    { label: "SCROLL", value: 28, lost: 64 },
-    { label: "CTA",    value: 12, lost: 80 },
-    { label: "EXIT",   value: 4,  lost: 92 }
-  ];
-  const max = 100;
-  const visiblePts = plotPoints(data.map((d) => ({ label: d.label, value: d.value })), CHART_BOX, max);
   return (
-    <>
-      <text x={20} y={22} className="svg-label inc-fade" fill={CHART.lime} fontSize="10" opacity={0}>POST-CLICK VISIBILITY · % retained</text>
-      <LegendChip x={290} y={22} label="VISIBLE" tone="lime" />
-      <LegendChip x={370} y={22} label="LOST" tone="amber" />
-      <HGrid x={CHART_BOX.x} y={CHART_BOX.y} w={CHART_BOX.w} h={CHART_BOX.h} ticks={3} />
-      <YAxis x={CHART_BOX.x - 6} y={CHART_BOX.y} h={CHART_BOX.h} max={max} ticks={3} />
-      {barLayout(data.map((d) => ({ label: d.label, value: d.lost })), CHART_BOX, max, 0.5).map((b, i) => (
-        <rect key={`l-${i}`} className="inc-bar" x={b.x} y={b.y} width={b.w} height={b.h} fill={CHART.amber} opacity={0.55} rx={1.5} />
-      ))}
-      <path className="inc-line" d={smoothPath(visiblePts)} stroke={CHART.lime} strokeWidth={2} fill="none" />
-      {visiblePts.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r={2.4} fill={CHART.lime} className="inc-fade" opacity={0} />)}
-      <XAxis x={CHART_BOX.x} y={CHART_BOX.y + CHART_BOX.h + 14} w={CHART_BOX.w} labels={data.map((d) => d.label)} />
-      <text x={20} y={VIEW_H - 12} className="svg-label svg-label-muted inc-fade" fontSize="9" opacity={0}>OWNER INSIGHT · 4% — page consumes the click without reporting back</text>
-    </>
+    <g>
+      <g transform="translate(40,90)">
+        <rect width="140" height="140" rx="12" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.5" />
+        <text x="70" y="86" textAnchor="middle" fill={TEXT} fontSize="38" fontWeight="700" letterSpacing="0.06em">AD</text>
+        <path d="M85 96 L100 110 L92 112 L96 122 L92 124 L88 114 L82 118 Z" fill={ACCENT} />
+        <text x="70" y="178" textAnchor="middle" fill={MUTED} fontSize="11" letterSpacing="0.12em">KLIKS</text>
+      </g>
+      <path d="M195 160 L255 160" stroke={ACCENT} strokeWidth="1.5" markerEnd="url(#arr-lime)" />
+      <g transform="translate(270,90)">
+        <rect width="180" height="140" rx="10" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.5" />
+        <circle cx="20" cy="18" r="3" fill={DIM} />
+        <circle cx="32" cy="18" r="3" fill={DIM} />
+        <circle cx="44" cy="18" r="3" fill={DIM} />
+        <rect x="14" y="34" width="60" height="50" rx="4" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+        <path d="M22 70 L34 56 L46 64 L66 50 L66 80 L22 80 Z" fill={ACCENT} opacity="0.25" />
+        <circle cx="58" cy="46" r="4" fill={ACCENT} opacity="0.6" />
+        <line x1="86" y1="40" x2="166" y2="40" stroke={ACCENT} strokeWidth="1.2" />
+        <line x1="86" y1="52" x2="166" y2="52" stroke={DIM} strokeWidth="1" />
+        <line x1="86" y1="62" x2="146" y2="62" stroke={DIM} strokeWidth="1" />
+        <line x1="86" y1="72" x2="156" y2="72" stroke={DIM} strokeWidth="1" />
+        <line x1="14" y1="100" x2="166" y2="100" stroke={DIM} strokeWidth="1" />
+        <line x1="14" y1="112" x2="140" y2="112" stroke={DIM} strokeWidth="1" />
+        <line x1="14" y1="124" x2="120" y2="124" stroke={DIM} strokeWidth="1" />
+        <text x="90" y="178" textAnchor="middle" fill={MUTED} fontSize="11" letterSpacing="0.12em">LAPA ATVĒRTA</text>
+      </g>
+      <path d="M460 160 Q540 90 600 130 T680 160" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="5 5" fill="none" markerEnd="url(#arr-lime)" />
+      <g transform="translate(620,90)">
+        <circle cx="60" cy="60" r="62" fill="url(#inc-glow)" />
+        <circle cx="60" cy="60" r="50" fill="none" stroke={ACCENT} strokeWidth="1.5" strokeDasharray="6 5" />
+        <text x="60" y="74" textAnchor="middle" fill={ACCENT} fontSize="48" fontWeight="700">?</text>
+        <text x="60" y="160" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">NENOTEIKTĀ ZONA</text>
+        <text x="60" y="174" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">NULLE REDZAMĪBAS</text>
+      </g>
+    </g>
   );
 }
 
-// ─── 02 · Lead silence — response-time histogram ────────────────────────────
 function LeadSilence() {
-  const data = [
-    { label: "0-1m",   value: 32 },
-    { label: "1-5m",   value: 14 },
-    { label: "5-30m",  value: 9 },
-    { label: "30m-2h", value: 6 },
-    { label: "2-12h",  value: 4 },
-    { label: "12-48h", value: 3 },
-    { label: "48h+",   value: 0 }
-  ];
-  const max = 35;
+  const stages = ["JAUNS", "KONTAKTĪES", "PIEDĀVĀTS", "SAGAIDA", "SLĒGTS"];
   return (
-    <>
-      <text x={20} y={22} className="svg-label inc-fade" fill={CHART.lime} fontSize="10" opacity={0}>LEAD RESPONSE LATENCY · count</text>
-      <LegendChip x={310} y={22} label="REPLIES" tone="lime" />
-      <LegendChip x={400} y={22} label="SILENCE" tone="amber" />
-      <HGrid x={CHART_BOX.x} y={CHART_BOX.y} w={CHART_BOX.w} h={CHART_BOX.h} ticks={3} />
-      <YAxis x={CHART_BOX.x - 6} y={CHART_BOX.y} h={CHART_BOX.h} max={max} ticks={3} />
-      {barLayout(data, CHART_BOX, max, 0.6).map((b, i) => (
-        <Bar key={i} {...b} tone={i >= 4 ? "amber" : "lime"} opacity={i >= 4 ? 0.85 : 1} />
-      ))}
-      {/* SLA threshold */}
-      <line x1={CHART_BOX.x + (CHART_BOX.w / data.length) * 2} x2={CHART_BOX.x + (CHART_BOX.w / data.length) * 2} y1={CHART_BOX.y} y2={CHART_BOX.y + CHART_BOX.h} stroke={CHART.amber} strokeDasharray="3 4" opacity={0.7} />
-      <text x={CHART_BOX.x + (CHART_BOX.w / data.length) * 2 + 6} y={CHART_BOX.y + 14} className="svg-label" fill={CHART.amber} fontSize="9">SLA = 5m</text>
-      <XAxis x={CHART_BOX.x} y={CHART_BOX.y + CHART_BOX.h + 14} w={CHART_BOX.w} labels={data.map((d) => d.label)} />
-      <text x={20} y={VIEW_H - 12} className="svg-label svg-label-muted inc-fade" fontSize="9" opacity={0}>22 / 68 leads slipped past the SLA window — owner unassigned</text>
-    </>
-  );
-}
-
-// ─── 03 · Attribution gap — source resolution matrix ────────────────────────
-function AttributionGap() {
-  const channels = ["GOOGLE", "META", "ORG.", "DIRECT", "REF."] as const;
-  const stages = ["UTM", "SESSION", "FORM", "CRM"] as const;
-  // 1 = clean, 0.55 = partial, 0 = missing
-  const matrix: number[][] = [
-    [1.0, 0.7, 1.0, 0.4],
-    [1.0, 0.6, 0.9, 0.3],
-    [0.4, 0.3, 0.6, 0.2],
-    [0.0, 0.0, 0.4, 0.1],
-    [0.4, 0.2, 0.3, 0.0]
-  ];
-  const cellW = (CHART_BOX.w - 90) / channels.length;
-  const cellH = CHART_BOX.h / stages.length;
-
-  return (
-    <>
-      <text x={20} y={22} className="svg-label inc-fade" fill={CHART.lime} fontSize="10" opacity={0}>SOURCE RESOLUTION MATRIX · channel × stage</text>
-      <LegendChip x={310} y={22} label="RESOLVED" tone="lime" />
-      <LegendChip x={410} y={22} label="MISSING" tone="amber" />
-      {/* stage labels (Y) */}
-      {stages.map((s, i) => (
-        <text key={s} x={CHART_BOX.x - 6} y={CHART_BOX.y + i * cellH + cellH / 2 + 3} textAnchor="end" className="svg-label" fill={CHART.axis} fontSize="9">{s}</text>
-      ))}
-      {/* matrix cells */}
-      {matrix.map((row, ci) =>
-        row.map((v, si) => {
-          const x = CHART_BOX.x + ci * cellW + 4;
-          const y = CHART_BOX.y + si * cellH + 4;
-          const w = cellW - 8;
-          const h = cellH - 8;
-          const tone = v >= 0.85 ? CHART.lime : v >= 0.45 ? "rgba(59,255,124,0.45)" : v > 0 ? CHART.amber : "rgba(217,108,95,0.6)";
-          const text = v >= 0.85 ? "OK" : v >= 0.45 ? "PARTIAL" : v > 0 ? "WEAK" : "MISS";
+    <g>
+      <g transform="translate(34,100)">
+        <rect width="170" height="120" rx="10" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.5" />
+        <circle cx="34" cy="34" r="14" fill="none" stroke={ACCENT} strokeWidth="1.4" />
+        <circle cx="34" cy="30" r="5" fill={ACCENT} />
+        <path d="M22 44 Q34 32 46 44" stroke={ACCENT} strokeWidth="1.4" fill="none" />
+        <text x="58" y="30" fill={TEXT} fontSize="13" fontWeight="700" letterSpacing="0.06em">JAUNS LEADS</text>
+        <text x="58" y="46" fill={MUTED} fontSize="10">info@piemers.lv</text>
+        <g transform="translate(14,72)">
+          <circle cx="14" cy="14" r="14" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+          <path d="M6 11 L14 17 L22 11" stroke={ACCENT} strokeWidth="1.2" fill="none" />
+          <circle cx="50" cy="14" r="14" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+          <path d="M44 8 Q44 14 50 16 Q56 14 56 8" stroke={ACCENT} strokeWidth="1.2" fill="none" />
+          <circle cx="86" cy="14" r="14" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+          <path d="M78 10 H94 V18 H86 L82 22 L84 18 H78 Z" stroke={ACCENT} strokeWidth="1.2" fill="none" />
+        </g>
+      </g>
+      <path d="M212 158 L240 158" stroke={ACCENT} strokeWidth="1.5" markerEnd="url(#arr-lime)" />
+      <g transform="translate(248,90)">
+        <rect width="380" height="120" rx="8" fill="rgba(8,12,10,0.5)" stroke="rgba(255,255,255,0.1)" />
+        {stages.map((label, i) => {
+          const x = 22 + i * 70;
+          const active = i === 2;
           return (
-            <g key={`${ci}-${si}`} className="inc-fade" opacity={0}>
-              <rect x={x} y={y} width={w} height={h} rx={3} fill="rgba(16,20,25,0.86)" stroke={tone} />
-              <rect x={x + 2} y={y + 2} width={(w - 4) * Math.max(v, 0.08)} height={3} rx={1.5} fill={tone} />
-              <text x={x + w / 2} y={y + h / 2 + 4} textAnchor="middle" className="svg-label" fill={tone} fontSize="9">{text}</text>
+            <g key={label}>
+              <text x={x + 22} y="22" textAnchor="middle" fill={active ? ACCENT : MUTED} fontSize="10" letterSpacing="0.1em">{label}</text>
+              {active ? <rect x={x - 2} y="38" width="48" height="48" rx="4" fill="none" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="4 3" /> : null}
+              <circle cx={x + 22} cy="62" r="14" fill="none" stroke={active ? ACCENT : DIM} strokeWidth="1.4" />
+              {i < stages.length - 1 ? <line x1={x + 38} y1="62" x2={x + 76} y2="62" stroke={DIM} strokeWidth="1.2" /> : null}
             </g>
           );
-        })
-      )}
-      {/* X-axis labels under matrix */}
-      <XAxis x={CHART_BOX.x} y={CHART_BOX.y + CHART_BOX.h + 14} w={CHART_BOX.w - 90} labels={channels} />
-      <text x={20} y={VIEW_H - 12} className="svg-label svg-label-muted inc-fade" fontSize="9" opacity={0}>11 / 20 cells unresolved — UTM dropped at session boundary, CRM never receives source</text>
-    </>
+        })}
+        <text x="190" y="108" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.1em" fontWeight="700">NAV PĀRŅEMEA</text>
+      </g>
+      <path d="M640 160 L670 160" stroke={ACCENT} strokeWidth="1.5" markerEnd="url(#arr-lime)" />
+      <g transform="translate(672,118)">
+        <path d="M16 28 V18 a16 16 0 0 1 32 0 V28" stroke={ACCENT} strokeWidth="1.5" fill="none" />
+        <rect x="6" y="28" width="52" height="42" rx="6" fill="none" stroke={ACCENT} strokeWidth="1.5" />
+        <circle cx="32" cy="46" r="4" fill={ACCENT} />
+        <line x1="32" y1="50" x2="32" y2="60" stroke={ACCENT} strokeWidth="1.5" />
+        <text x="32" y="100" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">NEATBILDĒTS</text>
+        <text x="32" y="114" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">ZAUDĒTS POTENCIĀLS</text>
+      </g>
+    </g>
   );
 }
 
-// ─── 04 · No recovery — trigger gap timeline ────────────────────────────────
+function AttributionGap() {
+  const sources = [
+    { label: "META", icon: "M" },
+    { label: "GOOGLE", icon: "G" },
+    { label: "EMAIL", icon: "@" },
+    { label: "REFERRAL", icon: "P" },
+    { label: "ORGANIC", icon: "O" },
+    { label: "CRM", icon: "C" },
+    { label: "DIRECT", icon: "D" }
+  ];
+  const startY = 28;
+  const stepY = 38;
+  return (
+    <g>
+      {sources.map((s, i) => {
+        const y = startY + i * stepY;
+        return (
+          <g key={s.label}>
+            <g transform={`translate(40, ${y})`}>
+              <rect width="170" height="28" rx="14" fill="rgba(8,12,10,0.65)" stroke={ACCENT} strokeWidth="1.2" />
+              <circle cx="18" cy="14" r="9" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+              <text x="18" y="18" textAnchor="middle" fill={ACCENT} fontSize="11" fontWeight="700">{s.icon}</text>
+              <text x="40" y="18" fill={TEXT} fontSize="11" letterSpacing="0.1em" fontWeight="600">{s.label}</text>
+            </g>
+            <path d={`M210 ${y + 14} Q 320 ${y + 14} 450 160`} stroke={DIM} strokeWidth="1" fill="none" strokeDasharray="3 3" />
+          </g>
+        );
+      })}
+      <g transform="translate(450,116)">
+        <circle cx="50" cy="40" r="44" fill="url(#inc-glow)" />
+        <circle cx="50" cy="40" r="36" fill="none" stroke={ACCENT} strokeWidth="1.4" />
+        <circle cx="50" cy="32" r="10" fill={ACCENT} />
+        <path d="M30 56 Q50 38 70 56" stroke={ACCENT} strokeWidth="1.5" fill={ACCENT} fillOpacity="0.4" />
+        <text x="50" y="106" textAnchor="middle" fill={TEXT} fontSize="11" letterSpacing="0.12em" fontWeight="700">KLIENTS</text>
+      </g>
+      <path d="M560 156 L630 156" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="5 4" markerEnd="url(#arr-lime)" />
+      <g transform="translate(630,108)">
+        <circle cx="50" cy="50" r="48" fill="url(#inc-glow)" />
+        <circle cx="50" cy="50" r="38" fill="none" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="6 4" />
+        <text x="50" y="64" textAnchor="middle" fill={ACCENT} fontSize="40" fontWeight="700">?</text>
+        <text x="50" y="124" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">AVOTS</text>
+        <text x="50" y="138" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">NEZINĀMS</text>
+      </g>
+    </g>
+  );
+}
+
 function NoRecovery() {
-  // Days since silence vs. cumulative recoverable leads
-  const data = [
-    { label: "D0",  value: 24 },
-    { label: "D1",  value: 41 },
-    { label: "D2",  value: 56 },
-    { label: "D3",  value: 67 },
-    { label: "D5",  value: 78 },
-    { label: "D7",  value: 86 },
-    { label: "D14", value: 92 }
-  ];
-  const max = 100;
-  const pts = plotPoints(data, CHART_BOX, max);
-  const areaD = `${smoothPath(pts)} L${CHART_BOX.x + CHART_BOX.w} ${CHART_BOX.y + CHART_BOX.h} L${CHART_BOX.x} ${CHART_BOX.y + CHART_BOX.h} Z`;
   return (
-    <>
-      <defs>
-        <AreaGradient id="inc-recover-grad" tone="amber" />
-      </defs>
-      <text x={20} y={22} className="svg-label inc-fade" fill={CHART.lime} fontSize="10" opacity={0}>RECOVERABLE LEADS LOST OVER TIME · cumulative %</text>
-      <LegendChip x={290} y={22} label="UNRECOVERED" tone="amber" />
-      <LegendChip x={420} y={22} label="TRIGGERS = 0" tone="red" />
-      <HGrid x={CHART_BOX.x} y={CHART_BOX.y} w={CHART_BOX.w} h={CHART_BOX.h} ticks={4} />
-      <YAxis x={CHART_BOX.x - 6} y={CHART_BOX.y} h={CHART_BOX.h} max={max} ticks={4} />
-      <path className="inc-line" d={areaD} fill="url(#inc-recover-grad)" opacity={0.85} />
-      <path className="inc-line" d={smoothPath(pts)} stroke={CHART.amber} strokeWidth={2} fill="none" />
-      {pts.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r={2.5} fill={CHART.amber} className="inc-fade" opacity={0} />)}
-      {/* Trigger markers (none fired) */}
-      {pts.map((p, i) => (
-        <g key={`t-${i}`} className="inc-fade" opacity={0}>
-          <line x1={p.x} x2={p.x} y1={CHART_BOX.y + CHART_BOX.h} y2={CHART_BOX.y + CHART_BOX.h + 6} stroke={CHART.red} opacity={0.7} />
-          <circle cx={p.x} cy={CHART_BOX.y + CHART_BOX.h + 9} r={1.6} fill={CHART.red} />
+    <g>
+      <g transform="translate(28,110)">
+        <rect width="156" height="100" rx="10" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.5" />
+        <circle cx="32" cy="32" r="14" fill="none" stroke={ACCENT} strokeWidth="1.4" />
+        <circle cx="32" cy="28" r="5" fill={ACCENT} />
+        <path d="M20 42 Q32 30 44 42" stroke={ACCENT} strokeWidth="1.4" fill="none" />
+        <text x="56" y="28" fill={TEXT} fontSize="12" fontWeight="700" letterSpacing="0.04em">JAUNS LEADS</text>
+        <text x="56" y="44" fill={MUTED} fontSize="9.5">info@piemers.lv</text>
+        <g transform="translate(14,60)">
+          <circle cx="12" cy="12" r="11" fill="none" stroke={ACCENT} strokeWidth="1.1" />
+          <path d="M5 9 L12 14 L19 9" stroke={ACCENT} strokeWidth="1.1" fill="none" />
+          <circle cx="42" cy="12" r="11" fill="none" stroke={ACCENT} strokeWidth="1.1" />
+          <path d="M37 7 Q37 12 42 14 Q47 12 47 7" stroke={ACCENT} strokeWidth="1.1" fill="none" />
+          <circle cx="72" cy="12" r="11" fill="none" stroke={ACCENT} strokeWidth="1.1" />
+          <path d="M65 9 H79 V15 H72 L69 18 L70 15 H65 Z" stroke={ACCENT} strokeWidth="1.1" fill="none" />
         </g>
-      ))}
-      <XAxis x={CHART_BOX.x} y={CHART_BOX.y + CHART_BOX.h + 24} w={CHART_BOX.w} labels={data.map((d) => d.label)} />
-      <text x={20} y={VIEW_H - 12} className="svg-label svg-label-muted inc-fade" fontSize="9" opacity={0}>92% of silent leads stay silent — zero recovery triggers fired across 14 days</text>
-    </>
+      </g>
+      <path d="M188 160 Q220 160 240 140" stroke={ACCENT} strokeWidth="1.5" fill="none" markerEnd="url(#arr-lime)" />
+      {["SAZIŅA", "SEKOŠANA", "GAIDA"].map((label, i) => {
+        const x = 260 + i * 90;
+        return (
+          <g key={i} transform={`translate(${x}, 110)`}>
+            <rect width="74" height="74" rx="6" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.3" />
+            {i === 0 ? (
+              <path d="M18 24 H56 V44 H38 L30 52 L32 44 H18 Z" stroke={ACCENT} strokeWidth="1.3" fill="none" />
+            ) : i === 1 ? (
+              <path d="M16 28 H58 V46 H22 L16 52 Z M22 34 H46 M22 40 H42" stroke={ACCENT} strokeWidth="1.3" fill="none" />
+            ) : (
+              <g>
+                <circle cx="37" cy="36" r="14" fill="none" stroke={ACCENT} strokeWidth="1.3" />
+                <path d="M37 28 V36 L44 40" stroke={ACCENT} strokeWidth="1.3" fill="none" />
+              </g>
+            )}
+            <text x="37" y="92" textAnchor="middle" fill={MUTED} fontSize="9.5" letterSpacing="0.08em">{label}</text>
+            {i === 2 ? <text x="37" y="104" textAnchor="middle" fill={MUTED} fontSize="9.5" letterSpacing="0.08em">ATBILDI</text> : null}
+          </g>
+        );
+      })}
+      <path d="M510 144 Q570 60 614 82" stroke={ACCENT} strokeWidth="1.4" fill="none" strokeDasharray="5 4" />
+      <g transform="translate(614,82)">
+        <circle r="10" fill="rgba(8,12,10,0.9)" stroke="#E6A84A" strokeWidth="1.5" />
+        <path d="M-5 -5 L5 5 M-5 5 L5 -5" stroke="#E6A84A" strokeWidth="1.6" />
+      </g>
+      <path d="M624 96 Q650 130 670 160" stroke={ACCENT} strokeWidth="1.4" fill="none" strokeDasharray="5 4" />
+      <g transform="translate(640,118)">
+        <circle cx="40" cy="40" r="40" fill="url(#inc-glow)" />
+        <circle cx="40" cy="32" r="10" fill="none" stroke={ACCENT} strokeWidth="1.4" />
+        <path d="M22 60 Q40 42 58 60" stroke={ACCENT} strokeWidth="1.4" fill="none" />
+        <text x="40" y="100" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">PAZAUDĒTS</text>
+        <text x="40" y="114" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">UZ PALIKŠANU</text>
+      </g>
+    </g>
   );
 }
 
-// ─── 05 · Page blindness — session events density ──────────────────────────
 function PageBlindness() {
-  const data = [
-    { label: "00", value: 8 },
-    { label: "10", value: 14 },
-    { label: "20", value: 22 },
-    { label: "30", value: 18 },
-    { label: "40", value: 12 },
-    { label: "50", value: 8 },
-    { label: "60", value: 6 },
-    { label: "70", value: 4 },
-    { label: "80", value: 3 },
-    { label: "90", value: 2 }
-  ];
-  const max = 25;
-  const visiblePts = plotPoints(data, CHART_BOX, max);
-  // "Blind" overlay: same data scaled to 0 — owner cannot see any of it
   return (
-    <>
-      <defs>
-        <AreaGradient id="inc-page-grad" tone="lime" />
-      </defs>
-      <text x={20} y={22} className="svg-label inc-fade" fill={CHART.lime} fontSize="10" opacity={0}>SCROLL DEPTH DISTRIBUTION · session count by depth %</text>
-      <LegendChip x={290} y={22} label="OBSERVED" tone="lime" />
-      <LegendChip x={400} y={22} label="OWNER SEES" tone="muted" />
-      <HGrid x={CHART_BOX.x} y={CHART_BOX.y} w={CHART_BOX.w} h={CHART_BOX.h} ticks={3} />
-      <YAxis x={CHART_BOX.x - 6} y={CHART_BOX.y} h={CHART_BOX.h} max={max} ticks={3} />
-      <path d={`${smoothPath(visiblePts)} L${CHART_BOX.x + CHART_BOX.w} ${CHART_BOX.y + CHART_BOX.h} L${CHART_BOX.x} ${CHART_BOX.y + CHART_BOX.h} Z`} fill="url(#inc-page-grad)" opacity={0.7} />
-      <path className="inc-line" d={smoothPath(visiblePts)} stroke={CHART.lime} strokeWidth={2} fill="none" />
-      {/* Owner-visibility line: flat along zero */}
-      <line className="inc-line" x1={CHART_BOX.x} x2={CHART_BOX.x + CHART_BOX.w} y1={CHART_BOX.y + CHART_BOX.h - 2} y2={CHART_BOX.y + CHART_BOX.h - 2} stroke={CHART.muted} strokeDasharray="4 4" />
-      {visiblePts.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r={2.2} fill={CHART.lime} className="inc-fade" opacity={0} />)}
-      <XAxis x={CHART_BOX.x} y={CHART_BOX.y + CHART_BOX.h + 14} w={CHART_BOX.w} labels={data.map((d) => d.label)} />
-      <text x={20} y={VIEW_H - 12} className="svg-label svg-label-muted inc-fade" fontSize="9" opacity={0}>97 sessions, 0 visible — scroll, exit and back-button events never reach the owner</text>
-    </>
+    <g>
+      <g transform="translate(40,40)">
+        <rect width="440" height="240" rx="12" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.5" />
+        <circle cx="22" cy="22" r="11" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+        <path d="M26 18 L18 22 L26 26" stroke={ACCENT} strokeWidth="1.3" fill="none" />
+        <circle cx="404" cy="22" r="2.5" fill={DIM} />
+        <circle cx="414" cy="22" r="2.5" fill={DIM} />
+        <circle cx="424" cy="22" r="2.5" fill={DIM} />
+        <line x1="50" y1="50" x2="200" y2="50" stroke={DIM} strokeWidth="1.2" />
+        <line x1="50" y1="62" x2="160" y2="62" stroke={DIM} strokeWidth="1.2" />
+        <line x1="220" y1="50" x2="380" y2="50" stroke={DIM} strokeWidth="1.2" />
+        <line x1="220" y1="62" x2="350" y2="62" stroke={DIM} strokeWidth="1.2" />
+        <line x1="220" y1="74" x2="380" y2="74" stroke={DIM} strokeWidth="1.2" />
+        <rect x="50" y="100" width="120" height="80" rx="4" fill="none" stroke={DIM} strokeWidth="1.2" />
+        <path d="M58 168 L80 150 L100 162 L140 130 L160 174 L58 174 Z" fill={DIM} opacity="0.4" />
+        <circle cx="148" cy="120" r="6" fill={DIM} opacity="0.7" />
+        <rect x="220" y="100" width="120" height="32" rx="4" fill={ACCENT} opacity="0.55" />
+        <rect x="220" y="100" width="120" height="32" rx="4" fill="none" stroke={ACCENT} strokeWidth="1.4" />
+        <rect x="50" y="200" width="60" height="34" rx="3" fill="none" stroke={DIM} />
+        <rect x="120" y="200" width="60" height="34" rx="3" fill="none" stroke={DIM} />
+        <path d="M30 40 Q120 60 200 80 T280 116" stroke={ACCENT} strokeWidth="2" fill="none" />
+        <circle cx="120" cy="60" r="9" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.3" />
+        <text x="120" y="64" textAnchor="middle" fill={ACCENT} fontSize="9" fontWeight="700">II</text>
+        <circle cx="200" cy="80" r="9" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.3" />
+        <text x="200" y="84" textAnchor="middle" fill={ACCENT} fontSize="9" fontWeight="700">II</text>
+        <path d="M280 116 Q220 180 160 160 T100 220" stroke={ACCENT} strokeWidth="2" fill="none" />
+        <circle cx="160" cy="160" r="9" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.3" />
+        <text x="160" y="164" textAnchor="middle" fill={ACCENT} fontSize="9" fontWeight="700">II</text>
+        <path d="M286 116 L300 130 L292 132 L296 142 L292 144 L288 134 L282 138 Z" fill={ACCENT} />
+      </g>
+      <path d="M490 120 L560 120" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="5 4" markerEnd="url(#arr-lime)" />
+      <g transform="translate(560,52)">
+        <circle cx="60" cy="60" r="58" fill="url(#inc-glow)" />
+        <circle cx="60" cy="60" r="46" fill="none" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="6 4" />
+        <text x="60" y="76" textAnchor="middle" fill={ACCENT} fontSize="44" fontWeight="700">?</text>
+      </g>
+      <g transform="translate(584,210)">
+        <path d="M0 22 Q26 -6 52 22 Q26 50 0 22 Z" fill="none" stroke={MUTED} strokeWidth="1.3" />
+        <circle cx="26" cy="22" r="8" fill="none" stroke={MUTED} strokeWidth="1.3" />
+        <line x1="-4" y1="-4" x2="56" y2="48" stroke={MUTED} strokeWidth="1.5" />
+        <text x="26" y="74" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">NEZINĀMS, KUR AIZIET.</text>
+        <text x="26" y="88" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">NAV REDZAMĪBAS.</text>
+      </g>
+    </g>
   );
 }
 
-const VISUALS: Record<IncidentVisual, () => JSX.Element> = {
+const VISUALS: Record<IncidentVisual, () => React.JSX.Element> = {
   postClickUnknown: PostClickUnknown,
   leadSilence: LeadSilence,
   attributionGap: AttributionGap,
   noRecovery: NoRecovery,
   pageBlindness: PageBlindness
 };
+
+export function IncidentMiniDiagram({ visual }: { visual: IncidentVisual }) {
+  const Visual = VISUALS[visual];
+  return (
+    <Box sx={{ width: "100%" }}>
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" preserveAspectRatio="xMidYMid meet" style={{ width: "100%", height: "auto", display: "block" }}>
+        <Defs />
+        <rect x="0" y="0" width={W} height={H} fill="url(#inc-grid)" />
+        <Visual />
+      </svg>
+    </Box>
+  );
+}

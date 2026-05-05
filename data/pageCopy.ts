@@ -14,7 +14,7 @@ export const navItems = [
 
 export const heroCopy = {
   eyebrow: "VEX / 2026 · KOMERCIĀLĀS SISTĒMAS",
-  headline: "Lielākā daļa Latvijas uzņēmumu nezina,|kur pazūd viņu klienti.",
+  headline: "Klienti nepazūd.|Viņi iekrīt sistēmā.",
   body: [
     "Vexilian uzbūvē komerciālo sistēmu Latvijas mazajiem un vidējiem uzņēmumiem — vienu savienotu plūsmu no pirmā kontakta līdz noslēgtam darījumam.",
     "Mēs neuztaisām tikai lapu. Mēs savienojam vietni, formas, CRM, atribūciju, atgūšanu un vadības skatu vienā sistēmā, kuru var redzēt, vadīt un uzlabot."

@@ -1,41 +1,67 @@
 "use client";
 
 import { Box, Stack, Typography } from "@mui/material";
-import anime from "animejs";
 import { collaborationPhases } from "@/data/phases";
-import { useAnimeInView } from "@/hooks/useAnimeInView";
 import { MetaLabel } from "@/components/ui/MetaLabel";
 import { SignalChip } from "@/components/ui/SignalChip";
-import { AreaGradient, Bar, CHART, HGrid, LegendChip, XAxis, YAxis, barLayout, plotPoints, smoothPath } from "./chartPrimitives";
+
+const ACCENT = "#3BFF7C";
+const DIM = "rgba(59,255,124,0.45)";
+const TEXT = "#F4F7FA";
+const MUTED = "#A7B0BA";
+const AMBER = "#E6A84A";
 
 export function ScopeLockRail() {
-  const ref = useAnimeInView<HTMLDivElement>((node) => {
-    anime({ targets: node.querySelectorAll(".scope-module"), opacity: [0, 1], translateX: [16, 0], delay: anime.stagger(130), duration: 650, easing: "easeOutQuad" });
-    anime({ targets: node.querySelectorAll(".acceptance"), scale: [0.75, 1], opacity: [0, 1], delay: anime.stagger(160, { start: 500 }), duration: 520, easing: "easeOutBack" });
-
-    const bars = node.querySelectorAll<SVGRectElement>(".scope-bar");
-    anime.set(bars, { transformOrigin: "center bottom" });
-    anime({ targets: bars, scaleY: [0, 1], delay: anime.stagger(50, { start: 320 }), duration: 620, easing: "easeOutCubic" });
-
-    const lines = node.querySelectorAll<SVGPathElement>(".scope-line");
-    lines.forEach((p) => { const len = p.getTotalLength(); p.style.strokeDasharray = `${len}`; p.style.strokeDashoffset = `${len}`; });
-    anime({ targets: lines, strokeDashoffset: 0, delay: anime.stagger(160, { start: 360 }), duration: 1300, easing: "easeInOutSine" });
-  });
-
   return (
-    <Box ref={ref} sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "repeat(3, 1fr)" }, gap: 2 }}>
-      {collaborationPhases.map((phase) => (
-        <Box key={phase.number} className="scope-module industrial-card" sx={{ opacity: 0, border: "1px solid var(--border)", borderRadius: "var(--radius)", background: "rgba(16,20,25,0.82)", p: 2.3 }}>
+    <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "repeat(3, 1fr)" }, gap: 2 }}>
+      {collaborationPhases.map((phase, i) => (
+        <Box
+          key={phase.number}
+          sx={{
+            border: "1px solid var(--border)",
+            borderRadius: "var(--radius)",
+            background: "rgba(8,12,10,0.78)",
+            p: 2.4,
+            position: "relative"
+          }}
+        >
+          {/* corner brackets */}
+          <CornerBrackets />
           <Stack spacing={1.6}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
-              <MetaLabel>{phase.number} · {phase.title}</MetaLabel>
-              <SignalChip tone="green" className="acceptance">{phase.acceptance}</SignalChip>
+              <MetaLabel>PHASE {phase.number}</MetaLabel>
+              <SignalChip tone="green">{phase.acceptance}</SignalChip>
             </Stack>
-            <Typography sx={{ color: "var(--text-2)", lineHeight: 1.6 }}>{phase.text}</Typography>
-            <PhaseChart phaseNumber={phase.number} acceptance={phase.acceptance} />
+            <Typography
+              sx={{
+                color: TEXT,
+                fontWeight: 700,
+                letterSpacing: "0.02em",
+                fontSize: "1.05rem",
+                textTransform: "uppercase"
+              }}
+            >
+              {phase.title}
+            </Typography>
+            <Typography sx={{ color: "var(--text-2)", lineHeight: 1.55, fontSize: "0.92rem" }}>
+              {phase.text}
+            </Typography>
+
+            <Box
+              sx={{
+                mt: 1,
+                border: "1px solid rgba(59,255,124,0.18)",
+                borderRadius: 1,
+                background: "rgba(6,9,7,0.6)",
+                p: 1.4
+              }}
+            >
+              <PhaseDiagram index={i} />
+            </Box>
+
             <Box>
-              <MetaLabel>Result</MetaLabel>
-              <Typography sx={{ color: "var(--text)", mt: 0.6 }}>{phase.output}</Typography>
+              <MetaLabel>Rezultāts</MetaLabel>
+              <Typography sx={{ color: TEXT, mt: 0.5, fontSize: "0.92rem" }}>{phase.output}</Typography>
             </Box>
           </Stack>
         </Box>
@@ -44,98 +70,136 @@ export function ScopeLockRail() {
   );
 }
 
-const VIEW_W = 420;
-const VIEW_H = 210;
-const BOX = { x: 44, y: 56, w: 348, h: 110 };
-
-function PhaseChart({ phaseNumber, acceptance }: { phaseNumber: string; acceptance: string }) {
+function CornerBrackets() {
+  const c = ACCENT;
+  const s = { position: "absolute" as const, width: 12, height: 12, borderColor: c };
   return (
-    <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} role="img" aria-label={`Faze ${phaseNumber} telemetrija`} style={{ width: "100%", height: 210 }}>
-      <rect x={6} y={6} width={VIEW_W - 12} height={VIEW_H - 12} rx={8} fill={CHART.bg} stroke={CHART.border} />
-      <text x={20} y={26} fontSize="10" fontFamily="var(--mono)" fill={CHART.lime}>PHASE {phaseNumber}</text>
-      <text x={VIEW_W - 14} y={26} textAnchor="end" fontSize="9" fontFamily="var(--mono)" fill={CHART.axis}>{acceptance.toUpperCase()}</text>
-      {phaseNumber === "01" ? <ArchitecturePhase /> : phaseNumber === "02" ? <InstallationPhase /> : <HandoverPhase />}
+    <>
+      <Box sx={{ ...s, top: 6, left: 6, borderTop: `1px solid ${c}`, borderLeft: `1px solid ${c}` }} />
+      <Box sx={{ ...s, top: 6, right: 6, borderTop: `1px solid ${c}`, borderRight: `1px solid ${c}` }} />
+      <Box sx={{ ...s, bottom: 6, left: 6, borderBottom: `1px solid ${c}`, borderLeft: `1px solid ${c}` }} />
+      <Box sx={{ ...s, bottom: 6, right: 6, borderBottom: `1px solid ${c}`, borderRight: `1px solid ${c}` }} />
+    </>
+  );
+}
+
+function PhaseDiagram({ index }: { index: number }) {
+  return (
+    <svg viewBox="0 0 360 180" preserveAspectRatio="xMidYMid meet" style={{ width: "100%", height: "auto", display: "block" }}>
+      <defs>
+        <pattern id={`phase-grid-${index}`} width="24" height="24" patternUnits="userSpaceOnUse">
+          <path d="M24 0H0V24" fill="none" stroke="rgba(59,255,124,0.06)" strokeWidth="0.6" />
+        </pattern>
+        <marker id={`phase-arr-${index}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 0 L10 5 L0 10 Z" fill={ACCENT} />
+        </marker>
+      </defs>
+      <rect width="360" height="180" fill={`url(#phase-grid-${index})`} />
+      {index === 0 && <ArchitectureScene />}
+      {index === 1 && <SetupScene />}
+      {index === 2 && <HandoverScene />}
     </svg>
   );
 }
 
-// 01 — Arhitektūra: risk vs scope clarity. Two bar series rising/falling as the
-// blueprint is locked. As clarity rises, risk drops.
-function ArchitecturePhase() {
-  const labels = ["D1", "D3", "D5", "D8", "D12", "D16"];
-  const clarity = [22, 38, 56, 72, 86, 96];
-  const risk    = [88, 72, 58, 42, 26, 12];
-  const max = 100;
-  const cPts = plotPoints(labels.map((l, i) => ({ label: l, value: clarity[i] })), BOX, max);
-  const cArea = `${smoothPath(cPts)} L${BOX.x + BOX.w} ${BOX.y + BOX.h} L${BOX.x} ${BOX.y + BOX.h} Z`;
+// Phase 01 — blueprint: scoping wireframe
+function ArchitectureScene() {
   return (
-    <>
-      <defs>
-        <AreaGradient id="phase-clarity" tone="lime" />
-      </defs>
-      <text x={20} y={42} className="svg-label svg-label-muted" fontSize="9">SCOPE CLARITY ↑  ·  TECHNICAL RISK ↓</text>
-      <LegendChip x={250} y={42} label="CLARITY" tone="lime" />
-      <LegendChip x={326} y={42} label="RISK" tone="amber" />
-      <HGrid x={BOX.x} y={BOX.y} w={BOX.w} h={BOX.h} ticks={4} />
-      <YAxis x={BOX.x - 6} y={BOX.y} h={BOX.h} max={max} ticks={4} />
-      <path d={cArea} fill="url(#phase-clarity)" opacity={0.8} />
-      <path className="scope-line" d={smoothPath(cPts)} stroke={CHART.lime} strokeWidth={2} fill="none" />
-      <path className="scope-line" d={smoothPath(plotPoints(labels.map((l, i) => ({ label: l, value: risk[i] })), BOX, max))} stroke={CHART.amber} strokeWidth={1.7} fill="none" strokeDasharray="4 4" />
-      <XAxis x={BOX.x} y={BOX.y + BOX.h + 16} w={BOX.w} labels={labels} />
-      <text x={20} y={VIEW_H - 14} className="svg-label svg-label-muted" fontSize="9">data model · CRM struct. · integrations · risk map → blueprint locked</text>
-    </>
+    <g>
+      <text x="14" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">BLUEPRINT</text>
+      {/* document outline */}
+      <rect x="20" y="32" width="200" height="130" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
+      <line x1="20" y1="50" x2="220" y2="50" stroke={DIM} strokeWidth="0.8" />
+      {/* lines representing scope items */}
+      {[0, 1, 2, 3, 4].map((i) => (
+        <g key={i}>
+          <rect x="32" y={66 + i * 18} width="8" height="8" fill="none" stroke={ACCENT} strokeWidth="1" />
+          <line x1="46" y1={70 + i * 18} x2={i === 1 || i === 3 ? 180 : 200} y2={70 + i * 18} stroke={DIM} strokeWidth="1" />
+          {(i === 0 || i === 2 || i === 4) && (
+            <line x1="34" y1={70 + i * 18} x2="38" y2={70 + i * 18} stroke={ACCENT} strokeWidth="1.6" />
+          )}
+        </g>
+      ))}
+      {/* node graph on right */}
+      <g transform="translate(250,40)">
+        <circle cx="40" cy="20" r="14" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />
+        <text x="40" y="24" textAnchor="middle" fill={ACCENT} fontSize="9" fontWeight="700">A</text>
+        <circle cx="14" cy="70" r="10" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />
+        <circle cx="66" cy="70" r="10" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />
+        <circle cx="40" cy="110" r="10" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />
+        <line x1="40" y1="34" x2="14" y2="60" stroke={DIM} strokeWidth="1" strokeDasharray="2 2" />
+        <line x1="40" y1="34" x2="66" y2="60" stroke={DIM} strokeWidth="1" strokeDasharray="2 2" />
+        <line x1="14" y1="80" x2="40" y2="100" stroke={DIM} strokeWidth="1" strokeDasharray="2 2" />
+        <line x1="66" y1="80" x2="40" y2="100" stroke={DIM} strokeWidth="1" strokeDasharray="2 2" />
+      </g>
+    </g>
   );
 }
 
-// 02 — Uzstādīšana: 6 modules connected — bar chart of integration test pass rate
-function InstallationPhase() {
-  const data = [
-    { label: "WEB",   value: 100 },
-    { label: "FORM",  value: 100 },
-    { label: "CRM",   value: 92 },
-    { label: "ATTR.", value: 88 },
-    { label: "RECOV", value: 96 },
-    { label: "DASH",  value: 100 }
+// Phase 02 — connected modules being built
+function SetupScene() {
+  const modules = [
+    { label: "WEBSITE", w: 0.85 },
+    { label: "CRM", w: 1 },
+    { label: "AUTOMATION", w: 0.7 },
+    { label: "DASHBOARD", w: 0.55 }
   ];
-  const max = 100;
   return (
-    <>
-      <text x={20} y={42} className="svg-label svg-label-muted" fontSize="9">MODULE TEST PASS RATE · 6 connected systems</text>
-      <LegendChip x={282} y={42} label="LIVE" tone="green" />
-      <LegendChip x={344} y={42} label="GAP" tone="amber" />
-      <HGrid x={BOX.x} y={BOX.y} w={BOX.w} h={BOX.h} ticks={4} />
-      <YAxis x={BOX.x - 6} y={BOX.y} h={BOX.h} max={max} ticks={4} />
-      {barLayout(data, BOX, max, 0.55).map((b, i) => <Bar key={i} {...b} tone={data[i].value >= 95 ? "green" : "lime"} opacity={0.9} />)}
-      {/* gap markers at 100 line */}
-      <line x1={BOX.x} x2={BOX.x + BOX.w} y1={BOX.y + 4} y2={BOX.y + 4} stroke={CHART.green} strokeOpacity={0.5} strokeDasharray="2 4" />
-      <text x={BOX.x + BOX.w + 4} y={BOX.y + 6} fontSize="8" fontFamily="var(--mono)" fill={CHART.green}>100</text>
-      <XAxis x={BOX.x} y={BOX.y + BOX.h + 16} w={BOX.w} labels={data.map((d) => d.label)} />
-      <text x={20} y={VIEW_H - 14} className="svg-label svg-label-muted" fontSize="9">all six modules tested before workflow goes live · attribution layer = 88%, in calibration</text>
-    </>
+    <g>
+      <text x="14" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">CONNECTED BUILD</text>
+      {modules.map((m, i) => {
+        const y = 36 + i * 30;
+        const fullW = 280;
+        return (
+          <g key={m.label}>
+            <rect x="20" y={y} width={fullW} height="20" fill="rgba(8,12,10,0.7)" stroke="rgba(59,255,124,0.25)" strokeWidth="0.8" />
+            <rect x="20" y={y} width={fullW * m.w} height="20" fill="rgba(59,255,124,0.18)" />
+            <rect x="20" y={y} width="3" height="20" fill={ACCENT} />
+            <text x="30" y={y + 13} fill={TEXT} fontSize="9" letterSpacing="0.16em" fontWeight="700">{m.label}</text>
+            <text x={fullW + 12} y={y + 13} fill={ACCENT} fontSize="9" fontWeight="700">{Math.round(m.w * 100)}%</text>
+          </g>
+        );
+      })}
+      {/* connector ticks */}
+      <line x1="12" y1="40" x2="12" y2="160" stroke={DIM} strokeWidth="1" strokeDasharray="2 3" />
+      {[0, 1, 2, 3].map((i) => <circle key={i} cx="12" cy={46 + i * 30} r="2.5" fill={ACCENT} />)}
+    </g>
   );
 }
 
-// 03 — Nodošana + optimizācija: monthly cycle improvement
-function HandoverPhase() {
-  const labels = ["M1", "M2", "M3", "M4", "M5", "M6"];
-  const usage  = [40, 56, 68, 78, 86, 94];
-  const gain   = [4, 9, 16, 24, 33, 42];
-  const max = 100;
-  const uPts = plotPoints(labels.map((l, i) => ({ label: l, value: usage[i] })), BOX, max);
-  const gPts = plotPoints(labels.map((l, i) => ({ label: l, value: gain[i] })), BOX, max);
+// Phase 03 — handover with bidirectional arrows
+function HandoverScene() {
   return (
-    <>
-      <text x={20} y={42} className="svg-label svg-label-muted" fontSize="9">TEAM USAGE  ·  CUMULATIVE GAIN — monthly</text>
-      <LegendChip x={250} y={42} label="USAGE" tone="lime" />
-      <LegendChip x={320} y={42} label="GAIN" tone="green" />
-      <HGrid x={BOX.x} y={BOX.y} w={BOX.w} h={BOX.h} ticks={4} />
-      <YAxis x={BOX.x - 6} y={BOX.y} h={BOX.h} max={max} ticks={4} />
-      <path className="scope-line" d={smoothPath(uPts)} stroke={CHART.lime} strokeWidth={2} fill="none" />
-      <path className="scope-line" d={smoothPath(gPts)} stroke={CHART.green} strokeWidth={2} fill="none" />
-      {uPts.map((p, i) => <circle key={`u-${i}`} cx={p.x} cy={p.y} r={2.2} fill={CHART.lime} />)}
-      {gPts.map((p, i) => <circle key={`g-${i}`} cx={p.x} cy={p.y} r={2.2} fill={CHART.green} />)}
-      <XAxis x={BOX.x} y={BOX.y + BOX.h + 16} w={BOX.w} labels={labels} />
-      <text x={20} y={VIEW_H - 14} className="svg-label svg-label-muted" fontSize="9">first report cycle starts the rhythm · system improves with use</text>
-    </>
+    <g>
+      <text x="14" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">HANDOVER + TUNE</text>
+      {/* left: VEX */}
+      <rect x="20" y="50" width="100" height="80" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
+      <text x="70" y="80" textAnchor="middle" fill={ACCENT} fontSize="11" fontWeight="700" letterSpacing="0.12em">VEX</text>
+      <text x="70" y="96" textAnchor="middle" fill={MUTED} fontSize="8" letterSpacing="0.18em">SYSTEM</text>
+      <text x="70" y="116" textAnchor="middle" fill={MUTED} fontSize="8" letterSpacing="0.18em">OWNERS</text>
+
+      {/* right: TEAM */}
+      <rect x="240" y="50" width="100" height="80" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
+      <text x="290" y="80" textAnchor="middle" fill={ACCENT} fontSize="11" fontWeight="700" letterSpacing="0.12em">KOMANDA</text>
+      <text x="290" y="96" textAnchor="middle" fill={MUTED} fontSize="8" letterSpacing="0.18em">DAILY</text>
+      <text x="290" y="116" textAnchor="middle" fill={MUTED} fontSize="8" letterSpacing="0.18em">OPERATORS</text>
+
+      {/* bidirectional arrows */}
+      <line x1="124" y1="74" x2="236" y2="74" stroke={ACCENT} strokeWidth="1.4" markerEnd="url(#phase-arr-2)" />
+      <text x="180" y="68" textAnchor="middle" fill={ACCENT} fontSize="8" fontWeight="700">DOCS · TRAINING</text>
+
+      <line x1="236" y1="106" x2="124" y2="106" stroke={AMBER} strokeWidth="1.4" strokeDasharray="4 3" />
+      <polygon points="124,106 130,103 130,109" fill={AMBER} />
+      <text x="180" y="120" textAnchor="middle" fill={AMBER} fontSize="8" fontWeight="700">REPORTS · TUNE</text>
+
+      {/* handshake icon between */}
+      <circle cx="180" cy="90" r="12" fill="rgba(8,12,10,0.95)" stroke={ACCENT} strokeWidth="1.2" />
+      <path d="M174 92 L178 88 L182 92 L186 88" fill="none" stroke={ACCENT} strokeWidth="1.4" strokeLinecap="round" />
+
+      {/* bottom monthly cycle */}
+      <text x="180" y="158" textAnchor="middle" fill={MUTED} fontSize="8" letterSpacing="0.22em">MONTHLY CYCLE</text>
+      <line x1="40" y1="148" x2="320" y2="148" stroke={DIM} strokeWidth="0.8" strokeDasharray="2 3" />
+      {[0, 1, 2, 3, 4, 5].map((i) => <circle key={i} cx={40 + i * 56} cy="148" r="2.5" fill={ACCENT} />)}
+    </g>
   );
 }

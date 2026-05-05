@@ -2,9 +2,13 @@ import { Box, Stack, Typography } from "@mui/material";
 import type { founders } from "@/data/founders";
 import { MetaLabel } from "@/components/ui/MetaLabel";
 import { SignalChip } from "@/components/ui/SignalChip";
-import { AreaGradient, Bar, CHART, HGrid, LegendChip, XAxis, YAxis, barLayout, plotPoints, smoothPath } from "./chartPrimitives";
 
 type Founder = (typeof founders)[number];
+
+const ACCENT = "#3BFF7C";
+const DIM = "rgba(59,255,124,0.45)";
+const TEXT = "#F4F7FA";
+const MUTED = "#A7B0BA";
 
 export function FounderOperatorCard({ founder }: { founder: Founder }) {
   return (
@@ -19,27 +23,23 @@ export function FounderOperatorCard({ founder }: { founder: Founder }) {
         flexDirection: "column",
         width: "100%",
         height: "100%",
-        minHeight: { xs: 540, md: 580, lg: 620 },
         transition: "border-color 180ms ease, transform 180ms ease",
-        "&:hover": {
-          borderColor: "rgba(59,255,124,0.32)",
-          transform: "translateY(-2px)"
-        }
+        "&:hover": { borderColor: "rgba(59,255,124,0.32)", transform: "translateY(-2px)" }
       }}
     >
-      <Stack spacing={1.5} sx={{ p: 2.2, borderBottom: "1px solid var(--border)" }}>
+      <Stack spacing={1.2} sx={{ p: 2.2, borderBottom: "1px solid var(--border)" }}>
         <MetaLabel sx={{ color: "var(--signal-blue)" }}>{founder.operatorCode}</MetaLabel>
         <Box>
           <Typography component="h3" variant="h3">{founder.name}</Typography>
           <Typography sx={{ color: "var(--text-2)", fontFamily: "var(--mono)", fontSize: 12, textTransform: "uppercase", mt: 0.7 }}>{founder.role}</Typography>
         </Box>
       </Stack>
-      <Box sx={{ height: 230, borderBottom: "1px solid var(--border)", background: "rgba(7,9,11,0.62)" }}>
-        <OperatorChart founder={founder} />
+      <Box sx={{ borderBottom: "1px solid var(--border)", background: "rgba(7,9,11,0.62)" }}>
+        <OperatorDiagram mode={founder.visualMode} />
       </Box>
       <Stack spacing={1.4} sx={{ p: 2.2, flex: 1 }}>
-        {founder.text.map((paragraph) => (
-          <Typography key={paragraph} sx={{ color: "var(--text-2)", fontSize: 14.5, lineHeight: 1.65 }}>{paragraph}</Typography>
+        {founder.text.map((p) => (
+          <Typography key={p} sx={{ color: "var(--text-2)", fontSize: 14.5, lineHeight: 1.65 }}>{p}</Typography>
         ))}
         <Box sx={{ pt: 1 }}>
           <MetaLabel>Fokuss</MetaLabel>
@@ -51,117 +51,201 @@ export function FounderOperatorCard({ founder }: { founder: Founder }) {
         </Box>
       </Stack>
       <Stack direction="row" useFlexGap flexWrap="wrap" spacing={0.8} sx={{ p: 2.2, pt: 0 }}>
-        {founder.tags.map((tag) => <SignalChip key={tag} tone="blue">{tag}</SignalChip>)}
+        {founder.tags.map((t) => <SignalChip key={t} tone="blue">{t}</SignalChip>)}
       </Stack>
       <Stack direction="row" useFlexGap flexWrap="wrap" spacing={0.8} sx={{ p: 2.2, pt: 0 }}>
-        {founder.layers.map((layer) => <SignalChip key={layer}>{layer}</SignalChip>)}
+        {founder.layers.map((l) => <SignalChip key={l}>{l}</SignalChip>)}
       </Stack>
     </Box>
   );
 }
 
-const VIEW_W = 420;
-const VIEW_H = 230;
-const BOX = { x: 44, y: 56, w: 348, h: 130 };
-
-function OperatorChart({ founder }: { founder: Founder }) {
+function OperatorDiagram({ mode }: { mode: string }) {
+  const W = 520;
+  const H = 280;
   return (
-    <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} role="img" aria-label={`${founder.name} operatora telemetrijas panelis`} style={{ width: "100%", height: "100%" }}>
-      <rect x={6} y={6} width={VIEW_W - 12} height={VIEW_H - 12} rx={8} fill={CHART.bg} stroke={CHART.border} />
-      <text x={20} y={26} className="svg-label" fill={CHART.lime} fontSize="10">{founder.operatorCode}</text>
-      <text x={VIEW_W - 14} y={26} textAnchor="end" className="svg-label svg-label-muted" fontSize="9">RANGE · 30D</text>
-      {founder.visualMode === "architecture" ? <ArchitectureChart /> : null}
-      {founder.visualMode === "analysis" ? <AnalysisChart /> : null}
-      {founder.visualMode === "communication" ? <CommunicationChart /> : null}
+    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" style={{ width: "100%", height: "auto", display: "block" }}>
+      <defs>
+        <pattern id="op-grid" width="28" height="28" patternUnits="userSpaceOnUse">
+          <path d="M28 0H0V28" fill="none" stroke="rgba(59,255,124,0.04)" strokeWidth="1" />
+        </pattern>
+        <marker id="op-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0 L10 5 L0 10 Z" fill={ACCENT} />
+        </marker>
+        <radialGradient id="op-glow" cx="50%" cy="50%">
+          <stop offset="0%" stopColor="rgba(59,255,124,0.25)" />
+          <stop offset="100%" stopColor="rgba(59,255,124,0)" />
+        </radialGradient>
+      </defs>
+      <rect x="0" y="0" width={W} height={H} fill="url(#op-grid)" />
+      {mode === "architecture" && <Architecture />}
+      {mode === "analysis" && <Analysis />}
+      {mode === "communication" && <Communication />}
     </svg>
   );
 }
 
-// Dāvids — Structure: stacked bar showing system component reliability across 7 layers
-function ArchitectureChart() {
-  const data = [
-    { label: "WEB",   value: 96 },
-    { label: "FORM",  value: 92 },
-    { label: "BUS",   value: 88 },
-    { label: "CRM",   value: 90 },
-    { label: "ATTR.", value: 84 },
-    { label: "RECOV", value: 86 },
-    { label: "DASH",  value: 95 }
+function Pill({ x, y, label, icon }: { x: number; y: number; label: string; icon: string }) {
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <rect width="120" height="28" rx="14" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
+      <text x="22" y="18" textAnchor="middle" fill={ACCENT} fontSize="11" fontWeight="700">{icon}</text>
+      <line x1="38" y1="6" x2="38" y2="22" stroke="rgba(59,255,124,0.25)" />
+      <text x="46" y="18" fill={TEXT} fontSize="10" letterSpacing="0.1em" fontWeight="600">{label}</text>
+    </g>
+  );
+}
+
+// Dāvids — system architecture cube + 7 component pills
+function Architecture() {
+  const cx = 260;
+  const cy = 142;
+  const left = [
+    { y: 38, label: "WEBSITE", icon: "⊕" },
+    { y: 88, label: "FORMS", icon: "≡" },
+    { y: 138, label: "CRM", icon: "◉" }
   ];
-  const max = 100;
-  const pts = plotPoints(data, BOX, max);
+  const right = [
+    { y: 38, label: "DATA STRUCTURE", icon: "▤" },
+    { y: 88, label: "INTEGRATIONS", icon: "⇌" },
+    { y: 138, label: "DASHBOARD", icon: "▮" }
+  ];
   return (
-    <>
-      <text x={20} y={42} className="svg-label svg-label-muted" fontSize="9">SYSTEM COMPONENT UPTIME · % healthy hours</text>
-      <LegendChip x={250} y={42} label="UPTIME" tone="lime" />
-      <LegendChip x={320} y={42} label="LINK" tone="green" />
-      <HGrid x={BOX.x} y={BOX.y} w={BOX.w} h={BOX.h} ticks={4} />
-      <YAxis x={BOX.x - 6} y={BOX.y} h={BOX.h} max={max} ticks={4} />
-      {barLayout(data, BOX, max, 0.55).map((b, i) => <Bar key={i} {...b} tone="lime" opacity={0.85} />)}
-      <path d={smoothPath(pts)} stroke={CHART.green} strokeWidth={1.7} fill="none" />
-      <XAxis x={BOX.x} y={BOX.y + BOX.h + 16} w={BOX.w} labels={data.map((d) => d.label)} />
-      <text x={20} y={VIEW_H - 14} className="svg-label svg-label-muted" fontSize="9">ports · schemas · fallback paths — single chain, single owner</text>
-    </>
-  );
-}
-
-// Miks — Analysis: line of TRAFFIC vs DECISION over 8 weeks, with WON / LOST bar split
-function AnalysisChart() {
-  const labels = ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"];
-  const traffic = [42, 48, 55, 50, 62, 70, 74, 78];
-  const decision = [10, 14, 18, 20, 28, 36, 42, 48];
-  const lost = [22, 24, 26, 22, 20, 18, 16, 14];
-  const max = 100;
-  const tPts = plotPoints(labels.map((l, i) => ({ label: l, value: traffic[i] })), BOX, max);
-  const dPts = plotPoints(labels.map((l, i) => ({ label: l, value: decision[i] })), BOX, max);
-  const dArea = `${smoothPath(dPts)} L${BOX.x + BOX.w} ${BOX.y + BOX.h} L${BOX.x} ${BOX.y + BOX.h} Z`;
-  return (
-    <>
-      <defs>
-        <AreaGradient id="founder-decision" tone="lime" />
-      </defs>
-      <text x={20} y={42} className="svg-label svg-label-muted" fontSize="9">TRAFFIC → DECISION CONVERSION · weekly</text>
-      <LegendChip x={250} y={42} label="TRAFFIC" tone="muted" />
-      <LegendChip x={320} y={42} label="DECISION" tone="lime" />
-      <HGrid x={BOX.x} y={BOX.y} w={BOX.w} h={BOX.h} ticks={4} />
-      <YAxis x={BOX.x - 6} y={BOX.y} h={BOX.h} max={max} ticks={4} />
-      {/* lost bars (light amber, behind) */}
-      {barLayout(labels.map((l, i) => ({ label: l, value: lost[i] })), BOX, max, 0.4).map((b, i) => (
-        <Bar key={i} {...b} tone="amber" opacity={0.5} />
+    <g>
+      <text x="40" y="22" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">SYSTEM ARCHITECTURE</text>
+      {left.map((it) => <Pill key={it.label} x={28} y={it.y} label={it.label} icon={it.icon} />)}
+      {right.map((it) => <Pill key={it.label} x={372} y={it.y} label={it.label} icon={it.icon} />)}
+      {/* central cube */}
+      <g transform={`translate(${cx},${cy})`}>
+        <circle r="58" fill="url(#op-glow)" />
+        {/* isometric cube */}
+        <path d="M-30 -22 L0 -36 L30 -22 L30 18 L0 32 L-30 18 Z" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.4" />
+        <path d="M-30 -22 L0 -8 L30 -22 M0 -8 L0 32" stroke={ACCENT} strokeWidth="1.2" fill="none" />
+        <text x="0" y="-46" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.18em" fontWeight="700">CORE SYSTEM</text>
+      </g>
+      {/* connectors from pills to cube */}
+      {[...left.map((it) => ({ x: 148, y: it.y + 14, dir: 1 })), ...right.map((it) => ({ x: 372, y: it.y + 14, dir: -1 }))].map((c, i) => (
+        <line key={i} x1={c.x} y1={c.y} x2={cx + (c.dir < 0 ? 30 : -30)} y2={cy} stroke={DIM} strokeWidth="1" strokeDasharray="3 3" />
       ))}
-      <path d={dArea} fill="url(#founder-decision)" opacity={0.75} />
-      <path d={smoothPath(dPts)} stroke={CHART.lime} strokeWidth={2} fill="none" />
-      <path d={smoothPath(tPts)} stroke={CHART.muted} strokeWidth={1.4} strokeDasharray="3 4" fill="none" />
-      <XAxis x={BOX.x} y={BOX.y + BOX.h + 16} w={BOX.w} labels={labels} />
-      <text x={20} y={VIEW_H - 14} className="svg-label svg-label-muted" fontSize="9">attention · trust · source · next-action — measured per week</text>
-    </>
+      {/* system logic gear at bottom */}
+      <g transform="translate(180,210)">
+        <rect width="160" height="28" rx="14" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
+        <circle cx="20" cy="14" r="7" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+        <circle cx="20" cy="14" r="2.5" fill={ACCENT} />
+        <text x="80" y="18" textAnchor="middle" fill={TEXT} fontSize="10" letterSpacing="0.1em" fontWeight="600">SYSTEM LOGIC</text>
+      </g>
+      <line x1="260" y1="184" x2="260" y2="210" stroke={DIM} strokeWidth="1" strokeDasharray="3 3" />
+    </g>
   );
 }
 
-// Edvards — Growth & Comms: signal radar — message clarity / trust / action over time as area stack
-function CommunicationChart() {
-  const labels = ["M1", "M2", "M3", "M4", "M5", "M6"];
-  const message = [42, 50, 58, 64, 70, 76];
-  const trust   = [28, 36, 44, 52, 60, 68];
-  const action  = [12, 18, 28, 38, 50, 62];
-  const max = 100;
-  const mPts = plotPoints(labels.map((l, i) => ({ label: l, value: message[i] })), BOX, max);
-  const tPts = plotPoints(labels.map((l, i) => ({ label: l, value: trust[i] })), BOX, max);
-  const aPts = plotPoints(labels.map((l, i) => ({ label: l, value: action[i] })), BOX, max);
+// Miks — interpretation hub with 4 inputs + 4 outputs
+function Analysis() {
+  const cx = 260;
+  const cy = 142;
+  const inputs = [
+    { y: 38, label: "SEARCH TRENDS", icon: "↗" },
+    { y: 88, label: "COMPETITORS", icon: "▲" },
+    { y: 138, label: "INDUSTRY DATA", icon: "▮" },
+    { y: 188, label: "SOCIAL SIGNALS", icon: "◌" }
+  ];
+  const outputs = [
+    { y: 38, label: "AUDIENCE INSIGHTS", icon: "◉" },
+    { y: 88, label: "OFFER ANALYSIS", icon: "≡" },
+    { y: 138, label: "POSITIONING", icon: "⊕" },
+    { y: 188, label: "MARKETING FOCUS", icon: "✦" }
+  ];
   return (
-    <>
-      <text x={20} y={42} className="svg-label svg-label-muted" fontSize="9">MARKET RESPONSE INDEX · message · trust · action</text>
-      <LegendChip x={216} y={42} label="MESSAGE" tone="lime" />
-      <LegendChip x={284} y={42} label="TRUST" tone="green" />
-      <LegendChip x={342} y={42} label="ACTION" tone="amber" />
-      <HGrid x={BOX.x} y={BOX.y} w={BOX.w} h={BOX.h} ticks={4} />
-      <YAxis x={BOX.x - 6} y={BOX.y} h={BOX.h} max={max} ticks={4} />
-      <path d={smoothPath(mPts)} stroke={CHART.lime} strokeWidth={2} fill="none" />
-      <path d={smoothPath(tPts)} stroke={CHART.green} strokeWidth={1.8} fill="none" />
-      <path d={smoothPath(aPts)} stroke={CHART.amber} strokeWidth={1.8} fill="none" />
-      {[mPts, tPts, aPts].flat().map((p, i) => <circle key={i} cx={p.x} cy={p.y} r={2} fill={i < mPts.length ? CHART.lime : i < mPts.length + tPts.length ? CHART.green : CHART.amber} />)}
-      <XAxis x={BOX.x} y={BOX.y + BOX.h + 16} w={BOX.w} labels={labels} />
-      <text x={20} y={VIEW_H - 14} className="svg-label svg-label-muted" fontSize="9">market signal becomes language — language becomes a clear next action</text>
-    </>
+    <g>
+      <text x="28" y="22" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">MARKET SIGNALS</text>
+      <text x="492" y="22" textAnchor="end" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">DIRECTION</text>
+      {inputs.map((it) => <Pill key={it.label} x={20} y={it.y} label={it.label} icon={it.icon} />)}
+      {outputs.map((it) => <Pill key={it.label} x={380} y={it.y} label={it.label} icon={it.icon} />)}
+      {/* hub hex */}
+      <g transform={`translate(${cx},${cy})`}>
+        <circle r="56" fill="url(#op-glow)" />
+        <polygon points="0,-34 30,-17 30,17 0,34 -30,17 -30,-17" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.4" />
+        <polygon points="0,-20 18,-10 18,10 0,20 -18,10 -18,-10" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+        <circle r="6" fill={ACCENT} />
+        <text x="0" y="-46" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.18em" fontWeight="700">INTERPRETATION</text>
+        <text x="0" y="50" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.18em" fontWeight="700">LAYER</text>
+      </g>
+      {inputs.map((it, i) => (
+        <line key={`in-${i}`} x1="140" y1={it.y + 14} x2={cx - 30} y2={cy} stroke={DIM} strokeWidth="1" strokeDasharray="3 3" markerEnd="url(#op-arr)" />
+      ))}
+      {outputs.map((it, i) => (
+        <line key={`out-${i}`} x1={cx + 30} y1={cy} x2="380" y2={it.y + 14} stroke={DIM} strokeWidth="1" strokeDasharray="3 3" markerEnd="url(#op-arr)" />
+      ))}
+    </g>
   );
+}
+
+// Edvards — message → trust → relationship → growth wave-cone
+function Communication() {
+  const items = [
+    { x: 50, label: "MESSAGE", sub: "CLARITY", icon: "chat" },
+    { x: 165, label: "BUILDING", sub: "TRUST", icon: "shield" },
+    { x: 280, label: "STRONG", sub: "RELATIONSHIP", icon: "users" },
+    { x: 395, label: "DRIVING", sub: "GROWTH", icon: "rise" }
+  ];
+  return (
+    <g>
+      <text x="28" y="22" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">SIGNAL → ACTION</text>
+      {items.map((it, i) => (
+        <g key={i} transform={`translate(${it.x},${110})`}>
+          <circle cx="36" cy="36" r="34" fill="url(#op-glow)" />
+          <circle cx="36" cy="36" r="26" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.4" />
+          <CommIcon icon={it.icon} cx={36} cy={36} />
+          <text x="36" y="92" textAnchor="middle" fill={TEXT} fontSize="10" letterSpacing="0.1em" fontWeight="700">{it.label}</text>
+          <text x="36" y="106" textAnchor="middle" fill={MUTED} fontSize="9" letterSpacing="0.1em">{it.sub}</text>
+          {i < items.length - 1 ? (
+            <path d={`M70 36 Q${82} 30 100 36 Q${110} 42 115 36`} stroke={ACCENT} strokeWidth="1.4" fill="none" markerEnd="url(#op-arr)" />
+          ) : null}
+        </g>
+      ))}
+      {/* expanding waves under final node */}
+      <g transform="translate(431,200)">
+        {[14, 28, 42, 56].map((r, i) => (
+          <path key={i} d={`M-${r} 0 a${r} ${r * 0.55} 0 0 1 ${r * 2} 0`} stroke={ACCENT} strokeWidth="1.1" strokeOpacity={1 - i * 0.2} fill="none" />
+        ))}
+      </g>
+    </g>
+  );
+}
+
+function CommIcon({ icon, cx, cy }: { icon: string; cx: number; cy: number }) {
+  switch (icon) {
+    case "chat":
+      return (
+        <g transform={`translate(${cx - 11},${cy - 10})`} fill="none" stroke={ACCENT} strokeWidth="1.4">
+          <path d="M2 4 H22 V16 H10 L4 22 L6 16 H2 Z" />
+          <line x1="6" y1="10" x2="18" y2="10" />
+        </g>
+      );
+    case "shield":
+      return (
+        <g transform={`translate(${cx - 10},${cy - 11})`} fill="none" stroke={ACCENT} strokeWidth="1.4">
+          <path d="M10 0 L20 4 V12 Q20 18 10 22 Q0 18 0 12 V4 Z" />
+          <path d="M5 11 L9 15 L15 7" />
+        </g>
+      );
+    case "users":
+      return (
+        <g transform={`translate(${cx - 12},${cy - 10})`} fill="none" stroke={ACCENT} strokeWidth="1.4">
+          <circle cx="8" cy="6" r="4" />
+          <circle cx="17" cy="6" r="4" />
+          <path d="M0 20 Q8 12 16 20" />
+          <path d="M9 20 Q17 12 24 20" />
+        </g>
+      );
+    case "rise":
+      return (
+        <g transform={`translate(${cx - 11},${cy - 10})`} fill="none" stroke={ACCENT} strokeWidth="1.4">
+          <path d="M0 18 L8 10 L13 14 L22 2" />
+          <path d="M16 2 H22 V8" />
+        </g>
+      );
+    default:
+      return null;
+  }
 }
