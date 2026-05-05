@@ -32,16 +32,18 @@ export const vexTheme = createTheme({
     h1: {
       fontFamily: "var(--font-display), 'Michroma', 'Chakra Petch', sans-serif",
       fontSize: "4.5rem",
-      lineHeight: 0.95,
+      lineHeight: 1.18,
       letterSpacing: 0,
-      fontWeight: 400
+      fontWeight: 400,
+      WebkitTextStroke: "0.55px currentColor"
     },
     h2: {
       fontFamily: "var(--font-display), 'Michroma', 'Chakra Petch', sans-serif",
       fontSize: "3rem",
-      lineHeight: 1.05,
+      lineHeight: 1.22,
       letterSpacing: 0,
-      fontWeight: 400
+      fontWeight: 400,
+      WebkitTextStroke: "0.45px currentColor"
     },
     h3: {
       fontSize: "1.5rem",

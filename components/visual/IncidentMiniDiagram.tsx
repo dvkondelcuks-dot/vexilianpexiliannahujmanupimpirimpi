@@ -71,52 +71,123 @@ function PostClickUnknown() {
 }
 
 function LeadSilence() {
-  const stages = ["JAUNS", "KONTAKTĪES", "PIEDĀVĀTS", "SAGAIDA", "SLĒGTS"];
+  // New scene: incoming message thread (left) → silent inbox queue (middle, with day counter) → ghost cell in spreadsheet (right)
+  // The story: a hot lead writes in, days pass with zero owner action, the lead becomes a forgotten row.
   return (
     <g>
-      <g transform="translate(34,100)">
-        <rect width="170" height="120" rx="10" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.5" />
-        <circle cx="34" cy="34" r="14" fill="none" stroke={ACCENT} strokeWidth="1.4" />
-        <circle cx="34" cy="30" r="5" fill={ACCENT} />
-        <path d="M22 44 Q34 32 46 44" stroke={ACCENT} strokeWidth="1.4" fill="none" />
-        <text x="58" y="30" fill={TEXT} fontSize="13" fontWeight="700" letterSpacing="0.06em">JAUNS LEADS</text>
-        <text x="58" y="46" fill={MUTED} fontSize="10">info@piemers.lv</text>
-        <g transform="translate(14,72)">
-          {/* envelope icon */}
-          <rect x="0" y="3" width="28" height="22" rx="3" fill="none" stroke={ACCENT} strokeWidth="1.3" />
-          <path d="M0 6 L14 18 L28 6" stroke={ACCENT} strokeWidth="1.3" fill="none" />
-          {/* phone icon */}
-          <path d="M40 4 L48 4 L52 10 L48 14 Q52 22 60 26 L64 22 L70 26 L70 32 Q62 34 54 28 Q44 22 40 12 Z" fill="none" stroke={ACCENT} strokeWidth="1.3" />
-          {/* clock icon */}
-          <circle cx="86" cy="15" r="12" fill="none" stroke={ACCENT} strokeWidth="1.3" />
-          <path d="M86 9 L86 15 L92 19" stroke={ACCENT} strokeWidth="1.3" fill="none" />
+      {/* LEFT — incoming lead message bubble */}
+      <g transform="translate(36,68)">
+        <rect width="200" height="184" rx="10" fill="rgba(8,12,10,0.78)" stroke={ACCENT} strokeWidth="1.5" />
+        <text x="14" y="22" fill={ACCENT} fontSize="10" letterSpacing="0.18em" fontWeight="700">JAUNS LEAD</text>
+        {/* avatar + name */}
+        <g transform="translate(14,38)">
+          <circle cx="14" cy="14" r="14" fill="none" stroke={ACCENT} strokeWidth="1.4" />
+          <circle cx="14" cy="11" r="5" fill={ACCENT} />
+          <path d="M2 24 Q14 14 26 24" fill="none" stroke={ACCENT} strokeWidth="1.4" />
+          <text x="36" y="14" fill={TEXT} fontSize="12" fontWeight="700" letterSpacing="0.04em">A. KALNIŅŠ</text>
+          <text x="36" y="26" fill={MUTED} fontSize="10">a.kalnins@piemers.lv</text>
+        </g>
+        {/* incoming bubble */}
+        <g transform="translate(14,82)">
+          <path d="M0 8 H170 a4 4 0 0 1 4 4 V44 a4 4 0 0 1 -4 4 H22 L12 60 L14 48 H0 Z" fill="rgba(59,255,124,0.12)" stroke={ACCENT} strokeWidth="1.2" />
+          <line x1="10" y1="20" x2="160" y2="20" stroke={DIM} strokeWidth="0.9" />
+          <line x1="10" y1="30" x2="148" y2="30" stroke={DIM} strokeWidth="0.9" />
+          <line x1="10" y1="40" x2="120" y2="40" stroke={DIM} strokeWidth="0.9" />
+        </g>
+        {/* tag chips */}
+        <g transform="translate(14,156)">
+          <rect width="58" height="16" rx="8" fill="rgba(59,255,124,0.14)" stroke={ACCENT} strokeWidth="0.9" />
+          <text x="29" y="11" textAnchor="middle" fill={ACCENT} fontSize="8" letterSpacing="0.14em" fontWeight="700">VĒRTĪGS</text>
+          <g transform="translate(64,0)">
+            <rect width="60" height="16" rx="8" fill="rgba(59,255,124,0.14)" stroke={ACCENT} strokeWidth="0.9" />
+            <text x="30" y="11" textAnchor="middle" fill={ACCENT} fontSize="8" letterSpacing="0.14em" fontWeight="700">B2B · MVU</text>
+          </g>
         </g>
       </g>
-      <path d="M212 158 L240 158" stroke={ACCENT} strokeWidth="1.5" markerEnd="url(#arr-lime)" />
-      <g transform="translate(248,90)">
-        <rect width="380" height="120" rx="8" fill="rgba(8,12,10,0.5)" stroke="rgba(255,255,255,0.1)" />
-        {stages.map((label, i) => {
-          const x = 22 + i * 70;
-          const active = i === 2;
+
+      {/* connecting arrow → */}
+      <path d="M244 160 L292 160" stroke={ACCENT} strokeWidth="1.5" markerEnd="url(#arr-lime)" />
+
+      {/* MIDDLE — silent inbox queue showing days since touch */}
+      <g transform="translate(296,68)">
+        <rect width="248" height="184" rx="10" fill="rgba(8,12,10,0.7)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+        <text x="14" y="22" fill={MUTED} fontSize="10" letterSpacing="0.18em" fontWeight="700">CRM · NEPIEŠĶIRTI</text>
+        {/* day-since header */}
+        <text x="234" y="22" textAnchor="end" fill={MUTED} fontSize="9" letterSpacing="0.16em">DIENAS</text>
+        {/* queue rows: highlight first row as our lead */}
+        {[
+          { name: "A. KALNIŅŠ",   days: 7, our: true  },
+          { name: "M. OZOLS",     days: 4, our: false },
+          { name: "K. BĒRZIŅA",   days: 11, our: false },
+          { name: "I. LIEPA",     days: 2, our: false }
+        ].map((r, i) => {
+          const yy = 38 + i * 32;
+          const overdue = r.days >= 3;
           return (
-            <g key={label}>
-              <text x={x + 22} y="22" textAnchor="middle" fill={active ? ACCENT : MUTED} fontSize="10" letterSpacing="0.1em">{label}</text>
-              {active ? <rect x={x - 2} y="38" width="48" height="48" rx="4" fill="none" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="4 3" /> : null}
-              <circle cx={x + 22} cy="62" r="14" fill="none" stroke={active ? ACCENT : DIM} strokeWidth="1.4" />
-              {i < stages.length - 1 ? <line x1={x + 38} y1="62" x2={x + 76} y2="62" stroke={DIM} strokeWidth="1.2" /> : null}
+            <g key={r.name} transform={`translate(0,${yy})`}>
+              <rect x="6" y="0" width="236" height="26" rx="4" fill={r.our ? "rgba(230,168,74,0.08)" : "rgba(8,12,10,0.5)"} stroke={r.our ? "#E6A84A" : DIM} strokeWidth={r.our ? 1.2 : 0.7} strokeDasharray={r.our ? "4 3" : undefined} />
+              {/* status dot */}
+              <circle cx="18" cy="13" r="4" fill={r.our ? "#E6A84A" : DIM} />
+              <text x="30" y="17" fill={r.our ? TEXT : MUTED} fontSize="10" letterSpacing="0.06em" fontWeight={r.our ? 700 : 500}>{r.name}</text>
+              {/* tiny envelope */}
+              <g transform="translate(132,7)" fill="none" stroke={r.our ? "#E6A84A" : DIM} strokeWidth="1">
+                <rect x="0" y="2" width="14" height="10" rx="1.5" />
+                <path d="M0 3 L7 9 L14 3" />
+              </g>
+              {/* days counter */}
+              <text x="234" y="17" textAnchor="end" fill={overdue ? "#E6A84A" : MUTED} fontSize="11" fontWeight="700">+{r.days}d</text>
+              {/* "no owner" badge for our row */}
+              {r.our ? (
+                <g transform="translate(154,7)">
+                  <rect width="62" height="12" rx="6" fill="rgba(38,18,8,0.7)" stroke="#E6A84A" strokeWidth="0.9" />
+                  <text x="31" y="9" textAnchor="middle" fill="#E6A84A" fontSize="7.5" letterSpacing="0.14em" fontWeight="700">NAV ĪPAŠN.</text>
+                </g>
+              ) : null}
             </g>
           );
         })}
-        <text x="190" y="108" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.1em" fontWeight="700">NAV PĀRŅĒMĒJA</text>
+        {/* footer notice */}
+        <text x="14" y="174" fill="#E6A84A" fontSize="9" letterSpacing="0.18em" fontWeight="700">7 DIENAS · 0 ATBILDES</text>
       </g>
-      <path d="M640 160 L670 160" stroke={ACCENT} strokeWidth="1.5" markerEnd="url(#arr-lime)" />
-      <g transform="translate(672,118)">
-        <path d="M16 28 V18 a16 16 0 0 1 32 0 V28" stroke={ACCENT} strokeWidth="1.5" fill="none" />
-        <rect x="6" y="28" width="52" height="42" rx="6" fill="none" stroke={ACCENT} strokeWidth="1.5" />
-        <circle cx="32" cy="46" r="4" fill={ACCENT} />
-        <line x1="32" y1="50" x2="32" y2="60" stroke={ACCENT} strokeWidth="1.5" />
-        <text x="32" y="100" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">NEATBILDĒTS</text>
-        <text x="32" y="114" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">ZAUDĒTS POTENCIĀLS</text>
+
+      {/* connecting arrow → */}
+      <path d="M552 160 L596 160" stroke={ACCENT} strokeWidth="1.5" strokeDasharray="5 4" markerEnd="url(#arr-lime)" />
+
+      {/* RIGHT — spreadsheet ghost cell */}
+      <g transform="translate(602,68)">
+        <rect width="186" height="184" rx="10" fill="rgba(8,12,10,0.78)" stroke="rgba(255,255,255,0.12)" />
+        <text x="14" y="22" fill={MUTED} fontSize="9.5" letterSpacing="0.18em" fontWeight="700">IZKLĀJLAPA · LEADI</text>
+        {/* spreadsheet column headers */}
+        {["VĀRDS", "DATUMS", "ST."].map((h, i) => (
+          <g key={h} transform={`translate(${10 + i * 60},32)`}>
+            <rect width="56" height="18" rx="2" fill="rgba(255,255,255,0.04)" stroke={DIM} strokeWidth="0.7" />
+            <text x="28" y="12" textAnchor="middle" fill={MUTED} fontSize="8" letterSpacing="0.14em" fontWeight="700">{h}</text>
+          </g>
+        ))}
+        {/* rows */}
+        {[
+          { a: "I. LIEPA",     d: "12-04", s: "OK" },
+          { a: "A. KALNIŅŠ",   d: "05-04", s: "—", ghost: true },
+          { a: "M. OZOLS",     d: "09-04", s: "OK" }
+        ].map((r, i) => {
+          const yy = 54 + i * 22;
+          return (
+            <g key={i} transform={`translate(0,${yy})`}>
+              {[r.a, r.d, r.s].map((cell, j) => (
+                <g key={j} transform={`translate(${10 + j * 60},0)`}>
+                  <rect width="56" height="20" rx="2" fill={r.ghost ? "rgba(230,168,74,0.06)" : "rgba(8,12,10,0.4)"} stroke={r.ghost ? "#E6A84A" : DIM} strokeWidth={r.ghost ? 1.1 : 0.6} strokeDasharray={r.ghost ? "3 3" : undefined} />
+                  <text x="28" y="13" textAnchor="middle" fill={r.ghost ? "#E6A84A" : TEXT} fontSize="9" opacity={r.ghost ? 0.65 : 1} fontWeight={r.ghost ? 700 : 500}>{cell}</text>
+                </g>
+              ))}
+            </g>
+          );
+        })}
+        {/* strike-through ghost row */}
+        <line x1="10" y1="86" x2="186" y2="86" stroke="#E6A84A" strokeWidth="1" strokeDasharray="3 3" />
+        {/* caption */}
+        <text x="14" y="146" fill="#E6A84A" fontSize="9" letterSpacing="0.16em" fontWeight="700">TUKŠA ŠŪNA</text>
+        <text x="14" y="160" fill={MUTED} fontSize="9" letterSpacing="0.06em">LEAD KĻUVIS PAR</text>
+        <text x="14" y="172" fill={MUTED} fontSize="9" letterSpacing="0.06em">FONA TROKSNI.</text>
       </g>
     </g>
   );
@@ -170,68 +241,95 @@ function AttributionGap() {
 }
 
 function NoRecovery() {
+  // New scene: a 4-stage funnel with dropouts at every stage falling into a "PAZUDĪS" drain
+  // and a faint dashed "MISSING RECOVERY LOOP" arc that should bring them back to stage 1 — but doesn't.
+  const stages = [
+    { label: "KONTAKTS",    pct: 100 },
+    { label: "ATBILDE",     pct: 64  },
+    { label: "PIEDĀVĀJUMS", pct: 38  },
+    { label: "SLĒGTS",      pct: 18  }
+  ];
+  const startX = 36;
+  const stageW = 132;
+  const gap = 14;
+  const topY = 70;
+  const baseY = 200;
+  const drainY = 280;
+
   return (
     <g>
-      <g transform="translate(28,110)">
-        <rect width="176" height="100" rx="10" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.5" />
-        {/* avatar */}
-        <circle cx="30" cy="34" r="14" fill="none" stroke={ACCENT} strokeWidth="1.4" />
-        <circle cx="30" cy="30" r="5" fill={ACCENT} />
-        <path d="M18 44 Q30 32 42 44" stroke={ACCENT} strokeWidth="1.4" fill="none" />
-        {/* name + email */}
-        <text x="54" y="28" fill={TEXT} fontSize="12" fontWeight="700" letterSpacing="0.04em">JAUNS LEADS</text>
-        <text x="54" y="42" fill={MUTED} fontSize="9.5">info@piemers.lv</text>
-        {/* status badge top right */}
-        <g transform="translate(118,18)">
-          <rect width="50" height="16" rx="8" fill="rgba(59,255,124,0.12)" stroke={ACCENT} strokeWidth="0.8" />
-          <circle cx="8" cy="8" r="3" fill={ACCENT} />
-          <text x="16" y="11" fill={ACCENT} fontSize="8" letterSpacing="0.08em" fontWeight="700">JAUNS</text>
-        </g>
-        {/* contact action icons */}
-        <g transform="translate(14,64)">
-          <rect x="0" y="3" width="24" height="18" rx="3" fill="none" stroke={ACCENT} strokeWidth="1.2" />
-          <path d="M0 6 L12 16 L24 6" stroke={ACCENT} strokeWidth="1.2" fill="none" />
-          <path d="M36 4 L42 4 L46 10 L42 14 Q46 20 52 24 L56 20 L62 24 L62 30 Q56 32 50 28 Q42 22 38 14 Z" fill="none" stroke={ACCENT} strokeWidth="1.2" />
-          <circle cx="82" cy="15" r="11" fill="none" stroke={ACCENT} strokeWidth="1.2" />
-          <path d="M82 9 L82 15 L88 18" stroke={ACCENT} strokeWidth="1.2" fill="none" />
-          <rect x="108" y="4" width="22" height="22" rx="3" fill="none" stroke={ACCENT} strokeWidth="1.2" />
-          <path d="M114 14 L118 18 L126 10" stroke={ACCENT} strokeWidth="1.4" fill="none" />
-        </g>
-      </g>
-      <path d="M204 160 L260 160" stroke={ACCENT} strokeWidth="1.5" fill="none" markerEnd="url(#arr-lime)" />
-      {["SAZIŅA", "SEKOŠANA", "GAIDA"].map((label, i) => {
-        const x = 260 + i * 90;
+      {/* funnel header */}
+      <text x={startX} y="40" fill={ACCENT} fontSize="10" letterSpacing="0.18em" fontWeight="700">KLIENTA CEĻŠ · BEZ ATGŪŠANAS</text>
+
+      {/* funnel stages with dropouts */}
+      {stages.map((s, i) => {
+        const xx = startX + i * (stageW + gap);
+        // each stage: a vertical bar whose fill height represents pct,
+        // top label = stage name, bottom label = % through.
+        const barH = baseY - topY;
+        const fillH = (s.pct / 100) * barH;
+        const dropPct = i > 0 ? stages[i - 1].pct - s.pct : 0;
         return (
-          <g key={i} transform={`translate(${x}, 110)`}>
-            <rect width="74" height="74" rx="6" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.3" />
-            {i === 0 ? (
-              <path d="M18 24 H56 V44 H38 L30 52 L32 44 H18 Z" stroke={ACCENT} strokeWidth="1.3" fill="none" />
-            ) : i === 1 ? (
-              <path d="M16 28 H58 V46 H22 L16 52 Z M22 34 H46 M22 40 H42" stroke={ACCENT} strokeWidth="1.3" fill="none" />
-            ) : (
+          <g key={s.label}>
+            {/* outer bar */}
+            <rect x={xx} y={topY} width={stageW} height={barH} rx={6} fill="rgba(8,12,10,0.5)" stroke={DIM} strokeWidth="1" strokeDasharray="3 3" />
+            {/* filled portion (still in funnel) */}
+            <rect x={xx} y={baseY - fillH} width={stageW} height={fillH} rx={6} fill={ACCENT} fillOpacity="0.18" stroke={ACCENT} strokeWidth="1.2" />
+            {/* corner brackets */}
+            <path d={`M${xx + 6} ${topY + 14} V${topY + 6} H${xx + 14}`} stroke={ACCENT} strokeWidth="1" fill="none" />
+            <path d={`M${xx + stageW - 14} ${topY + 6} H${xx + stageW - 6} V${topY + 14}`} stroke={ACCENT} strokeWidth="1" fill="none" />
+            {/* labels */}
+            <text x={xx + stageW / 2} y={topY + 26} textAnchor="middle" fill={TEXT} fontSize="11" letterSpacing="0.12em" fontWeight="700">{s.label}</text>
+            <text x={xx + stageW / 2} y={baseY - fillH - 8} textAnchor="middle" fill={ACCENT} fontSize="14" fontWeight="700">{s.pct}%</text>
+
+            {/* dropout indicator — leak channel falling into drain */}
+            {i > 0 ? (
               <g>
-                <circle cx="37" cy="36" r="14" fill="none" stroke={ACCENT} strokeWidth="1.3" />
-                <path d="M37 28 V36 L44 40" stroke={ACCENT} strokeWidth="1.3" fill="none" />
+                <path d={`M${xx} ${baseY - fillH + 8} C${xx - 8} ${baseY - fillH + 16}, ${xx - 18} ${drainY - 32}, ${xx - 12} ${drainY - 6}`} stroke="#E6A84A" strokeWidth="1.2" strokeDasharray="3 3" fill="none" markerEnd="url(#arr-lime)" />
+                <text x={xx - 14} y={baseY - fillH + 4} textAnchor="end" fill="#E6A84A" fontSize="9" fontWeight="700">−{dropPct}%</text>
               </g>
-            )}
-            <text x="37" y="92" textAnchor="middle" fill={MUTED} fontSize="9.5" letterSpacing="0.08em">{label}</text>
-            {i === 2 ? <text x="37" y="104" textAnchor="middle" fill={MUTED} fontSize="9.5" letterSpacing="0.08em">ATBILDI</text> : null}
+            ) : null}
+
+            {/* connecting arrow to next stage */}
+            {i < stages.length - 1 ? (
+              <path d={`M${xx + stageW} ${topY + barH / 2} L${xx + stageW + gap - 2} ${topY + barH / 2}`} stroke={ACCENT} strokeWidth="1.2" markerEnd="url(#arr-lime)" />
+            ) : null}
           </g>
         );
       })}
-      <path d="M510 144 Q570 60 614 82" stroke={ACCENT} strokeWidth="1.4" fill="none" strokeDasharray="5 4" />
-      <g transform="translate(614,82)">
-        <circle r="10" fill="rgba(8,12,10,0.9)" stroke="#E6A84A" strokeWidth="1.5" />
-        <path d="M-5 -5 L5 5 M-5 5 L5 -5" stroke="#E6A84A" strokeWidth="1.6" />
+
+      {/* DRAIN — collected dropouts pool */}
+      <g transform={`translate(${startX - 4},${drainY - 12})`}>
+        <rect width={stageW * stages.length + gap * (stages.length - 1) + 8} height="36" rx="6" fill="rgba(38,18,8,0.45)" stroke="#E6A84A" strokeWidth="1.2" strokeDasharray="4 3" />
+        <text x="14" y="14" fill="#E6A84A" fontSize="9" letterSpacing="0.18em" fontWeight="700">PAZUDU\u0160AIS POOLS</text>
+        <text x="14" y="28" fill={MUTED} fontSize="9" letterSpacing="0.06em">82 % no s\u0101kotn\u0113ji ie\u0146\u0101kuma plūsmas \u2014 nekur neatgriežas</text>
+        {/* small ghost icons */}
+        {[0.45, 0.55, 0.65, 0.75, 0.85].map((p, i) => (
+          <g key={i} transform={`translate(${(stageW * stages.length + gap * (stages.length - 1) + 8) * p},10)`}>
+            <circle cx="0" cy="6" r="3.5" fill="rgba(230,168,74,0.5)" stroke="#E6A84A" strokeWidth="0.8" />
+            <path d="M-3 14 Q0 9 3 14" stroke="#E6A84A" strokeWidth="0.9" fill="none" />
+          </g>
+        ))}
       </g>
-      <path d="M624 96 Q650 130 670 160" stroke={ACCENT} strokeWidth="1.4" fill="none" strokeDasharray="5 4" />
-      <g transform="translate(640,118)">
-        <circle cx="40" cy="40" r="40" fill="url(#inc-glow)" />
-        <circle cx="40" cy="32" r="10" fill="none" stroke={ACCENT} strokeWidth="1.4" />
-        <path d="M22 60 Q40 42 58 60" stroke={ACCENT} strokeWidth="1.4" fill="none" />
-        <text x="40" y="100" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">PAZAUDĒTS</text>
-        <text x="40" y="114" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">UZ PALIKŠANU</text>
-      </g>
+
+      {/* MISSING RECOVERY ARC — drawn faint above with red X overlay */}
+      {(() => {
+        const x1 = startX + stageW * stages.length + gap * (stages.length - 1) - 20;
+        const x2 = startX + 20;
+        const arcMidY = topY - 38;
+        return (
+          <g>
+            <path d={`M${x1} ${topY + 10} C${x1} ${arcMidY}, ${x2} ${arcMidY}, ${x2} ${topY + 10}`} stroke="#E6A84A" strokeWidth="1.3" strokeDasharray="4 4" fill="none" />
+            <text x={(x1 + x2) / 2} y={arcMidY + 4} textAnchor="middle" fill="#E6A84A" fontSize="9" letterSpacing="0.2em" fontWeight="700">ATG\u016a\u0160ANAS LOOP \u00b7 TR\u016aKST</text>
+            {/* big X at the top of the arc */}
+            <g transform={`translate(${(x1 + x2) / 2},${arcMidY - 14})`}>
+              <circle r="11" fill="rgba(8,12,10,0.95)" stroke="#E6A84A" strokeWidth="1.4" />
+              <line x1="-5" y1="-5" x2="5" y2="5" stroke="#E6A84A" strokeWidth="1.6" />
+              <line x1="5" y1="-5" x2="-5" y2="5" stroke="#E6A84A" strokeWidth="1.6" />
+            </g>
+          </g>
+        );
+      })()}
     </g>
   );
 }

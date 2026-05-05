@@ -178,30 +178,63 @@ function StepIllustration({ index }: { index: number }) {
   );
 }
 
-// 01 — Audits: messy → highlighted gaps
+// 01 — Audits: scanner sweeps the existing stack and exposes leak points
 function AuditScene() {
+  const layers = [
+    { label: "VIETNE",   leaks: [70, 230] },
+    { label: "FORMAS",   leaks: [140] },
+    { label: "CRM",      leaks: [50, 200] },
+    { label: "ATGŪŠANA", leaks: [110, 260] }
+  ];
+  const lyH = 22;
+  const left = 18;
+  const right = 280;
+  const top = 32;
   return (
     <g>
-      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">AUDITA KARTE</text>
-      {/* tangled paths */}
-      <path d="M30 60 C70 40 110 90 150 70 S220 50 250 80 S320 60 340 90" fill="none" stroke={DIM} strokeWidth="1" />
-      <path d="M30 100 C80 110 130 70 180 100 S260 120 340 100" fill="none" stroke={DIM} strokeWidth="1" strokeDasharray="3 2" />
-      {/* nodes */}
-      {[
-        { x: 30, y: 60 }, { x: 90, y: 75 }, { x: 150, y: 70 }, { x: 210, y: 65 },
-        { x: 270, y: 80 }, { x: 340, y: 90 }
-      ].map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r="3.5" fill="rgba(8,12,10,0.95)" stroke={ACCENT} strokeWidth="1" />
-      ))}
-      {/* highlighted breakpoints with X */}
-      {[{ x: 150, y: 70 }, { x: 270, y: 80 }].map((p, i) => (
-        <g key={i}>
-          <circle cx={p.x} cy={p.y} r="9" fill="none" stroke="#E6A84A" strokeWidth="1.4" strokeDasharray="2 2" />
-          <line x1={p.x - 5} y1={p.y - 5} x2={p.x + 5} y2={p.y + 5} stroke="#E6A84A" strokeWidth="1.4" />
-          <line x1={p.x + 5} y1={p.y - 5} x2={p.x - 5} y2={p.y + 5} stroke="#E6A84A" strokeWidth="1.4" />
-        </g>
-      ))}
-      <text x="16" y="140" fill={MUTED} fontSize="8" letterSpacing="0.22em">LŪZUMA PUNKTI · 2 / 6</text>
+      <text x={left} y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">SISTĒMAS SKENĒŠANA</text>
+      {/* stack of layers */}
+      {layers.map((ly, i) => {
+        const yy = top + i * (lyH + 6);
+        return (
+          <g key={ly.label}>
+            <rect x={left} y={yy} width={right - left} height={lyH} rx={3} fill="rgba(8,12,10,0.7)" stroke={DIM} strokeWidth="0.9" />
+            <text x={left + 6} y={yy + 14} fill={MUTED} fontSize="8" letterSpacing="0.16em" fontWeight="700">{ly.label}</text>
+            {/* low signal bars inside */}
+            <line x1={left + 70} y1={yy + 11} x2={right - 8} y2={yy + 11} stroke={DIM} strokeWidth="0.7" strokeDasharray="2 4" />
+            {/* leak markers */}
+            {ly.leaks.map((lx, j) => (
+              <g key={j} transform={`translate(${left + 70 + lx},${yy + 11})`}>
+                <circle r="6" fill="rgba(38,18,8,0.6)" stroke="#E6A84A" strokeWidth="1.2" />
+                <line x1="-2.4" y1="-2.4" x2="2.4" y2="2.4" stroke="#E6A84A" strokeWidth="1.2" />
+                <line x1="2.4" y1="-2.4" x2="-2.4" y2="2.4" stroke="#E6A84A" strokeWidth="1.2" />
+              </g>
+            ))}
+          </g>
+        );
+      })}
+      {/* scanning beam — vertical sweep with gradient hint */}
+      <line x1="170" y1={top - 4} x2="170" y2={top + 4 * (lyH + 6) - 2} stroke={ACCENT} strokeWidth="1.6" strokeDasharray="3 2" />
+      <rect x="160" y={top - 4} width="20" height={4 * (lyH + 6) + 2} fill={ACCENT} fillOpacity="0.06" />
+      {/* magnifier on the right shows audit findings */}
+      <g transform="translate(296,28)">
+        <circle cx="22" cy="22" r="22" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.4" />
+        <circle cx="22" cy="22" r="14" fill="none" stroke={ACCENT} strokeWidth="1" strokeDasharray="2 2" />
+        <line x1="36" y1="36" x2="48" y2="48" stroke={ACCENT} strokeWidth="2.4" />
+        <text x="22" y="26" textAnchor="middle" fill={ACCENT} fontSize="11" fontWeight="700">A</text>
+      </g>
+      {/* findings panel */}
+      <g transform="translate(264,80)">
+        <rect width="92" height="58" rx="3" fill="rgba(8,12,10,0.85)" stroke={DIM} strokeWidth="0.8" />
+        <text x="6" y="12" fill={ACCENT} fontSize="7" letterSpacing="0.18em" fontWeight="700">ATKL\u0100JUMI</text>
+        {[0, 1, 2, 3].map((i) => (
+          <g key={i} transform={`translate(6,${20 + i * 9})`}>
+            <rect width="6" height="6" rx="1" fill={i === 1 || i === 3 ? "#E6A84A" : ACCENT} fillOpacity="0.8" />
+            <line x1="12" y1="3" x2="80" y2="3" stroke={DIM} strokeWidth="0.8" />
+          </g>
+        ))}
+      </g>
+      <text x={left} y="148" fill={MUTED} fontSize="8" letterSpacing="0.22em">L\u016aZUMA PUNKTI \u00b7 5 / 4 SL\u0100\u0145I</text>
     </g>
   );
 }
@@ -260,73 +293,165 @@ function BuildScene() {
   );
 }
 
-// 04 — Handover: manual + people
+// 04 — Handover: Vexilian zone → key transfer → Klients zone (docs, training, access)
 function HandoverScene() {
   return (
     <g>
-      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">NODOŠANA</text>
-      {/* manual */}
-      <rect x="30" y="40" width="120" height="100" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
-      <line x1="30" y1="56" x2="150" y2="56" stroke={DIM} strokeWidth="0.8" />
-      {[0, 1, 2, 3, 4].map((i) => (
-        <line key={i} x1="42" y1={70 + i * 14} x2={i === 1 ? 124 : 138} y2={70 + i * 14} stroke={DIM} strokeWidth="0.8" />
-      ))}
-      <text x="38" y="50" fill={ACCENT} fontSize="8" letterSpacing="0.16em" fontWeight="700">SOP · DOKUMENTI</text>
+      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">NODOŠANA · KOMANDAI</text>
 
-      {/* arrow to team */}
-      <line x1="160" y1="90" x2="200" y2="90" stroke={ACCENT} strokeWidth="1.4" markerEnd={`url(#proc-arr-3)`} />
+      {/* LEFT zone — VEXILIAN */}
+      <rect x="18" y="34" width="116" height="116" rx="6" fill="rgba(8,12,10,0.55)" stroke={DIM} strokeWidth="0.9" strokeDasharray="3 3" />
+      <text x="76" y="48" textAnchor="middle" fill={ACCENT} fontSize="7.5" letterSpacing="0.22em" fontWeight="700">VEXILIAN</text>
+      {/* stacked sealed package */}
+      <g transform="translate(40,62)">
+        <rect width="72" height="72" rx="4" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />
+        <line x1="0" y1="24" x2="72" y2="24" stroke={ACCENT} strokeWidth="1" />
+        <line x1="36" y1="0" x2="36" y2="72" stroke={ACCENT} strokeWidth="1" />
+        {/* seal */}
+        <circle cx="36" cy="36" r="9" fill="rgba(59,255,124,0.18)" stroke={ACCENT} strokeWidth="1.2" />
+        <text x="36" y="40" textAnchor="middle" fill={ACCENT} fontSize="9" fontWeight="700">V</text>
+      </g>
 
-      {/* team silhouettes */}
-      {[0, 1, 2].map((i) => {
-        const x = 220 + i * 40;
+      {/* CENTER — key crossing the boundary */}
+      <line x1="138" y1="92" x2="222" y2="92" stroke={ACCENT} strokeWidth="1.4" markerEnd={`url(#proc-arr-3)`} strokeDasharray="4 3" />
+      <g transform="translate(160,76)">
+        {/* key icon */}
+        <circle cx="10" cy="16" r="8" fill="none" stroke={ACCENT} strokeWidth="1.4" />
+        <line x1="18" y1="16" x2="44" y2="16" stroke={ACCENT} strokeWidth="1.4" />
+        <line x1="34" y1="16" x2="34" y2="22" stroke={ACCENT} strokeWidth="1.4" />
+        <line x1="40" y1="16" x2="40" y2="22" stroke={ACCENT} strokeWidth="1.4" />
+        <text x="22" y="38" textAnchor="middle" fill={MUTED} fontSize="6.5" letterSpacing="0.14em">PIEKĻUVE</text>
+      </g>
+
+      {/* RIGHT zone — KLIENTS */}
+      <rect x="226" y="34" width="116" height="116" rx="6" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
+      <text x="284" y="48" textAnchor="middle" fill={ACCENT} fontSize="7.5" letterSpacing="0.22em" fontWeight="700">KLIENTS</text>
+      {/* 3 deliverable mini-cards */}
+      {[
+        { lab: "DOKS", glyph: "doc" },
+        { lab: "MĀCĪBA", glyph: "play" },
+        { lab: "ATSL.", glyph: "key" }
+      ].map((d, i) => {
+        const xx = 234 + i * 36;
         return (
-          <g key={i}>
-            <circle cx={x} cy="74" r="9" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />
-            <path d={`M${x - 13} 110 Q${x} 92 ${x + 13} 110 L${x + 13} 124 L${x - 13} 124 Z`} fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />
+          <g key={d.lab} transform={`translate(${xx},62)`}>
+            <rect width="32" height="40" rx="3" fill="rgba(8,12,10,0.9)" stroke={ACCENT} strokeWidth="1" />
+            {d.glyph === "doc" && (
+              <g transform="translate(8,8)" fill="none" stroke={ACCENT} strokeWidth="1.1">
+                <path d="M0 0 H10 L16 6 V20 H0 Z" />
+                <line x1="3" y1="11" x2="13" y2="11" />
+                <line x1="3" y1="15" x2="11" y2="15" />
+              </g>
+            )}
+            {d.glyph === "play" && (
+              <g transform="translate(8,9)" fill="none" stroke={ACCENT} strokeWidth="1.1">
+                <circle cx="8" cy="8" r="8" />
+                <path d="M6 4 L13 8 L6 12 Z" fill={ACCENT} />
+              </g>
+            )}
+            {d.glyph === "key" && (
+              <g transform="translate(7,11)" fill="none" stroke={ACCENT} strokeWidth="1.1">
+                <circle cx="4" cy="4" r="3.5" />
+                <line x1="7" y1="4" x2="18" y2="4" />
+                <line x1="14" y1="4" x2="14" y2="7" />
+              </g>
+            )}
+            <text x="16" y="56" textAnchor="middle" fill={MUTED} fontSize="6" letterSpacing="0.12em">{d.lab}</text>
           </g>
         );
       })}
-      <text x="260" y="148" textAnchor="middle" fill={MUTED} fontSize="8" letterSpacing="0.22em">KOMANDA · GATAVA</text>
+      {/* team silhouettes inside klients zone */}
+      <g transform="translate(238,118)">
+        {[0, 1, 2].map((i) => (
+          <g key={i} transform={`translate(${i * 36},0)`}>
+            <circle cx="14" cy="10" r="6" fill="rgba(8,12,10,0.9)" stroke={ACCENT} strokeWidth="1" />
+            <path d="M2 24 Q14 14 26 24" fill="none" stroke={ACCENT} strokeWidth="1" />
+          </g>
+        ))}
+      </g>
+
+      <text x="16" y="148" fill={MUTED} fontSize="8" letterSpacing="0.22em">SISTĒMA · NODOTA · DOKUMENTĒTA</text>
     </g>
   );
 }
 
-// 05 — Optimize: closed improvement loop
+// 05 — Optimize: monthly timeline shows metrics improving + dashboard mirror
 function OptimizeScene() {
+  // 6 months of bar pairs: signal in, output up
+  const months = ["M1", "M2", "M3", "M4", "M5", "M6"];
+  const out = [22, 30, 38, 50, 62, 78];
+  const signal = [40, 50, 56, 64, 72, 84];
+  const baseY = 116;
+  const colW = 28;
+  const colGap = 6;
+  const startX = 18;
   return (
     <g>
-      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">IKMĒNEŠA CIKLS</text>
-      <g transform="translate(180,82)">
-        {/* outer loop */}
-        <circle r="56" fill="none" stroke={DIM} strokeWidth="1" strokeDasharray="3 3" />
-        {/* 4 nodes */}
+      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">IKMĒNEŠA REGULĒŠANAS CIKLS</text>
+
+      {/* baseline + grid */}
+      <line x1={startX - 2} y1={baseY} x2={startX + months.length * (colW + colGap) - colGap + 2} y2={baseY} stroke={DIM} strokeWidth="0.9" />
+      {[20, 40, 60, 80].map((g) => (
+        <line key={g} x1={startX - 2} y1={baseY - g} x2={startX + months.length * (colW + colGap) - colGap + 2} y2={baseY - g} stroke={DIM} strokeWidth="0.4" strokeDasharray="2 4" />
+      ))}
+
+      {/* paired bars per month */}
+      {months.map((m, i) => {
+        const x = startX + i * (colW + colGap);
+        const sH = signal[i];
+        const oH = out[i];
+        return (
+          <g key={m}>
+            {/* signal (faint) */}
+            <rect x={x} y={baseY - sH} width={colW / 2 - 1} height={sH} fill={ACCENT} fillOpacity="0.22" />
+            {/* output (solid) */}
+            <rect x={x + colW / 2 + 1} y={baseY - oH} width={colW / 2 - 1} height={oH} fill={ACCENT} fillOpacity={0.55 + i * 0.06} />
+            {/* tick label */}
+            <text x={x + colW / 2} y={baseY + 12} textAnchor="middle" fill={MUTED} fontSize="7.5" letterSpacing="0.1em">{m}</text>
+          </g>
+        );
+      })}
+      {/* trend line tying tops of output bars */}
+      <path
+        d={out
+          .map((h, i) => {
+            const cx = startX + i * (colW + colGap) + colW / 2 + 1 + (colW / 2 - 1) / 2;
+            const cy = baseY - h;
+            return `${i === 0 ? "M" : "L"}${cx} ${cy}`;
+          })
+          .join(" ")}
+        stroke={ACCENT}
+        strokeWidth="1.4"
+        fill="none"
+        markerEnd={`url(#proc-arr-4)`}
+      />
+
+      {/* RIGHT — dashboard mirror */}
+      <g transform="translate(232,30)">
+        <rect width="120" height="120" rx="6" fill="rgba(8,12,10,0.78)" stroke={ACCENT} strokeWidth="1.2" />
+        <text x="8" y="14" fill={ACCENT} fontSize="7.5" letterSpacing="0.18em" fontWeight="700">VADĪBAS SKATS</text>
+        {/* 3 KPI rows that improve */}
         {[
-          { a: -90, label: "LASĪT" },
-          { a: 0, label: "REGULĒT" },
-          { a: 90, label: "PIEGĀDĀT" },
-          { a: 180, label: "MĒRĪT" }
-        ].map((n) => {
-          const r = 56;
-          const x = Math.cos((n.a * Math.PI) / 180) * r;
-          const y = Math.sin((n.a * Math.PI) / 180) * r;
+          { lab: "ATBILDE", from: 32, to: 78 },
+          { lab: "KVAL.",  from: 18, to: 64 },
+          { lab: "ATGŪT.", from: 12, to: 52 }
+        ].map((r, i) => {
+          const yy = 30 + i * 26;
           return (
-            <g key={n.label} transform={`translate(${x},${y})`}>
-              <circle r="14" fill="rgba(8,12,10,0.95)" stroke={ACCENT} strokeWidth="1.4" />
-              <text textAnchor="middle" y="3" fill={ACCENT} fontSize="8" fontWeight="700" letterSpacing="0.1em">{n.label}</text>
+            <g key={r.lab} transform={`translate(8,${yy})`}>
+              <text x="0" y="6" fill={MUTED} fontSize="7" letterSpacing="0.14em">{r.lab}</text>
+              {/* base bar */}
+              <rect x="0" y="10" width="100" height="6" rx="1" fill="rgba(255,255,255,0.07)" />
+              <rect x="0" y="10" width={r.from} height="6" rx="1" fill={ACCENT} fillOpacity="0.35" />
+              {/* improved tip */}
+              <rect x={r.from} y="10" width={r.to - r.from} height="6" rx="1" fill={ACCENT} fillOpacity="0.85" />
+              <text x="106" y="16" textAnchor="end" fill={ACCENT} fontSize="7" fontWeight="700">{r.to}%</text>
             </g>
           );
         })}
-        {/* arrows on the ring */}
-        {[-45, 45, 135, -135].map((a, i) => {
-          const r = 56;
-          const x = Math.cos((a * Math.PI) / 180) * r;
-          const y = Math.sin((a * Math.PI) / 180) * r;
-          return <polygon key={i} points={`${x - 3},${y - 3} ${x + 4},${y} ${x - 3},${y + 3}`} fill={ACCENT} transform={`rotate(${a + 90} ${x} ${y})`} />;
-        })}
-        {/* center */}
-        <circle r="6" fill={ACCENT} />
       </g>
-      <text x="16" y="148" fill={MUTED} fontSize="8" letterSpacing="0.22em">SISTĒMA · KĻŪST PRECĪZĀKA</text>
+
+      <text x="16" y="148" fill={MUTED} fontSize="8" letterSpacing="0.22em">SIGNĀLS \u2192 REGULĒT \u2192 PIEGĀDĀT \u2192 MĒRĪT</text>
     </g>
   );
 }

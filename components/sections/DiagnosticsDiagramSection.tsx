@@ -8,7 +8,7 @@ export function DiagnosticsDiagramSection() {
   return (
     <SectionShell id="diagnostics" sx={{ py: { xs: 8, md: 12 }, background: "rgba(11,14,17,0.45)" }}>
       <Stack spacing={4}>
-        <SectionHeader {...sectionCopy.diagnostics} maxWidth={900} />
+        <SectionHeader {...sectionCopy.diagnostics} maxWidth={1280} />
         <VexSystemDiagram />
       </Stack>
     </SectionShell>

@@ -9,7 +9,7 @@ export function FounderSection() {
   return (
     <SectionShell id="founders" sx={{ background: "rgba(11,14,17,0.28)" }}>
       <Stack spacing={4}>
-        <SectionHeader {...sectionCopy.founders} maxWidth={880} />
+        <SectionHeader {...sectionCopy.founders} maxWidth={1280} />
         <Grid container spacing={2.4}>
           {founders.map((founder) => (
             <Grid key={founder.id} size={{ xs: 12, md: 6, lg: 4 }} sx={{ display: "flex" }}>

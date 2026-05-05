@@ -8,7 +8,7 @@ export function ProcessSection() {
   return (
     <SectionShell id="process" sx={{ background: "rgba(11,14,17,0.28)" }}>
       <Stack spacing={4}>
-        <SectionHeader {...sectionCopy.process} maxWidth={850} />
+        <SectionHeader {...sectionCopy.process} maxWidth={1280} />
         <BuildMovementRail />
       </Stack>
     </SectionShell>

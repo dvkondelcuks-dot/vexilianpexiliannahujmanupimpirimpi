@@ -4,6 +4,7 @@ export function VexCard({ sx, children, ...props }: PaperProps) {
   return (
     <Paper
       elevation={0}
+      data-reveal="up"
       {...props}
       className={`industrial-card ${props.className ?? ""}`.trim()}
       sx={{

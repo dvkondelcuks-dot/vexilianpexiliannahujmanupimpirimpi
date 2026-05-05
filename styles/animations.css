@@ -32,3 +32,241 @@
   44% { opacity: 1; transform: scale(1.16); }
   100% { opacity: 0.6; transform: scale(1); }
 }
+
+/* ===========================================================================
+   VEX INTRO OVERLAY
+   --------------------------------------------------------------------------- */
+
+html.vex-booting,
+html.vex-booting body {
+  overflow: hidden;
+}
+
+.vex-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background:
+    radial-gradient(120% 80% at 50% 50%, rgba(8, 12, 10, 0.95), #04060a 72%);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  isolation: isolate;
+  animation: vex-intro-in 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.vex-intro--leaving {
+  animation: vex-intro-out 420ms cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+@keyframes vex-intro-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes vex-intro-out {
+  0%   { opacity: 1; transform: translateY(0); clip-path: inset(0 0 0 0); }
+  60%  { opacity: 1; transform: translateY(-8px); }
+  100% { opacity: 0; transform: translateY(-44px); clip-path: inset(0 0 100% 0); }
+}
+
+.vex-intro__bracket {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-color: #3BFF7C;
+  border-style: solid;
+  border-width: 0;
+  opacity: 0;
+  animation: vex-bracket-in 360ms ease-out 80ms forwards;
+}
+
+.vex-intro__bracket--tl { top: 22px; left: 22px;    border-top-width: 1.5px;    border-left-width: 1.5px; }
+.vex-intro__bracket--tr { top: 22px; right: 22px;   border-top-width: 1.5px;    border-right-width: 1.5px; }
+.vex-intro__bracket--bl { bottom: 22px; left: 22px; border-bottom-width: 1.5px; border-left-width: 1.5px; }
+.vex-intro__bracket--br { bottom: 22px; right: 22px;border-bottom-width: 1.5px; border-right-width: 1.5px; }
+
+@keyframes vex-bracket-in {
+  from { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  to   { opacity: 0.85; transform: translate(0, 0) scale(1); }
+}
+
+.vex-intro__grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(59, 255, 124, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 255, 124, 0.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(120% 80% at 50% 50%, #000 30%, transparent 78%);
+  opacity: 0;
+  animation: vex-fade-in 360ms ease-out 200ms forwards;
+}
+
+.vex-intro__scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 3px);
+  opacity: 0;
+  animation: vex-fade-in 480ms ease-out 360ms forwards;
+}
+
+.vex-intro__sweep {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -20%;
+  width: 18%;
+  background: linear-gradient(90deg, transparent, rgba(59, 255, 124, 0.18) 50%, transparent);
+  pointer-events: none;
+  animation: vex-sweep 1100ms cubic-bezier(0.4, 0, 0.2, 1) 380ms 1 forwards;
+}
+
+@keyframes vex-sweep {
+  from { left: -20%; }
+  to   { left: 110%; }
+}
+
+.vex-intro__center {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.vex-intro__mark {
+  opacity: 0;
+  transform: scale(0.78);
+  animation: vex-mark-in 520ms cubic-bezier(0.16, 1, 0.3, 1) 220ms forwards;
+}
+
+@keyframes vex-mark-in {
+  0%   { opacity: 0; transform: scale(0.62) rotate(-2deg); filter: drop-shadow(0 0 0 rgba(59, 255, 124, 0)); }
+  60%  { opacity: 1; transform: scale(1.04) rotate(0); filter: drop-shadow(0 0 18px rgba(59, 255, 124, 0.55)); }
+  100% { opacity: 1; transform: scale(1) rotate(0); filter: drop-shadow(0 0 8px rgba(59, 255, 124, 0.35)); }
+}
+
+.vex-intro__brand {
+  font-family: var(--display);
+  font-size: 22px;
+  letter-spacing: 0.36em;
+  color: var(--text);
+  opacity: 0;
+  animation: vex-line-in 460ms ease-out 540ms forwards;
+}
+
+.vex-intro__sub {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.32em;
+  color: var(--text-3);
+  text-transform: uppercase;
+  opacity: 0;
+  animation: vex-line-in 460ms ease-out 700ms forwards;
+}
+
+@keyframes vex-line-in {
+  from { opacity: 0; transform: translateY(8px); letter-spacing: 0.5em; }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.vex-intro__strip {
+  position: absolute;
+  bottom: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  opacity: 0;
+  animation: vex-line-in 420ms ease-out 880ms forwards;
+}
+
+.vex-intro__chip {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border: 1px solid rgba(59, 255, 124, 0.35);
+  background: rgba(8, 12, 10, 0.6);
+  color: #3BFF7C;
+}
+
+.vex-intro__chip--mute {
+  color: var(--text-3);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.vex-intro__chip--ok {
+  background: rgba(59, 255, 124, 0.12);
+  color: #3BFF7C;
+  border-color: #3BFF7C;
+  animation: vex-chip-blink 320ms steps(2, end) 1100ms 2;
+}
+
+@keyframes vex-chip-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+
+@keyframes vex-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ===========================================================================
+   SITEWIDE REVEAL SYSTEM
+   --------------------------------------------------------------------------- */
+
+[data-reveal],
+.vex-reveal {
+  --vex-reveal-duration: 760ms;
+  --vex-reveal-delay: 0ms;
+  --vex-reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --vex-reveal-shift: 28px;
+  opacity: 0;
+  transform: translate3d(0, var(--vex-reveal-shift), 0);
+  transition:
+    opacity var(--vex-reveal-duration) var(--vex-reveal-ease),
+    transform var(--vex-reveal-duration) var(--vex-reveal-ease),
+    filter var(--vex-reveal-duration) var(--vex-reveal-ease);
+  transition-delay: var(--vex-reveal-delay);
+  will-change: transform, opacity;
+  filter: blur(2px);
+}
+
+[data-reveal="down"]  { transform: translate3d(0, calc(var(--vex-reveal-shift) * -1), 0); }
+[data-reveal="left"]  { transform: translate3d(calc(var(--vex-reveal-shift) * -1), 0, 0); }
+[data-reveal="right"] { transform: translate3d(var(--vex-reveal-shift), 0, 0); }
+[data-reveal="fade"]  { transform: none; }
+[data-reveal="zoom"]  { transform: scale(0.94); filter: blur(3px); }
+
+[data-reveal].vex-reveal--in,
+.vex-reveal--in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: none;
+}
+
+/* Children of a fully booted page get a tiny ambient drift so the page
+   feels alive even after the reveal finishes. Affects only structural cards. */
+html.vex-booted .industrial-card {
+  transition: transform 320ms ease, border-color 320ms ease, box-shadow 320ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vex-reveal,
+  .vex-reveal--in {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+  .vex-intro,
+  .vex-intro * {
+    animation: none !important;
+  }
+}

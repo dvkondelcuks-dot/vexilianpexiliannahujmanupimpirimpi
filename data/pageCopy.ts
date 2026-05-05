@@ -31,7 +31,7 @@ export const heroCopy = {
 export const sectionCopy = {
   diagnosis: {
     eyebrow: "01 · DIAGNOZE",
-    headline: "Pieci klusi lūzuma punkti,|kur Latvijas MVU|zaudē klientus.",
+    headline: "Pieci klusi lūzuma punkti, kur|Latvijas MVŪ zaudē klientus.",
     body:
       "Tie nav dramatiski notikumi. Tie notiek katru dienu: cilvēks nospiež reklāmu, atver lapu, uzraksta, pazūd, neatbild, atgriežas vēlāk vai nopērk citur. Problēma nav tikai tajā, ka klients pazuda. Problēma ir tajā, ka uzņēmums nezina, kur tas notika."
   },

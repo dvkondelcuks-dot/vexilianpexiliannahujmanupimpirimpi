@@ -28,9 +28,9 @@ export function DiagnosisSection() {
             >
               <Stack direction={{ xs: "column", sm: "row" }} spacing={1.2} alignItems={{ sm: "center" }} justifyContent="space-between" sx={{ mb: 1.6 }}>
                 <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" alignItems="center">
-                  <MetaLabel sx={{ color: "var(--signal-blue)" }}>INCIDENT {event.number}</MetaLabel>
-                  <SignalChip tone="amber">LAYER: {event.layer.toUpperCase()}</SignalChip>
-                  <SignalChip tone="amber">SEVERITY: {event.severity}</SignalChip>
+                  <MetaLabel sx={{ color: "var(--signal-blue)" }}>INCIDENTS {event.number}</MetaLabel>
+                  <SignalChip tone="amber">SLĀNIS: {event.layer.toUpperCase()}</SignalChip>
+                  <SignalChip tone="amber">SMAGUMS: {event.severity}</SignalChip>
                 </Stack>
                 <MetaLabel sx={{ opacity: 0.55 }}>TS 04:2{index}:18</MetaLabel>
               </Stack>

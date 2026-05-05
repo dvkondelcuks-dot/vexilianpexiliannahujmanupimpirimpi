@@ -149,12 +149,13 @@ function HealthGauge({ x, y }: { x: number; y: number }) {
 }
 
 function UpwardChart({ x, y }: { x: number; y: number }) {
+  // card width 232 - inner padding 26 each side -> safe inner = 180
   return (
     <g transform={`translate(${x + 26},${y + 60})`}>
-      <path d="M0 160 Q40 130 80 110 T160 50 L200 10" stroke={ACCENT} strokeWidth="2.4" fill="none" />
-      <path d="M0 160 Q40 130 80 110 T160 50 L200 10 L200 160 Z" fill={ACCENT} fillOpacity="0.18" />
-      {/* arrowhead */}
-      <path d="M196 14 L208 6 L210 18" stroke={ACCENT} strokeWidth="2" fill="none" />
+      <path d="M0 160 Q36 130 72 110 T144 56 L176 22" stroke={ACCENT} strokeWidth="2.4" fill="none" />
+      <path d="M0 160 Q36 130 72 110 T144 56 L176 22 L176 160 Z" fill={ACCENT} fillOpacity="0.18" />
+      {/* arrowhead — kept fully inside the card */}
+      <path d="M170 26 L182 18 L178 32 Z" fill={ACCENT} stroke={ACCENT} strokeWidth="1.4" strokeLinejoin="round" />
     </g>
   );
 }

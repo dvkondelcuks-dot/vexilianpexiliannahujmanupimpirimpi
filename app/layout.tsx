@@ -35,6 +35,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="lv" className={`${michroma.variable} ${chakra.variable}`}>
+      <head>
+        <noscript>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important;filter:none!important;}.vex-intro{display:none!important;}`}</style>
+        </noscript>
+      </head>
       <body>
         <Providers>{children}</Providers>
       </body>

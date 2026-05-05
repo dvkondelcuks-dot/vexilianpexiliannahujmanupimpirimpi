@@ -11,7 +11,7 @@ export function CaseStudiesSection() {
   return (
     <SectionShell id="cases">
       <Stack spacing={5}>
-        <SectionHeader {...sectionCopy.cases} maxWidth={850} />
+        <SectionHeader {...sectionCopy.cases} maxWidth={1280} />
         <Stack spacing={3}>
           {cases.map((item, idx) => (
             <Grid
