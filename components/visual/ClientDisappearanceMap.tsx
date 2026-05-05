@@ -13,12 +13,12 @@ import { AreaGradient, CHART, HGrid, KpiCell, LegendChip, Panel, SubPanel, XAxis
 // keeping the visual language continuous from custom SVG into real charts.
 
 const funnelStages = [
-  { label: "AD",     visible: 100, lost: 0,  recovered: 0 },
-  { label: "PAGE",   visible: 78,  lost: 22, recovered: 0 },
-  { label: "FORM",   visible: 52,  lost: 48, recovered: 0 },
+  { label: "REKL.",  visible: 100, lost: 0,  recovered: 0 },
+  { label: "LAPA",   visible: 78,  lost: 22, recovered: 0 },
+  { label: "FORMA",  visible: 52,  lost: 48, recovered: 0 },
   { label: "CRM",    visible: 36,  lost: 56, recovered: 8 },
-  { label: "FOLLOW", visible: 24,  lost: 60, recovered: 16 },
-  { label: "OUT",    visible: 18,  lost: 60, recovered: 22 }
+  { label: "SEKOŠANA", visible: 24,  lost: 60, recovered: 16 },
+  { label: "IZEJA",  visible: 18,  lost: 60, recovered: 22 }
 ] as const;
 
 const sourceLoss = [
@@ -171,7 +171,7 @@ export function ClientDisappearanceMap() {
 
         {/* Main funnel decay chart */}
         <g className="cdm-fade" opacity={0}>
-          <text x={FUNNEL_BOX.x} y={FUNNEL_BOX.y - 20} className="svg-label svg-label-muted" fontSize="10">SESSION DECAY ACROSS COMMERCIAL FUNNEL · % of inflow</text>
+          <text x={FUNNEL_BOX.x} y={FUNNEL_BOX.y - 20} className="svg-label svg-label-muted" fontSize="10">SESIJU SARUKUMS KOMERCIĀLAJĀ PLŪSMĀ · % no ieejas</text>
           <LegendChip x={FUNNEL_BOX.x + 320} y={FUNNEL_BOX.y - 16} label="VISIBLE" tone="lime" />
           <LegendChip x={FUNNEL_BOX.x + 400} y={FUNNEL_BOX.y - 16} label="LOST" tone="amber" />
         </g>
@@ -228,9 +228,9 @@ export function ClientDisappearanceMap() {
 
         {/* KPI strip below */}
         <g className="cdm-fade" opacity={0}>
-          <KpiCell x={78} y={344} w={156} h={48} label="INFLOW · 14D" value="423 leads" tone="lime" />
-          <KpiCell x={244} y={344} w={156} h={48} label="VISIBLE AT OUT" value="76 / 18%" tone="green" />
-          <KpiCell x={410} y={344} w={156} h={48} label="LOST IN FUNNEL" value="254 / 60%" tone="amber" />
+          <KpiCell x={78} y={344} w={156} h={48} label="IEEJA · 14D" value="423 pieprasījumi" tone="lime" />
+          <KpiCell x={244} y={344} w={156} h={48} label="REDZAMI IZEJĀ" value="76 / 18%" tone="green" />
+          <KpiCell x={410} y={344} w={156} h={48} label="PAZUDIS PLŪSMĀ" value="254 / 60%" tone="amber" />
           <KpiCell x={576} y={344} w={156} h={48} label="UNATTRIBUTED" value="93 / 22%" tone="amber" />
           <KpiCell x={742} y={344} w={138} h={48} label="RECOVERED" value="0" tone="red" />
         </g>

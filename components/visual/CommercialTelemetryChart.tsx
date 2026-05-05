@@ -30,12 +30,12 @@ type TelemetryPoint = {
 
 const chartData: Record<TelemetryMode, TelemetryPoint[]> = {
   leakage: [
-    { label: "AD", visible: 91, lost: 4, recovered: 0 },
-    { label: "PAGE", visible: 78, lost: 16, recovered: 0 },
-    { label: "FORM", visible: 52, lost: 31, recovered: 6 },
+    { label: "REKL.", visible: 91, lost: 4, recovered: 0 },
+    { label: "LAPA", visible: 78, lost: 16, recovered: 0 },
+    { label: "FORMA", visible: 52, lost: 31, recovered: 6 },
     { label: "CRM", visible: 36, lost: 44, recovered: 11 },
-    { label: "FOLLOW", visible: 29, lost: 52, recovered: 19 },
-    { label: "OUT", visible: 24, lost: 58, recovered: 27 }
+    { label: "SEKOŠANA", visible: 29, lost: 52, recovered: 19 },
+    { label: "IZEJA", visible: 24, lost: 58, recovered: 27 }
   ],
   source: [
     { label: "GOOG", visible: 38, revenue: 24 },

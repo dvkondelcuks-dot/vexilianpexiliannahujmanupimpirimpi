@@ -35,7 +35,7 @@ export function CaseSystemOverlay({ item }: { item: CaseItem }) {
         <rect x={22} y={24} width={676} height={312} rx={8} fill={`url(#case-dim-${item.id})`} stroke={CHART.border} />
 
         {/* Header */}
-        <text x={40} y={50} fontSize="11" fontFamily="var(--mono)" fill={CHART.lime}>SIGNAL TRACE · {item.name.toUpperCase()}</text>
+        <text x={40} y={50} fontSize="11" fontFamily="var(--mono)" fill={CHART.lime}>SIGNĀLA PĒDAS · {item.name.toUpperCase()}</text>
         <text x={678} y={50} textAnchor="end" fontSize="10" fontFamily="var(--mono)" fill={CHART.axis}>WEEKLY · n=8</text>
 
         {/* Chart */}

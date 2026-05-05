@@ -5,7 +5,7 @@ export const collaborationPhases = [
     input: "current business flow",
     work: "system blueprint",
     output: "sistēmas karte pirms būvēšanas",
-    acceptance: "approved build scope",
+    acceptance: "apstiprināts būvēšanas apjoms",
     text: "Komerciālās plūsmas dizains, datu modelis, CRM struktūra, integrāciju karte un tehniskais risks."
   },
   {
@@ -14,7 +14,7 @@ export const collaborationPhases = [
     input: "blueprint",
     work: "connected system",
     output: "strādājoša komerciālā sistēma",
-    acceptance: "tested workflow",
+    acceptance: "testēta darbplūsma",
     text: "Vietne, formas, CRM, atribūcijas slānis, atgūšanas trigeri un live panelis tiek savienoti vienā plūsmā."
   },
   {
@@ -23,7 +23,7 @@ export const collaborationPhases = [
     input: "working system",
     work: "team-owned system",
     output: "sistēma, ko komanda var lietot un vadība var redzēt",
-    acceptance: "first report cycle",
+    acceptance: "pirmais atskaites cikls",
     text: "Komandas apmācība, dokumentācija, pirmais atskaites cikls un turpmākais ikmēneša uzlabojumu ritms."
   }
 ] as const;

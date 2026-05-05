@@ -6,9 +6,9 @@ import { useState } from "react";
 const STAGES = [
   { code: "01", title: ["IENĀKOŠĀ", "INTERESE"], bullets: ["META / GOOGLE / UGC", "SEO / IETEIKUMI", "E-PASTS / KAMPAŅAS"], status: "IEEJA SISTĒMĀ" },
   { code: "02", title: ["MĀJASLAPA"], bullets: ["SKAIDRS PIEDĀVĀJUMS", "UZTICĒŠANĀS", "CTA VIRZIENS"], status: "UZTICĒŠANĀS" },
-  { code: "03", title: ["CRM"], bullets: ["PIPELINE POSMI", "LEAD STATUSI", "KLIENTU DATI"], status: "PĀRREDZAMĪBA" },
-  { code: "04", title: ["AUTOMATIZĀCIJA"], bullets: ["LEAD CAPTURE", "MARŠRUTĒŠANA", "FOLLOW-UP"], status: "TURPINA DARBĪBU" },
-  { code: "05", title: ["KVALIFICĒTS", "LEAD"], bullets: ["FILTRĒTS PĒC NODOMA", "AVOTA VĒRTĒŠANA", "KVALITĀTE > APJOMS"], status: "GATAVS PĀRDOŠANAI" },
+  { code: "03", title: ["CRM"], bullets: ["PIEPRASĪJUMU POSMI", "KLIENTA STATUSI", "KLIENTU DATI"], status: "PĀRREDZAMĪBA" },
+  { code: "04", title: ["AUTOMATIZĀCIJA"], bullets: ["PIEPRASĪJUMU UZTVERŠANA", "MARŠRUTĒŠANA", "ATKĀRTOTS KONTAKTS"], status: "TURPINA DARBĪBU" },
+  { code: "05", title: ["KVALIFICĒTS", "PIEPRASĪJUMS"], bullets: ["FILTRĒTS PĒC NODOMA", "AVOTA VĒRTĒŠANA", "KVALITĀTE > APJOMS"], status: "GATAVS PĀRDOŠANAI" },
   { code: "06", title: ["PĀRDOŠANA"], bullets: ["PIEDĀVĀJUMI", "REZERVĀCIJAS", "IEŅĒMUMI"], status: "DARĪJUMS NOSLĒGTS" },
   { code: "07", title: ["NOTURĒŠANA"], bullets: ["ATGĀDINĀJUMI", "AKTIVIZĀCIJA", "IETEIKUMI"], status: "ILGTERMIŅA VĒRTĪBA" },
   { code: "08", title: ["VADĪBAS", "PANELIS"], bullets: ["PĀRSKATI / KPI", "ROI / AVOTI", "ATTĪSTĪBA"], status: "KONTROLE" }

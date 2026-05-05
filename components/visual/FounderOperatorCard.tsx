@@ -1,4 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
+import type { ReactNode } from "react";
 import type { founders } from "@/data/founders";
 import { MetaLabel } from "@/components/ui/MetaLabel";
 import { SignalChip } from "@/components/ui/SignalChip";
@@ -27,9 +28,10 @@ export function FounderOperatorCard({ founder }: { founder: Founder }) {
         "&:hover": { borderColor: "rgba(59,255,124,0.32)", transform: "translateY(-2px)" }
       }}
     >
-      <Stack spacing={1.2} sx={{ p: 2.2, borderBottom: "1px solid var(--border)" }}>
+      <Stack spacing={1.2} sx={{ p: 2.2, borderBottom: "1px solid var(--border)", position: "relative" }}>
+        <FounderGlyph id={founder.id} />
         <MetaLabel sx={{ color: "var(--signal-blue)" }}>{founder.operatorCode}</MetaLabel>
-        <Box>
+        <Box sx={{ pr: 7 }}>
           <Typography component="h3" variant="h3">{founder.name}</Typography>
           <Typography sx={{ color: "var(--text-2)", fontFamily: "var(--mono)", fontSize: 12, textTransform: "uppercase", mt: 0.7 }}>{founder.role}</Typography>
         </Box>
@@ -85,13 +87,13 @@ function OperatorDiagram({ mode }: { mode: string }) {
   );
 }
 
-function Pill({ x, y, label, icon }: { x: number; y: number; label: string; icon: string }) {
+function Pill({ x, y, label, icon, w = 160 }: { x: number; y: number; label: string; icon: string; w?: number }) {
   return (
     <g transform={`translate(${x},${y})`}>
-      <rect width="160" height="28" rx="14" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
+      <rect width={w} height="28" rx="14" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
       <text x="22" y="18" textAnchor="middle" fill={ACCENT} fontSize="11" fontWeight="700">{icon}</text>
       <line x1="38" y1="6" x2="38" y2="22" stroke="rgba(59,255,124,0.25)" />
-      <text x="46" y="18" fill={TEXT} fontSize="9.5" letterSpacing="0.08em" fontWeight="600">{label}</text>
+      <text x={(38 + w) / 2} y="18" textAnchor="middle" fill={TEXT} fontSize="9" letterSpacing="0.05em" fontWeight="600">{label}</text>
     </g>
   );
 }
@@ -158,8 +160,8 @@ function Analysis() {
     <g>
       <text x="20" y="22" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">TIRGUS SIGNĀLI</text>
       <text x="580" y="22" textAnchor="end" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">VIRZIENS</text>
-      {inputs.map((it) => <Pill key={it.label} x={16} y={it.y} label={it.label} icon={it.icon} />)}
-      {outputs.map((it) => <Pill key={it.label} x={424} y={it.y} label={it.label} icon={it.icon} />)}
+      {inputs.map((it) => <Pill key={it.label} x={4} y={it.y} label={it.label} icon={it.icon} w={196} />)}
+      {outputs.map((it) => <Pill key={it.label} x={400} y={it.y} label={it.label} icon={it.icon} w={196} />)}
       {/* hub hex */}
       <g transform={`translate(${cx},${cy})`}>
         <circle r="56" fill="url(#op-glow)" />
@@ -170,10 +172,10 @@ function Analysis() {
         <text x="0" y="50" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.18em" fontWeight="700">SLĀNIS</text>
       </g>
       {inputs.map((it, i) => (
-        <line key={`in-${i}`} x1="176" y1={it.y + 14} x2={cx - 30} y2={cy} stroke={DIM} strokeWidth="1" strokeDasharray="3 3" markerEnd="url(#op-arr)" />
+        <line key={`in-${i}`} x1="200" y1={it.y + 14} x2={cx - 30} y2={cy} stroke={DIM} strokeWidth="1" strokeDasharray="3 3" markerEnd="url(#op-arr)" />
       ))}
       {outputs.map((it, i) => (
-        <line key={`out-${i}`} x1={cx + 30} y1={cy} x2="424" y2={it.y + 14} stroke={DIM} strokeWidth="1" strokeDasharray="3 3" markerEnd="url(#op-arr)" />
+        <line key={`out-${i}`} x1={cx + 30} y1={cy} x2="400" y2={it.y + 14} stroke={DIM} strokeWidth="1" strokeDasharray="3 3" markerEnd="url(#op-arr)" />
       ))}
     </g>
   );
@@ -247,4 +249,62 @@ function CommIcon({ icon, cx, cy }: { icon: string; cx: number; cy: number }) {
     default:
       return null;
   }
+}
+
+// Per-founder identity glyph rendered top-right of the card header.
+function FounderGlyph({ id }: { id: string }) {
+  const wrap = (children: ReactNode) => (
+    <Box
+      aria-hidden
+      sx={{
+        position: "absolute",
+        top: 16,
+        right: 16,
+        width: 52,
+        height: 52,
+        borderRadius: "50%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "rgba(8,12,10,0.85)",
+        border: "1px solid rgba(59,255,124,0.45)",
+        boxShadow: "0 0 14px rgba(59,255,124,0.18)",
+        color: ACCENT
+      }}
+    >
+      <svg viewBox="0 0 32 32" width="28" height="28" fill="none" stroke={ACCENT} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        {children}
+      </svg>
+    </Box>
+  );
+  if (id === "davids") {
+    // Architecture cube
+    return wrap(
+      <>
+        <path d="M16 4 L28 10 L16 16 L4 10 Z" />
+        <path d="M4 10 V22 L16 28" />
+        <path d="M28 10 V22 L16 28" />
+        <line x1="16" y1="16" x2="16" y2="28" />
+      </>
+    );
+  }
+  if (id === "miks") {
+    // Analysis lens / signal
+    return wrap(
+      <>
+        <circle cx="14" cy="14" r="8" />
+        <line x1="20" y1="20" x2="27" y2="27" />
+        <path d="M10 14 H18" />
+        <path d="M14 10 V18" />
+      </>
+    );
+  }
+  // edvards — growth wave / rising signal
+  return wrap(
+    <>
+      <path d="M4 22 Q10 14 14 18 T22 14 T28 6" />
+      <path d="M22 6 H28 V12" />
+      <circle cx="4" cy="22" r="1.6" fill={ACCENT} />
+    </>
+  );
 }

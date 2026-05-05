@@ -1,11 +1,11 @@
 export const signalStates = [
-  "UNKNOWN VISITOR",
-  "CONTACT POINT",
-  "STRUCTURED ROUTE",
-  "LEAD RECORD",
-  "ATTRIBUTED LEAD",
-  "RECOVERABLE LEAD",
-  "VISIBLE BUSINESS SIGNAL"
+  "NEZINĀMS APMEKLĒTĀJS",
+  "KONTAKTA PUNKTS",
+  "STRUKTURĒTS MARŠRUTS",
+  "PIEPRASĪJUMA IERAKSTS",
+  "PIESĀISTS PIEPRASĪJUMS",
+  "ATGŪSTAMS PIEPRASĪJUMS",
+  "REDZAMS BIZNESA SIGNĀLS"
 ];
 
 export const layers = [
@@ -15,7 +15,7 @@ export const layers = [
     subtitle: "Pirmā tiešā saskare ar zīmolu",
     text: "Vietne, formas, satura plūsma un vizuālais materiāls. Tā ir telpa, kurā cilvēks pirmoreiz tieši satiek uzņēmumu.",
     includes: ["Next.js vietne", "formas ar telemetriju", "satura struktūra", "CTA loģika"],
-    visual: ["VISITOR", "PAGE", "FORM"]
+    visual: ["APMEKLĒTĀJS", "LAPA", "FORMA"]
   },
   {
     number: "02/06",
@@ -23,7 +23,7 @@ export const layers = [
     subtitle: "Ceļš no intereses līdz kontaktam",
     text: "Skaidrs ceļš no reklāmas līdz formai, no formas līdz cilvēkam, no cilvēka līdz nākamajam solim.",
     includes: ["lapu plūsmas", "daudzvalodu maršruti", "tracking", "konversijas punkti"],
-    visual: ["AD", "LANDING", "CTA", "CONTACT"]
+    visual: ["REKLĀMA", "LAPA", "CTA", "KONTAKTS"]
   },
   {
     number: "03/06",
@@ -31,7 +31,7 @@ export const layers = [
     subtitle: "Viena vieta katram kontaktam",
     text: "Kontakti, sarunas, lēmumi un statusi vienā vietā. Bez izklājlapām kā galvenās sistēmas. Bez pazudušiem pavedieniem.",
     includes: ["kontaktu vēsture", "stage pipeline", "komandas redzamība", "atbildības īpašnieks"],
-    visual: ["NEW", "QUALIFIED", "ACTIVE", "WON"]
+    visual: ["JAUNS", "KVALIFICĒTS", "AKTĪVS", "IEGŪTS"]
   },
   {
     number: "04/06",
@@ -39,7 +39,7 @@ export const layers = [
     subtitle: "Kura reklāma atveda klientu",
     text: "Beidzot redzams, kurš kanāls, kura reklāma, kurš ieraksts vai kurš ceļš atveda cilvēku līdz pieprasījumam.",
     includes: ["UTM disciplīna", "multi-touch piesaiste", "kanālu izmaksu skats", "cohort analīze"],
-    visual: ["META", "GOOGLE", "ORGANIC", "CLIENT RECORD"]
+    visual: ["META", "GOOGLE", "ORGĀNIKA", "KLIENTA IERAKSTS"]
   },
   {
     number: "05/06",
@@ -47,7 +47,7 @@ export const layers = [
     subtitle: "Pazaudētie atgriežas plūsmā",
     text: "Klusums vairs nav beigu punkts. Sistēma atceras neatbildētos, nepabeigtos un neizmantotos kontaktus.",
     includes: ["trigeru sekvences", "e-pasts + SMS", "re-engagement loģika", "atgūšanas statuss"],
-    visual: ["NO REPLY", "TRIGGER", "EMAIL/SMS", "BACK TO FLOW"]
+    visual: ["NAV ATBILDES", "TRIGERIS", "E-PASTS / SMS", "ATPAKAĻ PLŪSMĀ"]
   },
   {
     number: "06/06",
@@ -55,6 +55,6 @@ export const layers = [
     subtitle: "Vadības panelis tagad, ne pēc mēneša",
     text: "Vienots panelis komandai un vadībai. Pieprasījumi, avoti, statuss, atgūšana un ieņēmumu signāli redzami vienā vietā.",
     includes: ["live panelis", "nedēļas atskaites", "vadības KPI", "lēmumu skats"],
-    visual: ["INQUIRIES", "OPEN LEADS", "REVENUE", "SOURCE"]
+    visual: ["PIEPRASĪJUMI", "AKTĪVI", "IEŅĒMUMI", "AVOTS"]
   }
 ] as const;

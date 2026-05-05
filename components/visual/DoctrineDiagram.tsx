@@ -151,10 +151,10 @@ function Model() {
           <circle cx="18" cy="18" r="3" fill={ACCENT} />
           {[0, 60, 120, 180, 240, 300].map((a) => {
             const rad = (a * Math.PI) / 180;
-            const x1 = 18 + Math.cos(rad) * 11;
-            const y1 = 18 + Math.sin(rad) * 11;
-            const x2 = 18 + Math.cos(rad) * 16;
-            const y2 = 18 + Math.sin(rad) * 16;
+            const x1 = +(18 + Math.cos(rad) * 11).toFixed(3);
+            const y1 = +(18 + Math.sin(rad) * 11).toFixed(3);
+            const x2 = +(18 + Math.cos(rad) * 16).toFixed(3);
+            const y2 = +(18 + Math.sin(rad) * 16).toFixed(3);
             return <line key={a} x1={x1} y1={y1} x2={x2} y2={y2} />;
           })}
         </g>
@@ -244,12 +244,12 @@ function Model() {
       })}
 
       {/* OUTPUT on far right */}
-      <line x1={stations[2].x + stationW / 2 + 4} y1={yMid} x2={W - 110} y2={yMid} stroke={ACCENT} strokeWidth="1.3" markerEnd="url(#dd-arr)" />
-      <g transform={`translate(${W - 100},${yMid - 28})`}>
-        <rect width="64" height="56" rx="4" fill="rgba(8,30,15,0.65)" stroke={ACCENT} strokeWidth="1.2" />
-        <text x="32" y="22" textAnchor="middle" fill={ACCENT} fontSize="8" letterSpacing="0.16em" fontWeight="700">SISTĒMA</text>
-        <text x="32" y="36" textAnchor="middle" fill={TEXT} fontSize="7" letterSpacing="0.1em">SAVIENOTA</text>
-        <text x="32" y="48" textAnchor="middle" fill={TEXT} fontSize="7" letterSpacing="0.1em">REDZAMA · DZĪVA</text>
+      <line x1={stations[2].x + stationW / 2 + 4} y1={yMid} x2={W - 124} y2={yMid} stroke={ACCENT} strokeWidth="1.3" markerEnd="url(#dd-arr)" />
+      <g transform={`translate(${W - 116},${yMid - 28})`}>
+        <rect width="92" height="56" rx="4" fill="rgba(8,30,15,0.65)" stroke={ACCENT} strokeWidth="1.2" />
+        <text x="46" y="22" textAnchor="middle" fill={ACCENT} fontSize="8.5" letterSpacing="0.18em" fontWeight="700">SISTĒMA</text>
+        <text x="46" y="35" textAnchor="middle" fill={TEXT} fontSize="7.5" letterSpacing="0.12em">SAVIENOTA</text>
+        <text x="46" y="47" textAnchor="middle" fill={TEXT} fontSize="7.5" letterSpacing="0.12em">REDZAMA · DZĪVA</text>
       </g>
 
       {/* CONTINUOUS LOOP arc — output back to BŪVĒT */}
@@ -266,102 +266,99 @@ function Model() {
   );
 }
 
-// Boundary: a vertical filter / sieve metaphor.
-// Mixed inquiries fall in from the top, the filter membrane checks 3 criteria,
-// rejected types deflect aside (amber), qualified ones drop through to the bottom (green).
+// Boundary: simplified single-lane filter.
+// One inbound flow → three criteria gates in a row → branches into ACCEPTED / DECLINED.
 function Boundary() {
-  const yTop = 70;
-  const yMembrane = 150;
-  const yBottom = 230;
-  const cxFunnel = W / 2;
-  const halfWidth = 240;
-  // incoming pellets — labels above the funnel
-  const incoming = [
-    { x: cxFunnel - 200, label: "BEZ MĒRĶA",   ok: false },
-    { x: cxFunnel - 100, label: "ZEMA PLŪSMA", ok: false },
-    { x: cxFunnel +   0, label: "AR ĪPAŠNIEKU", ok: true  },
-    { x: cxFunnel + 100, label: "AR MĒRĶI",    ok: true  },
-    { x: cxFunnel + 200, label: "BEZ ĪPAŠNIEKA", ok: false }
+  const yMid = 168;
+  const inX = 56;
+  const outX = W - 56;
+  const gateW = 96;
+  const gateH = 60;
+  // three gates centered along the lane
+  const gates = [
+    { label: "MĒRĶIS",     sub: "komerciāls" },
+    { label: "PLŪSMA",     sub: "≥ 2 kanāli"  },
+    { label: "ĪPAŠNIEKS",  sub: "viens vadošs" }
   ];
-  // criteria checked at the membrane
-  const criteria = [
-    { x: cxFunnel - 140, label: "MĒRĶIS"    },
-    { x: cxFunnel,        label: "PLŪSMA"   },
-    { x: cxFunnel + 140, label: "ĪPAŠNIEKS" }
-  ];
+  const totalGatesW = gateW * gates.length + 36 * (gates.length - 1);
+  const startX = (W - totalGatesW) / 2;
+  const gatePos = (i: number) => startX + i * (gateW + 36);
+
   return (
     <g>
       <EyebrowTag x={36} y={36} label="ROBEŽAS · KVALIFIKĀCIJAS FILTRS" />
 
-      {/* Top zone: incoming pool */}
-      <text x={cxFunnel - halfWidth} y={yTop - 12} fill={MUTED} fontSize="9" letterSpacing="0.2em" fontWeight="700">IENĀKOŠAIS · JAUKTI PIEPRASĪJUMI</text>
-      <rect x={cxFunnel - halfWidth} y={yTop - 6} width={halfWidth * 2} height={26} rx={4} fill="rgba(8,12,10,0.5)" stroke={DIM} strokeWidth="0.9" strokeDasharray="3 3" />
+      {/* main horizontal lane */}
+      <line x1={inX} y1={yMid} x2={outX} y2={yMid} stroke="rgba(59,255,124,0.18)" strokeWidth="20" strokeLinecap="round" />
+      <line x1={inX} y1={yMid} x2={outX} y2={yMid} stroke={ACCENT} strokeWidth="1.4" strokeDasharray="6 5" />
 
-      {/* incoming pellets */}
-      {incoming.map((p) => (
-        <g key={p.label}>
-          <circle cx={p.x} cy={yTop + 7} r="6" fill={p.ok ? "rgba(59,255,124,0.35)" : "rgba(230,168,74,0.35)"} stroke={p.ok ? ACCENT : AMBER} strokeWidth="1.1" />
-          {p.ok ? (
-            <path d={`M${p.x - 2.4} ${yTop + 7} L${p.x - 0.5} ${yTop + 9.4} L${p.x + 3} ${yTop + 4}`} stroke={ACCENT} strokeWidth="1.4" fill="none" />
-          ) : (
-            <g>
-              <line x1={p.x - 2.5} y1={yTop + 4.5} x2={p.x + 2.5} y2={yTop + 9.5} stroke={AMBER} strokeWidth="1.4" />
-              <line x1={p.x + 2.5} y1={yTop + 4.5} x2={p.x - 2.5} y2={yTop + 9.5} stroke={AMBER} strokeWidth="1.4" />
+      {/* INPUT badge on left */}
+      <g transform={`translate(${inX - 36},${yMid - 22})`}>
+        <rect width="72" height="44" rx="6" fill="rgba(8,12,10,0.92)" stroke={ACCENT} strokeWidth="1.2" />
+        <text x="36" y="17" textAnchor="middle" fill={ACCENT} fontSize="8" letterSpacing="0.18em" fontWeight="700">IENĀK</text>
+        <text x="36" y="32" textAnchor="middle" fill={TEXT} fontSize="9" letterSpacing="0.12em" fontWeight="700">PIEPRASĪJUMS</text>
+      </g>
+
+      {/* GATES */}
+      {gates.map((g, i) => {
+        const gx = gatePos(i);
+        return (
+          <g key={g.label}>
+            {/* number above gate */}
+            <text x={gx + gateW / 2} y={yMid - gateH / 2 - 14} textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">0{i + 1}</text>
+            {/* gate body */}
+            <rect x={gx} y={yMid - gateH / 2} width={gateW} height={gateH} rx={6} fill="rgba(8,16,11,0.92)" stroke={ACCENT} strokeWidth="1.4" />
+            {/* corner brackets */}
+            <path d={`M${gx + 8} ${yMid - gateH / 2 + 14} V${yMid - gateH / 2 + 6} H${gx + 16}`} stroke={ACCENT} strokeWidth="1" fill="none" />
+            <path d={`M${gx + gateW - 16} ${yMid - gateH / 2 + 6} H${gx + gateW - 8} V${yMid - gateH / 2 + 14}`} stroke={ACCENT} strokeWidth="1" fill="none" />
+            {/* check icon */}
+            <g transform={`translate(${gx + gateW / 2},${yMid - 6})`}>
+              <circle r="9" fill="rgba(59,255,124,0.12)" stroke={ACCENT} strokeWidth="1.2" />
+              <path d="M-4 0 L-1 3 L4 -3" stroke={ACCENT} strokeWidth="1.6" fill="none" />
             </g>
-          )}
-          <text x={p.x} y={yTop - 14} textAnchor="middle" fill={p.ok ? ACCENT : AMBER} fontSize="7.5" letterSpacing="0.1em" fontWeight="700">{p.label}</text>
-        </g>
-      ))}
+            {/* labels inside gate */}
+            <text x={gx + gateW / 2} y={yMid + 16} textAnchor="middle" fill={TEXT} fontSize="10" letterSpacing="0.14em" fontWeight="700">{g.label}</text>
+            <text x={gx + gateW / 2} y={yMid + 26} textAnchor="middle" fill={MUTED} fontSize="7.5" letterSpacing="0.08em">{g.sub}</text>
+          </g>
+        );
+      })}
 
-      {/* funnel walls — converging from full width to membrane width */}
-      <path d={`M${cxFunnel - halfWidth} ${yTop + 22} L${cxFunnel - 90} ${yMembrane - 6}`} stroke={ACCENT} strokeWidth="1.3" fill="none" />
-      <path d={`M${cxFunnel + halfWidth} ${yTop + 22} L${cxFunnel + 90} ${yMembrane - 6}`} stroke={ACCENT} strokeWidth="1.3" fill="none" />
-      {/* faint inner walls to suggest depth */}
-      <path d={`M${cxFunnel - halfWidth + 14} ${yTop + 22} L${cxFunnel - 84} ${yMembrane - 6}`} stroke={DIM} strokeWidth="0.7" fill="none" strokeDasharray="2 4" />
-      <path d={`M${cxFunnel + halfWidth - 14} ${yTop + 22} L${cxFunnel + 84} ${yMembrane - 6}`} stroke={DIM} strokeWidth="0.7" fill="none" strokeDasharray="2 4" />
+      {/* split at right end: ACCEPTED branch (up) and DECLINED branch (down) */}
+      {(() => {
+        const branchX = outX - 100;
+        const acceptY = yMid - 56;
+        const declineY = yMid + 56;
+        return (
+          <g>
+            {/* split lines */}
+            <path d={`M${branchX} ${yMid} C${branchX + 24} ${yMid}, ${branchX + 30} ${acceptY}, ${branchX + 60} ${acceptY}`} stroke={ACCENT} strokeWidth="1.4" fill="none" markerEnd="url(#dd-arr)" />
+            <path d={`M${branchX} ${yMid} C${branchX + 24} ${yMid}, ${branchX + 30} ${declineY}, ${branchX + 60} ${declineY}`} stroke={AMBER} strokeWidth="1.4" strokeDasharray="5 4" fill="none" markerEnd="url(#dd-arr-amber)" />
 
-      {/* MEMBRANE (filter row) */}
-      <rect x={cxFunnel - 200} y={yMembrane} width={400} height={20} rx={3} fill="rgba(8,14,10,0.85)" stroke={ACCENT} strokeWidth="1.4" />
-      {/* slits */}
-      {Array.from({ length: 13 }).map((_, i) => (
-        <line key={i} x1={cxFunnel - 188 + i * 32} y1={yMembrane + 3} x2={cxFunnel - 188 + i * 32} y2={yMembrane + 17} stroke={ACCENT} strokeWidth="1" opacity="0.55" />
-      ))}
-      {/* criteria badges sit on the membrane */}
-      {criteria.map((c) => (
-        <g key={c.label} transform={`translate(${c.x - 38},${yMembrane - 28})`}>
-          <rect width="76" height="22" rx="11" fill="rgba(8,12,10,0.95)" stroke={ACCENT} strokeWidth="1.1" />
-          <circle cx="12" cy="11" r="4" fill={ACCENT} />
-          <path d="M9.5 11 L11.5 13.5 L15 9.5" stroke="#07090b" strokeWidth="1.4" fill="none" />
-          <text x="42" y="14" textAnchor="middle" fill={TEXT} fontSize="8.5" letterSpacing="0.14em" fontWeight="700">{c.label}</text>
-        </g>
-      ))}
+            {/* ACCEPTED card */}
+            <g transform={`translate(${branchX + 60},${acceptY - 18})`}>
+              <rect width="92" height="36" rx="6" fill="rgba(8,30,15,0.7)" stroke={ACCENT} strokeWidth="1.4" />
+              <circle cx="14" cy="18" r="6" fill={ACCENT} />
+              <path d="M11 18 L13.2 20.4 L17 16" stroke="#07090b" strokeWidth="1.6" fill="none" />
+              <text x="26" y="16" fill={ACCENT} fontSize="8" letterSpacing="0.18em" fontWeight="700">PIEŅEMTS</text>
+              <text x="26" y="26" fill={TEXT} fontSize="7.5" letterSpacing="0.1em">sistēma būvēta</text>
+            </g>
 
-      {/* deflected paths off membrane — rejected items shoot out left + right */}
-      <path d={`M${cxFunnel - 90} ${yMembrane} C${cxFunnel - 160} ${yMembrane + 4}, ${cxFunnel - 230} ${yBottom - 30}, ${cxFunnel - 250} ${yBottom + 0}`} stroke={AMBER} strokeWidth="1.2" strokeDasharray="4 3" fill="none" markerEnd="url(#dd-arr-amber)" />
-      <path d={`M${cxFunnel + 90} ${yMembrane} C${cxFunnel + 160} ${yMembrane + 4}, ${cxFunnel + 230} ${yBottom - 30}, ${cxFunnel + 250} ${yBottom + 0}`} stroke={AMBER} strokeWidth="1.2" strokeDasharray="4 3" fill="none" markerEnd="url(#dd-arr-amber)" />
-      {/* rejected end-caps */}
-      <g transform={`translate(${cxFunnel - 296},${yBottom - 12})`}>
-        <rect width="64" height="26" rx="4" fill="rgba(38,18,8,0.55)" stroke={AMBER} strokeWidth="1.1" strokeDasharray="3 3" />
-        <text x="32" y="11" textAnchor="middle" fill={AMBER} fontSize="7" letterSpacing="0.16em" fontWeight="700">NORAIDĪTS</text>
-        <text x="32" y="20" textAnchor="middle" fill={MUTED} fontSize="6.5">cita ekspertīze</text>
-      </g>
-      <g transform={`translate(${cxFunnel + 232},${yBottom - 12})`}>
-        <rect width="64" height="26" rx="4" fill="rgba(38,18,8,0.55)" stroke={AMBER} strokeWidth="1.1" strokeDasharray="3 3" />
-        <text x="32" y="11" textAnchor="middle" fill={AMBER} fontSize="7" letterSpacing="0.16em" fontWeight="700">NORAIDĪTS</text>
-        <text x="32" y="20" textAnchor="middle" fill={MUTED} fontSize="6.5">nav komerciāla mērķa</text>
-      </g>
+            {/* DECLINED card */}
+            <g transform={`translate(${branchX + 60},${declineY - 18})`}>
+              <rect width="92" height="36" rx="6" fill="rgba(38,22,10,0.55)" stroke={AMBER} strokeWidth="1.2" strokeDasharray="4 3" />
+              <g transform="translate(14,18)" stroke={AMBER} strokeWidth="1.6" fill="none">
+                <line x1="-4" y1="-4" x2="4" y2="4" />
+                <line x1="4" y1="-4" x2="-4" y2="4" />
+              </g>
+              <text x="26" y="16" fill={AMBER} fontSize="8" letterSpacing="0.18em" fontWeight="700">NORAIDĪTS</text>
+              <text x="26" y="26" fill={MUTED} fontSize="7.5" letterSpacing="0.1em">cita ekspertīze</text>
+            </g>
+          </g>
+        );
+      })()}
 
-      {/* qualified pellets that pass through and drop into the catch tray */}
-      {[cxFunnel - 22, cxFunnel + 16, cxFunnel - 2].map((px, i) => (
-        <g key={i}>
-          <line x1={px} y1={yMembrane + 22} x2={px} y2={yBottom - 10} stroke={ACCENT} strokeWidth="1.1" strokeDasharray="2 3" />
-          <circle cx={px} cy={yBottom - 6} r="4" fill={ACCENT} fillOpacity="0.85" />
-        </g>
-      ))}
-      {/* qualified catch tray */}
-      <rect x={cxFunnel - 110} y={yBottom + 4} width={220} height={32} rx={4} fill="rgba(8,30,15,0.65)" stroke={ACCENT} strokeWidth="1.4" />
-      <text x={cxFunnel - 100} y={yBottom + 18} fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">PIEŅEMTS · KVALIFICĒTS</text>
-      <text x={cxFunnel - 100} y={yBottom + 30} fill={MUTED} fontSize="7.5" letterSpacing="0.14em">VEXILIAN STRĀDĀ \u2192 SISTĒMA TIEK B\u016aV\u0112TA</text>
+      {/* footer microcopy */}
+      <text x={W / 2} y={H - 28} textAnchor="middle" fill={MUTED} fontSize="9" letterSpacing="0.22em" fontWeight="700">VEXILIAN STRĀDĀ → SISTĒMA TIEK BŪVĒTA</text>
     </g>
   );
 }

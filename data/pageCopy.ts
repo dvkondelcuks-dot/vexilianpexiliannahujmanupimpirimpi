@@ -42,7 +42,7 @@ export const sectionCopy = {
       "Vexilian sāk tur, kur lielākā daļa projektu beidzas: pie jautājuma, kas notiek pēc tam, kad cilvēks ir izrādījis interesi."
   },
   founders: {
-    eyebrow: "03 · FOUNDER-LED SYSTEMS",
+    eyebrow: "03 · DIBINĀTĀJU SISTĒMAS",
     headline: "Trīs cilvēki. Viena sistēmas galva.|Atbildība bez slāņiem pa vidu.",
     body:
       "Vexilian nav liela aģentūra ar pieciem starpniekiem starp klientu un darbu. Sistēmu veido cilvēki, kuri saprot arhitektūru, analīzi, mārketingu, komunikāciju un izaugsmi kā vienu kopēju plūsmu.",
@@ -56,7 +56,7 @@ export const sectionCopy = {
       "Atsevišķi neviens slānis nav unikāls. Sistēma strādā tāpēc, ka visi seši slāņi ir savienoti vienā plūsmā un viena komanda ir atbildīga par to, ka tie turas kopā."
   },
   diagnostics: {
-    eyebrow: "05 · SYSTEM-DIAGRAM",
+    eyebrow: "05 · SISTĒMAS DIAGRAMMA",
     headline: "Tā izskatās tava sistēma,|kad mēs esam iekšā.",
     body:
       "Pilnas arhitektūras shēma: no reklāmas avotiem līdz konversijai, no pazuduša kontakta līdz atgūšanas ciklam, no atsevišķām darbībām līdz vadības skatam. Tas nav dekoratīvs grafiks. Tā ir darba karte."

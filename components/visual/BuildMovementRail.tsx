@@ -226,7 +226,7 @@ function AuditScene() {
       {/* findings panel */}
       <g transform="translate(264,80)">
         <rect width="92" height="58" rx="3" fill="rgba(8,12,10,0.85)" stroke={DIM} strokeWidth="0.8" />
-        <text x="6" y="12" fill={ACCENT} fontSize="7" letterSpacing="0.18em" fontWeight="700">ATKL\u0100JUMI</text>
+        <text x="6" y="12" fill={ACCENT} fontSize="7" letterSpacing="0.18em" fontWeight="700">ATKLĀJUMI</text>
         {[0, 1, 2, 3].map((i) => (
           <g key={i} transform={`translate(6,${20 + i * 9})`}>
             <rect width="6" height="6" rx="1" fill={i === 1 || i === 3 ? "#E6A84A" : ACCENT} fillOpacity="0.8" />
@@ -234,7 +234,6 @@ function AuditScene() {
           </g>
         ))}
       </g>
-      <text x={left} y="148" fill={MUTED} fontSize="8" letterSpacing="0.22em">L\u016aZUMA PUNKTI \u00b7 5 / 4 SL\u0100\u0145I</text>
     </g>
   );
 }
@@ -261,7 +260,7 @@ function BlueprintScene() {
       <line x1="225" y1="56" x2="240" y2="56" stroke={ACCENT} strokeWidth="1" markerEnd={`url(#proc-arr-1)`} />
       <line x1="120" y1="106" x2="135" y2="106" stroke={ACCENT} strokeWidth="1" markerEnd={`url(#proc-arr-1)`} />
       <line x1="225" y1="106" x2="240" y2="106" stroke={ACCENT} strokeWidth="1" markerEnd={`url(#proc-arr-1)`} />
-      <text x="16" y="148" fill={MUTED} fontSize="8" letterSpacing="0.22em">6 MODUĻI · SAVIENOTI</text>
+
     </g>
   );
 }
@@ -288,7 +287,7 @@ function BuildScene() {
       {/* pipeline below */}
       <rect x="20" y="116" width="320" height="10" fill="rgba(8,12,10,0.7)" stroke={DIM} strokeWidth="0.8" />
       <rect x="20" y="116" width="260" height="10" fill="rgba(59,255,124,0.22)" />
-      <text x="20" y="148" fill={MUTED} fontSize="8" letterSpacing="0.22em">SAVIENOTA PLŪSMA · 81%</text>
+
     </g>
   );
 }
@@ -370,7 +369,7 @@ function HandoverScene() {
         ))}
       </g>
 
-      <text x="16" y="148" fill={MUTED} fontSize="8" letterSpacing="0.22em">SISTĒMA · NODOTA · DOKUMENTĒTA</text>
+
     </g>
   );
 }
@@ -451,7 +450,7 @@ function OptimizeScene() {
         })}
       </g>
 
-      <text x="16" y="148" fill={MUTED} fontSize="8" letterSpacing="0.22em">SIGNĀLS \u2192 REGULĒT \u2192 PIEGĀDĀT \u2192 MĒRĪT</text>
+
     </g>
   );
 }

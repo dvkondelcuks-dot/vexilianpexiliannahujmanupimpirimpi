@@ -129,18 +129,13 @@ function LeadSilence() {
               {/* status dot */}
               <circle cx="18" cy="13" r="4" fill={r.our ? "#E6A84A" : DIM} />
               <text x="30" y="17" fill={r.our ? TEXT : MUTED} fontSize="10" letterSpacing="0.06em" fontWeight={r.our ? 700 : 500}>{r.name}</text>
-              {/* tiny envelope */}
-              <g transform="translate(132,7)" fill="none" stroke={r.our ? "#E6A84A" : DIM} strokeWidth="1">
-                <rect x="0" y="2" width="14" height="10" rx="1.5" />
-                <path d="M0 3 L7 9 L14 3" />
-              </g>
               {/* days counter */}
-              <text x="234" y="17" textAnchor="end" fill={overdue ? "#E6A84A" : MUTED} fontSize="11" fontWeight="700">+{r.days}d</text>
-              {/* "no owner" badge for our row */}
+              <text x="232" y="17" textAnchor="end" fill={overdue ? "#E6A84A" : MUTED} fontSize="11" fontWeight="700">+{r.days}d</text>
+              {/* compact "no owner" badge for our row */}
               {r.our ? (
-                <g transform="translate(154,7)">
-                  <rect width="62" height="12" rx="6" fill="rgba(38,18,8,0.7)" stroke="#E6A84A" strokeWidth="0.9" />
-                  <text x="31" y="9" textAnchor="middle" fill="#E6A84A" fontSize="7.5" letterSpacing="0.14em" fontWeight="700">NAV ĪPAŠN.</text>
+                <g transform="translate(132,8)">
+                  <rect width="74" height="10" rx="5" fill="rgba(38,18,8,0.7)" stroke="#E6A84A" strokeWidth="0.9" />
+                  <text x="37" y="7.6" textAnchor="middle" fill="#E6A84A" fontSize="6.6" letterSpacing="0.18em" fontWeight="700">NAV ĪPAŠNIEKA</text>
                 </g>
               ) : null}
             </g>
@@ -186,7 +181,7 @@ function LeadSilence() {
         <line x1="10" y1="86" x2="186" y2="86" stroke="#E6A84A" strokeWidth="1" strokeDasharray="3 3" />
         {/* caption */}
         <text x="14" y="146" fill="#E6A84A" fontSize="9" letterSpacing="0.16em" fontWeight="700">TUKŠA ŠŪNA</text>
-        <text x="14" y="160" fill={MUTED} fontSize="9" letterSpacing="0.06em">LEAD KĻUVIS PAR</text>
+        <text x="14" y="160" fill={MUTED} fontSize="9" letterSpacing="0.06em">PIEPRASĪJUMS KĻUVIS PAR</text>
         <text x="14" y="172" fill={MUTED} fontSize="9" letterSpacing="0.06em">FONA TROKSNI.</text>
       </g>
     </g>
@@ -241,95 +236,123 @@ function AttributionGap() {
 }
 
 function NoRecovery() {
-  // New scene: a 4-stage funnel with dropouts at every stage falling into a "PAZUDĪS" drain
-  // and a faint dashed "MISSING RECOVERY LOOP" arc that should bring them back to stage 1 — but doesn't.
-  const stages = [
-    { label: "KONTAKTS",    pct: 100 },
-    { label: "ATBILDE",     pct: 64  },
-    { label: "PIEDĀVĀJUMS", pct: 38  },
-    { label: "SLĒGTS",      pct: 18  }
+  // Open-loop cycle metaphor — three nodes forming what SHOULD be a closed cycle,
+  // but the return arc is missing. Centered. The story: contact → no answer →
+  // marked lost → (no recovery loop back to re-engage) → permanent loss.
+  const cx = 400;
+  const cy = 168;
+  const radius = 108;
+  // node positions on the circle (top, bottom-right, bottom-left)
+  const nodes = [
+    { angle: -90, label: "KONTAKTS",   sub: "leads ienāk",     icon: "in"  },
+    { angle:  30, label: "NEATBILDE",  sub: "klusums",         icon: "mute"},
+    { angle: 150, label: "ZAUDĒTS",    sub: "marķēts par lost", icon: "out" }
   ];
-  const startX = 36;
-  const stageW = 132;
-  const gap = 14;
-  const topY = 70;
-  const baseY = 200;
-  const drainY = 280;
+  const pos = (a: number) => ({
+    x: +(cx + Math.cos((a * Math.PI) / 180) * radius).toFixed(3),
+    y: +(cy + Math.sin((a * Math.PI) / 180) * radius).toFixed(3)
+  });
+
+  // helper: arc from node a→b along the circle (short way clockwise)
+  const arcPath = (a1: number, a2: number, color: string, dashed: boolean) => {
+    const p1 = pos(a1);
+    const p2 = pos(a2);
+    return (
+      <path
+        d={`M${p1.x} ${p1.y} A${radius} ${radius} 0 0 1 ${p2.x} ${p2.y}`}
+        stroke={color}
+        strokeWidth="1.6"
+        fill="none"
+        strokeDasharray={dashed ? "5 5" : undefined}
+        markerEnd={dashed ? undefined : "url(#arr-lime)"}
+      />
+    );
+  };
+
+  // node icon switch
+  const NodeIcon = ({ kind }: { kind: string }) => {
+    if (kind === "in") {
+      return (
+        <g fill="none" stroke={ACCENT} strokeWidth="1.5">
+          <path d="M-12 0 L8 0" />
+          <path d="M2 -6 L8 0 L2 6" />
+          <circle cx="12" cy="0" r="4" fill={ACCENT} />
+        </g>
+      );
+    }
+    if (kind === "mute") {
+      return (
+        <g fill="none" stroke="#E6A84A" strokeWidth="1.5">
+          {/* speaker silenced */}
+          <path d="M-10 -5 L-4 -5 L2 -10 L2 10 L-4 5 L-10 5 Z" fill="rgba(230,168,74,0.18)" />
+          <line x1="6" y1="-7" x2="14" y2="7" />
+          <line x1="14" y1="-7" x2="6" y2="7" />
+        </g>
+      );
+    }
+    // out — gravestone-style flag
+    return (
+      <g fill="none" stroke="#E6A84A" strokeWidth="1.5">
+        <line x1="-8" y1="-10" x2="-8" y2="10" />
+        <path d="M-8 -10 L8 -10 L4 -6 L8 -2 L-8 -2 Z" fill="rgba(230,168,74,0.22)" />
+      </g>
+    );
+  };
 
   return (
     <g>
-      {/* funnel header */}
-      <text x={startX} y="40" fill={ACCENT} fontSize="10" letterSpacing="0.18em" fontWeight="700">KLIENTA CEĻŠ · BEZ ATGŪŠANAS</text>
+      {/* eyebrow above */}
+      <text x={cx} y="34" textAnchor="middle" fill={ACCENT} fontSize="10" letterSpacing="0.22em" fontWeight="700">ATGŪŠANAS CIKLS · ATVĒRTS</text>
 
-      {/* funnel stages with dropouts */}
-      {stages.map((s, i) => {
-        const xx = startX + i * (stageW + gap);
-        // each stage: a vertical bar whose fill height represents pct,
-        // top label = stage name, bottom label = % through.
-        const barH = baseY - topY;
-        const fillH = (s.pct / 100) * barH;
-        const dropPct = i > 0 ? stages[i - 1].pct - s.pct : 0;
+      {/* faint full circle to suggest the intended cycle */}
+      <circle cx={cx} cy={cy} r={radius} fill="none" stroke="rgba(59,255,124,0.08)" strokeWidth="1" strokeDasharray="2 6" />
+
+      {/* TWO present arcs (KONTAKTS → NEATBILDE → ZAUDĒTS) — solid green */}
+      {arcPath(-90, 30, ACCENT, false)}
+      {arcPath(30, 150, ACCENT, false)}
+
+      {/* MISSING return arc (ZAUDĒTS → KONTAKTS) — faint amber dashed with broken-link X */}
+      {arcPath(150, 270, "#E6A84A", true)}
+
+      {/* the broken-link badge that interrupts the missing arc */}
+      <g transform={`translate(${cx - 132},${cy + 38})`}>
+        <rect x="-46" y="-12" width="92" height="24" rx="12" fill="rgba(8,12,10,0.96)" stroke="#E6A84A" strokeWidth="1.2" />
+        <g transform="translate(-32,0)" stroke="#E6A84A" strokeWidth="1.4" fill="none">
+          {/* broken chain link icon */}
+          <path d="M-6 -4 a4 4 0 0 1 4 -4 h2" />
+          <path d="M6 4 a4 4 0 0 1 -4 4 h-2" />
+          <line x1="-9" y1="-7" x2="9" y2="7" />
+        </g>
+        <text x="6" y="3.5" textAnchor="middle" fill="#E6A84A" fontSize="7.5" letterSpacing="0.18em" fontWeight="700">NAV CIKLA</text>
+      </g>
+
+      {/* nodes */}
+      {nodes.map((n, i) => {
+        const p = pos(n.angle);
         return (
-          <g key={s.label}>
-            {/* outer bar */}
-            <rect x={xx} y={topY} width={stageW} height={barH} rx={6} fill="rgba(8,12,10,0.5)" stroke={DIM} strokeWidth="1" strokeDasharray="3 3" />
-            {/* filled portion (still in funnel) */}
-            <rect x={xx} y={baseY - fillH} width={stageW} height={fillH} rx={6} fill={ACCENT} fillOpacity="0.18" stroke={ACCENT} strokeWidth="1.2" />
-            {/* corner brackets */}
-            <path d={`M${xx + 6} ${topY + 14} V${topY + 6} H${xx + 14}`} stroke={ACCENT} strokeWidth="1" fill="none" />
-            <path d={`M${xx + stageW - 14} ${topY + 6} H${xx + stageW - 6} V${topY + 14}`} stroke={ACCENT} strokeWidth="1" fill="none" />
-            {/* labels */}
-            <text x={xx + stageW / 2} y={topY + 26} textAnchor="middle" fill={TEXT} fontSize="11" letterSpacing="0.12em" fontWeight="700">{s.label}</text>
-            <text x={xx + stageW / 2} y={baseY - fillH - 8} textAnchor="middle" fill={ACCENT} fontSize="14" fontWeight="700">{s.pct}%</text>
-
-            {/* dropout indicator — leak channel falling into drain */}
-            {i > 0 ? (
-              <g>
-                <path d={`M${xx} ${baseY - fillH + 8} C${xx - 8} ${baseY - fillH + 16}, ${xx - 18} ${drainY - 32}, ${xx - 12} ${drainY - 6}`} stroke="#E6A84A" strokeWidth="1.2" strokeDasharray="3 3" fill="none" markerEnd="url(#arr-lime)" />
-                <text x={xx - 14} y={baseY - fillH + 4} textAnchor="end" fill="#E6A84A" fontSize="9" fontWeight="700">−{dropPct}%</text>
-              </g>
-            ) : null}
-
-            {/* connecting arrow to next stage */}
-            {i < stages.length - 1 ? (
-              <path d={`M${xx + stageW} ${topY + barH / 2} L${xx + stageW + gap - 2} ${topY + barH / 2}`} stroke={ACCENT} strokeWidth="1.2" markerEnd="url(#arr-lime)" />
-            ) : null}
+          <g key={n.label} transform={`translate(${p.x},${p.y})`}>
+            {/* outer halo */}
+            <circle r="34" fill="url(#inc-glow)" />
+            {/* node disc */}
+            <circle r="26" fill="rgba(8,12,10,0.92)" stroke={i === 0 ? ACCENT : "#E6A84A"} strokeWidth="1.6" />
+            {/* number */}
+            <text x="0" y="-32" textAnchor="middle" fill={i === 0 ? ACCENT : "#E6A84A"} fontSize="8" letterSpacing="0.2em" fontWeight="700">0{i + 1}</text>
+            {/* icon */}
+            <NodeIcon kind={n.icon} />
+            {/* label below node */}
+            <text x="0" y="46" textAnchor="middle" fill={TEXT} fontSize="11" letterSpacing="0.16em" fontWeight="700">{n.label}</text>
+            <text x="0" y="60" textAnchor="middle" fill={MUTED} fontSize="9" letterSpacing="0.06em">{n.sub}</text>
           </g>
         );
       })}
 
-      {/* DRAIN — collected dropouts pool */}
-      <g transform={`translate(${startX - 4},${drainY - 12})`}>
-        <rect width={stageW * stages.length + gap * (stages.length - 1) + 8} height="36" rx="6" fill="rgba(38,18,8,0.45)" stroke="#E6A84A" strokeWidth="1.2" strokeDasharray="4 3" />
-        <text x="14" y="14" fill="#E6A84A" fontSize="9" letterSpacing="0.18em" fontWeight="700">PAZUDU\u0160AIS POOLS</text>
-        <text x="14" y="28" fill={MUTED} fontSize="9" letterSpacing="0.06em">82 % no s\u0101kotn\u0113ji ie\u0146\u0101kuma plūsmas \u2014 nekur neatgriežas</text>
-        {/* small ghost icons */}
-        {[0.45, 0.55, 0.65, 0.75, 0.85].map((p, i) => (
-          <g key={i} transform={`translate(${(stageW * stages.length + gap * (stages.length - 1) + 8) * p},10)`}>
-            <circle cx="0" cy="6" r="3.5" fill="rgba(230,168,74,0.5)" stroke="#E6A84A" strokeWidth="0.8" />
-            <path d="M-3 14 Q0 9 3 14" stroke="#E6A84A" strokeWidth="0.9" fill="none" />
-          </g>
-        ))}
+      {/* CENTER stamp — the diagnosis */}
+      <g transform={`translate(${cx},${cy})`}>
+        <circle r="46" fill="rgba(8,12,10,0.88)" stroke="rgba(230,168,74,0.55)" strokeWidth="1.1" strokeDasharray="3 4" />
+        <text x="0" y="-6" textAnchor="middle" fill="#E6A84A" fontSize="9" letterSpacing="0.24em" fontWeight="700">ATGŪŠANA</text>
+        <text x="0" y="10" textAnchor="middle" fill={TEXT} fontSize="13" letterSpacing="0.18em" fontWeight="700">TRŪKST</text>
+        <text x="0" y="24" textAnchor="middle" fill={MUTED} fontSize="7" letterSpacing="0.16em">nav atgriešanas mehānisma</text>
       </g>
-
-      {/* MISSING RECOVERY ARC — drawn faint above with red X overlay */}
-      {(() => {
-        const x1 = startX + stageW * stages.length + gap * (stages.length - 1) - 20;
-        const x2 = startX + 20;
-        const arcMidY = topY - 38;
-        return (
-          <g>
-            <path d={`M${x1} ${topY + 10} C${x1} ${arcMidY}, ${x2} ${arcMidY}, ${x2} ${topY + 10}`} stroke="#E6A84A" strokeWidth="1.3" strokeDasharray="4 4" fill="none" />
-            <text x={(x1 + x2) / 2} y={arcMidY + 4} textAnchor="middle" fill="#E6A84A" fontSize="9" letterSpacing="0.2em" fontWeight="700">ATG\u016a\u0160ANAS LOOP \u00b7 TR\u016aKST</text>
-            {/* big X at the top of the arc */}
-            <g transform={`translate(${(x1 + x2) / 2},${arcMidY - 14})`}>
-              <circle r="11" fill="rgba(8,12,10,0.95)" stroke="#E6A84A" strokeWidth="1.4" />
-              <line x1="-5" y1="-5" x2="5" y2="5" stroke="#E6A84A" strokeWidth="1.6" />
-              <line x1="5" y1="-5" x2="-5" y2="5" stroke="#E6A84A" strokeWidth="1.6" />
-            </g>
-          </g>
-        );
-      })()}
     </g>
   );
 }

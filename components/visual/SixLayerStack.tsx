@@ -14,7 +14,7 @@ export function SixLayerStack() {
     <Box className="diagram-panel" sx={{ p: { xs: 1.5, md: 2 }, minHeight: 760 }}>
       <Stack spacing={2} sx={{ position: "sticky", top: 88 }}>
         <Stack direction={{ xs: "column", sm: "row" }} alignItems={{ sm: "center" }} justifyContent="space-between" spacing={1.5} sx={{ p: 1.5, border: "1px solid var(--border)", borderRadius: "var(--radius)", background: "rgba(7,9,11,0.72)" }}>
-          <MetaLabel>Signal transform</MetaLabel>
+          <MetaLabel>Signāla transformācija</MetaLabel>
           <Typography sx={{ color: "var(--signal-blue)", fontFamily: "var(--mono)", fontSize: 13 }}>{signalStates[active + 1]}</Typography>
         </Stack>
         <Box sx={{ position: "relative", pl: { xs: 0, md: 3 } }}>

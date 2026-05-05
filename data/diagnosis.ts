@@ -12,8 +12,8 @@ export const diagnosisEvents = [
     number: "02/05",
     layer: "CRM",
     severity: "NAV ĪPAŠNIEKA",
-    title: "Pirmais kontakts. Atbilde. Klusums. Liels lead kļūst par tukšu šūnu izklājlapā.",
-    status: "LEAD BEZ ĪPAŠNIEKA",
+    title: "Pirmais kontakts. Atbilde. Klusums. Liels pieprasījums kļūst par tukšu šūnu izklājlapā.",
+    status: "PIEPRASĪJUMS BEZ ĪPAŠNIEKA",
     lossType: "Nepārvaldīts kontakts",
     visual: "leadSilence"
   },

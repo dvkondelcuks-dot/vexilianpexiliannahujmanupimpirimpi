@@ -97,39 +97,7 @@ export function CaseStudiesSection() {
                         {item.layers.map((layer) => <SignalChip key={layer} tone="blue">{layer}</SignalChip>)}
                       </Stack>
                     </Box>
-
-                    {/* clean KPI strip replaces broken overlay */}
-                    <Stack direction="row" sx={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", py: 1.4 }}>
-                      {[
-                        { k: "KVALIFICĒTI", v: "+62%" },
-                        { k: "ATBILDE", v: "<1h" },
-                        { k: "ATGŪŠANA", v: "ON" }
-                      ].map((kpi) => (
-                        <Box key={kpi.k} sx={{ flex: 1, textAlign: "center", borderRight: "1px solid var(--border)", "&:last-child": { borderRight: "none" } }}>
-                          <Box sx={{ fontFamily: "var(--mono)", fontSize: 9.5, letterSpacing: "0.22em", color: "var(--text-3)" }}>{kpi.k}</Box>
-                          <Box sx={{ color: "var(--signal-blue)", fontSize: 17, fontWeight: 700, mt: 0.4, fontFamily: "var(--mono)" }}>{kpi.v}</Box>
-                        </Box>
-                      ))}
-                    </Stack>
                   </Stack>
-                  <Typography
-                    className="case-cta"
-                    component="a"
-                    href="#audits"
-                    sx={{
-                      color: "var(--text)",
-                      fontFamily: "var(--mono)",
-                      fontSize: 12.5,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.22em",
-                      transition: "transform 180ms ease, color 180ms ease",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 1
-                    }}
-                  >
-                    {item.cta} <Box component="span" sx={{ color: "var(--signal-blue)" }}>→</Box>
-                  </Typography>
                 </Stack>
               </Grid>
             </Grid>

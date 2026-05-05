@@ -16,7 +16,7 @@ const receive = [
   "Skaidra atbilde: vai tev ir vajadzīga sistēma"
 ];
 
-const chips = ["Instagram leads disappear", "No attribution", "Excel CRM", "No follow-up", "Unclear booking flow"];
+const chips = ["Instagram pieprasījumi pazūd", "Nav atribūcijas", "Excel CRM", "Nav atkārtota kontakta", "Neskaidra rezervāciju plūsma"];
 
 export function AuditSection() {
   return (
@@ -47,7 +47,7 @@ export function AuditSection() {
           <Box className="industrial-card" sx={{ border: "1px solid var(--border-strong)", borderRadius: "var(--radius)", background: "rgba(16,20,25,0.94)", p: { xs: 2, md: 3 }, boxShadow: "0 24px 80px rgba(0,0,0,0.35)" }}>
             <Stack spacing={2.5}>
               <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-                <MetaLabel sx={{ color: "var(--signal-blue)" }}>AUDIT REQUEST / VEX-2026</MetaLabel>
+                <MetaLabel sx={{ color: "var(--signal-blue)" }}>AUDITA PIETEIKUMS / VEX-2026</MetaLabel>
                 <SignalChip tone="green">OPEN</SignalChip>
               </Stack>
               <Form layout="vertical" requiredMark={false} onFinish={() => undefined}>
