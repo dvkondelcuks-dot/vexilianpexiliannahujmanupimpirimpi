@@ -135,35 +135,58 @@ function IconSwitch({ icon, cx, cy }: { icon: string; cx: number; cy: number }) 
   }
 }
 
-// Model: 4 stages BUILD → HANDOVER → READ → CALIBRATE in a loop
+// Model: continuous loop — BUILD → HANDOVER → READ → CALIBRATE around a SYSTEM CORE
 function Model() {
+  const cx = W / 2;
+  const cy = H / 2 + 6;
+  const r = 92;
   const items = [
-    { label: "BUILD", icon: "wrench", num: "1" },
-    { label: "HANDOVER", icon: "shake", num: "2" },
-    { label: "READ", icon: "lens", num: "3" },
-    { label: "CALIBRATE", icon: "target", num: "4" }
+    { angle: -90, num: "01", label: "BUILD", sub: "WIRE LAYERS", icon: "wrench" },
+    { angle: 0, num: "02", label: "HANDOVER", sub: "TEAM OWNS IT", icon: "shake" },
+    { angle: 90, num: "03", label: "READ", sub: "WHAT BROKE / GREW", icon: "lens" },
+    { angle: 180, num: "04", label: "CALIBRATE", sub: "NEXT TUNE", icon: "target" }
   ];
-  const startX = 110;
-  const stepX = 140;
-  const y = 140;
-  const r = 32;
+  const nodeR = 30;
   return (
     <g>
-      <EyebrowTag x={36} y={42} label="DARBĪBAS MODELIS" />
-      {/* outer loop arrows */}
-      <path d={`M${startX} ${y - r - 14} H${startX + stepX * 3} L${startX + stepX * 3 + 12} ${y - r - 8}`} stroke={ACCENT} strokeWidth="1.4" fill="none" markerEnd="url(#dd-arr)" />
-      <path d={`M${startX + stepX * 3} ${y + r + 14} H${startX} L${startX - 12} ${y + r + 8}`} stroke={ACCENT} strokeWidth="1.4" fill="none" markerEnd="url(#dd-arr)" />
+      <EyebrowTag x={28} y={28} label="DARBĪBAS MODELIS · NEPĀRTRAUKTS CIKLS" />
+      {/* outer dashed ring */}
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke={DIM} strokeWidth="1" strokeDasharray="4 4" />
+      {/* arrowed arcs between nodes (4 quadrants) */}
       {items.map((it, i) => {
-        const cx = startX + i * stepX;
+        const next = items[(i + 1) % items.length];
+        const a1 = (it.angle * Math.PI) / 180;
+        const a2 = (next.angle * Math.PI) / 180;
+        const x1 = cx + Math.cos(a1) * r;
+        const y1 = cy + Math.sin(a1) * r;
+        const x2 = cx + Math.cos(a2) * r;
+        const y2 = cy + Math.sin(a2) * r;
+        return (
+          <path key={`arc-${i}`} d={`M${x1} ${y1} A${r} ${r} 0 0 1 ${x2} ${y2}`} stroke={ACCENT} strokeWidth="1.4" fill="none" markerEnd="url(#dd-arr)" />
+        );
+      })}
+      {/* central core */}
+      <g transform={`translate(${cx},${cy})`}>
+        <circle r="42" fill="rgba(8,12,10,0.9)" stroke={ACCENT} strokeWidth="1.4" />
+        <circle r="30" fill="none" stroke={DIM} strokeWidth="1" strokeDasharray="3 3" />
+        <text textAnchor="middle" y="-2" fill={ACCENT} fontSize="10" letterSpacing="0.18em" fontWeight="700">SYSTEM</text>
+        <text textAnchor="middle" y="14" fill={ACCENT} fontSize="10" letterSpacing="0.18em" fontWeight="700">CORE</text>
+      </g>
+      {/* nodes */}
+      {items.map((it) => {
+        const a = (it.angle * Math.PI) / 180;
+        const x = cx + Math.cos(a) * r;
+        const y = cy + Math.sin(a) * r;
+        const labelOffsetY = it.angle === -90 ? -nodeR - 18 : it.angle === 90 ? nodeR + 22 : 6;
+        const labelOffsetX = it.angle === 0 ? nodeR + 12 : it.angle === 180 ? -nodeR - 12 : 0;
+        const labelAnchor = it.angle === 0 ? "start" : it.angle === 180 ? "end" : "middle";
         return (
           <g key={it.label}>
-            <circle cx={cx} cy={y} r={r} fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.5" />
-            <text x={cx - r + 6} y={y - r + 2} fill={ACCENT} fontSize="11" fontWeight="700">{it.num}</text>
-            <ModelIcon icon={it.icon} cx={cx} cy={y + 4} />
-            <text x={cx} y={y + r + 22} textAnchor="middle" fill={TEXT} fontSize="11" letterSpacing="0.12em" fontWeight="700">{it.label}</text>
-            {i < items.length - 1 ? (
-              <path d={`M${cx + r + 6} ${y} L${cx + stepX - r - 8} ${y}`} stroke={ACCENT} strokeWidth="1.2" strokeDasharray="3 3" />
-            ) : null}
+            <circle cx={x} cy={y} r={nodeR} fill="rgba(8,12,10,0.9)" stroke={ACCENT} strokeWidth="1.5" />
+            <text x={x - nodeR + 8} y={y - nodeR + 12} fill={ACCENT} fontSize="9" fontWeight="700">{it.num}</text>
+            <ModelIcon icon={it.icon} cx={x} cy={y + 4} />
+            <text x={x + labelOffsetX} y={y + labelOffsetY} textAnchor={labelAnchor} fill={TEXT} fontSize="11" letterSpacing="0.14em" fontWeight="700">{it.label}</text>
+            <text x={x + labelOffsetX} y={y + labelOffsetY + 12} textAnchor={labelAnchor} fill={MUTED} fontSize="8.5" letterSpacing="0.12em">{it.sub}</text>
           </g>
         );
       })}
@@ -210,53 +233,67 @@ function ModelIcon({ icon, cx, cy }: { icon: string; cx: number; cy: number }) {
   }
 }
 
-// Boundary: BLOCKED (amber) | divider/prism | OPEN (green)
+// Boundary: a quality gateway — reject filter on the left, accepted clients on the right
 function Boundary() {
-  const blocked = [
-    { label: "NO GOAL", icon: "x" },
-    { label: "LOW FLOW", icon: "down" },
-    { label: "NO OWNER", icon: "user" },
-    { label: "TOOL-ONLY", icon: "wrench" }
+  const rejected = [
+    { label: "NO COMMERCIAL GOAL", icon: "x" },
+    { label: "LOW VOLUME FLOW", icon: "down" },
+    { label: "NO INTERNAL OWNER", icon: "user" },
+    { label: "WANT TOOLS, NOT SYSTEM", icon: "wrench" }
   ];
-  const open = [
+  const accepted = [
     { label: "QUALIFIED PIEPRASĪJUMI", icon: "user" },
-    { label: "RECOVERY SET", icon: "loop" },
-    { label: "REVENUE VIEW", icon: "bars" },
-    { label: "OWNER ASSIGNED", icon: "user" }
+    { label: "RECOVERY CYCLE LIVE", icon: "loop" },
+    { label: "REVENUE VIEW READY", icon: "bars" },
+    { label: "OWNERSHIP ASSIGNED", icon: "user" }
   ];
+  const gateX = W / 2;
   return (
     <g>
-      <EyebrowTag x={28} y={32} label="BLOCKED" />
-      <text x={W - 28} y="32" textAnchor="end" fill={ACCENT} fontSize="10" letterSpacing="0.18em" fontWeight="700">OPEN</text>
-      {blocked.map((it, i) => {
-        const y = 60 + i * 46;
+      <EyebrowTag x={28} y={28} label="REJECTED" />
+      <text x={W - 28} y={28} textAnchor="end" fill={ACCENT} fontSize="10" letterSpacing="0.18em" fontWeight="700">ACCEPTED</text>
+      {/* reject pile (left) */}
+      {rejected.map((it, i) => {
+        const y = 56 + i * 40;
         return (
           <g key={it.label} transform={`translate(28,${y})`}>
-            <rect width="270" height="34" rx="4" fill="rgba(8,12,10,0.6)" stroke={AMBER} strokeWidth="1.2" strokeDasharray="4 3" />
-            <BoundaryIcon icon={it.icon} cx={20} cy={17} color={AMBER} />
-            <text x="46" y="22" fill={TEXT} fontSize="11" letterSpacing="0.1em" fontWeight="600">{it.label}</text>
+            <rect width="230" height="28" rx="4" fill="rgba(38,18,8,0.55)" stroke={AMBER} strokeWidth="1.1" strokeDasharray="4 3" />
+            <BoundaryIcon icon={it.icon} cx={18} cy={14} color={AMBER} />
+            <text x="40" y="19" fill={TEXT} fontSize="10" letterSpacing="0.1em" fontWeight="600">{it.label}</text>
+            {/* exit arrow back left */}
+            <path d={`M-6 14 L-18 14 L-18 8 L-26 16 L-18 24 L-18 18 L-6 18 Z`} fill={AMBER} opacity="0.7" />
           </g>
         );
       })}
-      {/* prism divider */}
-      <g transform={`translate(${W / 2 - 20},60)`}>
-        <path d="M20 0 L40 110 L20 200 L0 110 Z" fill="rgba(59,255,124,0.08)" stroke={ACCENT} strokeWidth="1.4" />
-        <line x1="20" y1="10" x2="20" y2="190" stroke={ACCENT} strokeWidth="1" strokeDasharray="2 3" />
+      {/* central gateway with prism + filter mesh */}
+      <g transform={`translate(${gateX - 32},40)`}>
+        <rect width="64" height="200" rx="6" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.4" />
+        <text x="32" y="22" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">GATE</text>
+        {/* filter slits */}
+        {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+          <line key={i} x1={10} y1={40 + i * 22} x2={54} y2={40 + i * 22} stroke={DIM} strokeWidth="1" />
+        ))}
+        {/* prism spike */}
+        <path d="M32 32 L52 100 L32 168 L12 100 Z" fill="rgba(59,255,124,0.1)" stroke={ACCENT} strokeWidth="1.2" />
+        <circle cx="32" cy="100" r="6" fill={ACCENT} />
+        <text x="32" y="194" textAnchor="middle" fill={MUTED} fontSize="7" letterSpacing="0.18em">QUALIFY</text>
       </g>
-      {/* dotted particles */}
+      {/* incoming/outgoing particle dots */}
       {[0, 1, 2, 3, 4].map((i) => (
         <g key={i}>
-          <circle cx={W / 2 - 80 + i * 4} cy={100 + i * 12} r="2" fill={AMBER} />
-          <circle cx={W / 2 + 60 + i * 4} cy={100 + i * 12} r="2" fill={ACCENT} />
+          <circle cx={gateX - 60 - i * 6} cy={70 + i * 22} r="2.2" fill={AMBER} opacity={0.8 - i * 0.1} />
+          <circle cx={gateX + 50 + i * 6} cy={70 + i * 22} r="2.2" fill={ACCENT} opacity={1 - i * 0.15} />
         </g>
       ))}
-      {open.map((it, i) => {
-        const y = 60 + i * 46;
+      {/* accepted column (right) */}
+      {accepted.map((it, i) => {
+        const y = 56 + i * 40;
         return (
           <g key={it.label} transform={`translate(${W / 2 + 60},${y})`}>
-            <rect width="282" height="34" rx="4" fill="rgba(8,12,10,0.6)" stroke={ACCENT} strokeWidth="1.2" />
-            <BoundaryIcon icon={it.icon} cx={20} cy={17} color={ACCENT} />
-            <text x="46" y="22" fill={TEXT} fontSize="10.5" letterSpacing="0.08em" fontWeight="600">{it.label}</text>
+            <rect width="262" height="28" rx="4" fill="rgba(8,30,15,0.65)" stroke={ACCENT} strokeWidth="1.2" />
+            <BoundaryIcon icon={it.icon} cx={18} cy={14} color={ACCENT} />
+            <text x="40" y="19" fill={TEXT} fontSize="10" letterSpacing="0.08em" fontWeight="600">{it.label}</text>
+            <path d="M268 14 L280 14 L276 10 M280 14 L276 18" stroke={ACCENT} strokeWidth="1.1" fill="none" />
           </g>
         );
       })}

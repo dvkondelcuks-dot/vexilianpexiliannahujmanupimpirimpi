@@ -1,91 +1,230 @@
 "use client";
 
 import { Box } from "@mui/material";
+import { useState } from "react";
 
 const STAGES = [
-  { code: "01", title: ["IENĀKOŠĀ", "INTERESE"], bullets: ["META / GOOGLE / UGC", "SEO / ZIŅOJ / IETEIKUMI", "E-PASTS / KAMPAŅAS"], status: "IEEJA SISTĒMĀ" },
-  { code: "02", title: ["MĀJASLAPA"], bullets: ["SKAIDRS PIEDĀVĀJUMS", "UZTICĒŠANĀS", "CTA VIRZIENA", "LOKĀLA SEO"], status: "UZTICĒŠANĀS UN DARBĪBA" },
-  { code: "03", title: ["CRM"], bullets: ["PIEPELNI POSMI", "PIASNIĒTI", "LEAD STATUSI", "KLIENTU DATI"], status: "PĀRREDZAMĪBA" },
-  { code: "04", title: ["AUTOMATIZĀCIJA"], bullets: ["LEAD CAPTURE", "MARŠRUTĒŠANA", "ATGĀDINĀJUMI", "FOLLOW-UP"], status: "TURPINA DARBĪBU" },
-  { code: "05", title: ["KVALIFICĒTS", "LEADS"], bullets: ["FILTRĒTI PĒC NODOMĀ", "VĒRTĒTAS UN AVOTA", "KVALITĀTE > DAUDZUMS"], status: "GATAVI PĀRDOŠANAI" },
-  { code: "06", title: ["PĀRDOŠANA /", "REZERVĀCIJA"], bullets: ["PIEDĀVĀJUMU", "SASTRĀDĀJUMI", "REZERVĀCIJAS", "IEŅĒMUMI"], status: "NOSLĒGTA DARBĪJUMĀ" },
-  { code: "07", title: ["NOTURĒŠANA"], bullets: ["ATGĀDINĀJUMI", "AKTIVIZĒŠANA", "ATSAUKSMES", "IETEIKUMI"], status: "ILGTERMIŅA VĒRTĪBA" },
-  { code: "08", title: ["VADĪBAS", "PANELIS"], bullets: ["PĀRRSKATI / KPI", "REZERVĀCIJAS", "ROI / AVOTI", "ATTĪSTĪBA"], status: "PĀRSKATĀMĪBA & KONTROLE" }
+  { code: "01", title: ["IENĀKOŠĀ", "INTERESE"], bullets: ["META / GOOGLE / UGC", "SEO / IETEIKUMI", "E-PASTS / KAMPAŅAS"], status: "IEEJA SISTĒMĀ" },
+  { code: "02", title: ["MĀJASLAPA"], bullets: ["SKAIDRS PIEDĀVĀJUMS", "UZTICĒŠANĀS", "CTA VIRZIENS"], status: "UZTICĒŠANĀS" },
+  { code: "03", title: ["CRM"], bullets: ["PIPELINE POSMI", "LEAD STATUSI", "KLIENTU DATI"], status: "PĀRREDZAMĪBA" },
+  { code: "04", title: ["AUTOMATIZĀCIJA"], bullets: ["LEAD CAPTURE", "MARŠRUTĒŠANA", "FOLLOW-UP"], status: "TURPINA DARBĪBU" },
+  { code: "05", title: ["KVALIFICĒTS", "LEAD"], bullets: ["FILTRĒTS PĒC NODOMA", "AVOTA VĒRTĒŠANA", "KVALITĀTE > APJOMS"], status: "GATAVS PĀRDOŠANAI" },
+  { code: "06", title: ["PĀRDOŠANA"], bullets: ["PIEDĀVĀJUMI", "REZERVĀCIJAS", "IEŅĒMUMI"], status: "DARĪJUMS NOSLĒGTS" },
+  { code: "07", title: ["NOTURĒŠANA"], bullets: ["ATGĀDINĀJUMI", "AKTIVIZĀCIJA", "IETEIKUMI"], status: "ILGTERMIŅA VĒRTĪBA" },
+  { code: "08", title: ["VADĪBAS", "PANELIS"], bullets: ["PĀRSKATI / KPI", "ROI / AVOTI", "ATTĪSTĪBA"], status: "KONTROLE" }
 ] as const;
 
 const ACCENT = "#3BFF7C";
+const DIM = "rgba(59,255,124,0.45)";
 
 export function HeroFlowRail() {
-  const W = 1600;
-  const H = 360;
-  const cardW = 178;
-  const gap = 18;
-  const totalW = STAGES.length * cardW + (STAGES.length - 1) * gap;
-  const startX = (W - totalW) / 2;
-  const cardY = 12;
-  const cardH = 250;
-  const railY = cardH + 60;
-
   return (
-    <Box sx={{ width: "100%", overflowX: "auto" }}>
-      <Box sx={{ minWidth: 1100 }}>
-        <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Astoņpakāpju komerciālā plūsma" style={{ width: "100%", height: "auto", display: "block", fontFamily: "var(--font-display, ui-sans-serif)" }}>
-          <defs>
-            <pattern id="hf-grid" width="48" height="48" patternUnits="userSpaceOnUse">
-              <path d="M48 0H0V48" fill="none" stroke="rgba(59,255,124,0.05)" strokeWidth="1" />
-            </pattern>
-          </defs>
-          <rect x="0" y="0" width={W} height={H} fill="url(#hf-grid)" />
-
-          {STAGES.map((s, i) => {
-            const x = startX + i * (cardW + gap);
-            return (
-              <g key={s.code}>
-                {/* card */}
-                <rect x={x} y={cardY} width={cardW} height={cardH} rx={6} fill="rgba(8,12,10,0.85)" stroke="rgba(59,255,124,0.55)" strokeWidth={1.2} />
-                {/* corner brackets */}
-                <path d={`M${x + 6} ${cardY + 14} V${cardY + 6} H${x + 14}`} stroke={ACCENT} strokeWidth={1.4} fill="none" />
-                <path d={`M${x + cardW - 6} ${cardY + 14} V${cardY + 6} H${x + cardW - 14}`} stroke={ACCENT} strokeWidth={1.4} fill="none" />
-                {/* code */}
-                <text x={x + 14} y={cardY + 30} fill={ACCENT} fontSize="14" fontWeight="600" letterSpacing="0.04em">{s.code}</text>
-                {/* dots ornament */}
-                <text x={x + cardW - 14} y={cardY + 30} textAnchor="end" fill={ACCENT} fontSize="12" letterSpacing="0.18em">····</text>
-                {/* title */}
-                {s.title.map((t, ti) => (
-                  <text key={ti} x={x + 14} y={cardY + 64 + ti * 18} fill="#F4F7FA" fontSize="14.5" fontWeight="700" letterSpacing="0.02em">{t}</text>
-                ))}
-                {/* divider */}
-                <line x1={x + 14} x2={x + cardW - 14} y1={cardY + 64 + s.title.length * 18 + 8} y2={cardY + 64 + s.title.length * 18 + 8} stroke="rgba(59,255,124,0.18)" />
-                {/* bullets */}
-                {s.bullets.map((b, bi) => (
-                  <text key={bi} x={x + 14} y={cardY + 64 + s.title.length * 18 + 28 + bi * 14} fill="#A7B0BA" fontSize="9.5" letterSpacing="0.06em">{b}</text>
-                ))}
-                {/* status pill at bottom */}
-                <text x={x + cardW / 2} y={cardY + cardH + 22} textAnchor="middle" fill={ACCENT} fontSize="10" letterSpacing="0.08em" fontWeight="600">{s.status}</text>
-                {/* connector arrow inside */}
-                {i < STAGES.length - 1 ? (
-                  <g>
-                    <path d={`M${x + cardW - 18} ${cardY + 90} L${x + cardW - 8} ${cardY + 95} L${x + cardW - 18} ${cardY + 100}`} stroke={ACCENT} strokeWidth={1.2} fill="none" />
-                  </g>
-                ) : null}
-                {/* rail node */}
-                <circle cx={x + cardW / 2} cy={railY} r={5} fill={ACCENT} />
-                <circle cx={x + cardW / 2} cy={railY} r={9} fill="none" stroke="rgba(59,255,124,0.35)" />
-              </g>
-            );
-          })}
-
-          {/* rail line connecting nodes */}
-          <line
-            x1={startX + cardW / 2}
-            x2={startX + totalW - cardW / 2}
-            y1={railY}
-            y2={railY}
-            stroke={ACCENT}
-            strokeWidth={1.4}
-          />
-        </svg>
+    <Box sx={{ width: "100%", overflowX: "auto", pb: 1 }}>
+      <Box
+        sx={{
+          minWidth: { xs: 1180, md: "100%" },
+          display: "grid",
+          gridTemplateColumns: "repeat(8, 1fr)",
+          gap: { xs: 1.2, md: 1.6 },
+          position: "relative",
+          py: 2
+        }}
+      >
+        {/* connecting rail behind cards */}
+        <Box
+          aria-hidden
+          sx={{
+            position: "absolute",
+            left: "4%",
+            right: "4%",
+            top: "calc(100% - 14px)",
+            height: 1,
+            background: `linear-gradient(90deg, transparent, ${DIM} 6%, ${DIM} 94%, transparent)`,
+            zIndex: 0
+          }}
+        />
+        {STAGES.map((s, i) => (
+          <FlowCard key={s.code} stage={s} index={i} isLast={i === STAGES.length - 1} />
+        ))}
       </Box>
     </Box>
+  );
+}
+
+function FlowCard({
+  stage,
+  index,
+  isLast
+}: {
+  stage: (typeof STAGES)[number];
+  index: number;
+  isLast: boolean;
+}) {
+  const [hover, setHover] = useState(false);
+  return (
+    <Box
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      sx={{
+        position: "relative",
+        zIndex: 1,
+        cursor: "pointer",
+        transition: "transform 280ms cubic-bezier(.2,.7,.2,1), box-shadow 280ms ease, border-color 280ms ease, background 280ms ease",
+        transform: hover ? "translateY(-6px)" : "translateY(0)",
+        background: hover ? "rgba(12,18,14,0.95)" : "rgba(8,12,10,0.85)",
+        border: `1.2px solid ${hover ? ACCENT : "rgba(59,255,124,0.45)"}`,
+        borderRadius: 1.2,
+        boxShadow: hover ? `0 18px 48px -20px rgba(59,255,124,0.55), 0 0 0 1px rgba(59,255,124,0.12) inset` : "none",
+        minHeight: { xs: 280, md: 300 },
+        p: { xs: 1.4, md: 1.8 },
+        display: "flex",
+        flexDirection: "column",
+        textAlign: "center",
+        alignItems: "center"
+      }}
+    >
+      {/* corner brackets */}
+      <Brackets active={hover} />
+
+      {/* code */}
+      <Box
+        sx={{
+          color: ACCENT,
+          fontFamily: "var(--mono)",
+          fontWeight: 700,
+          fontSize: { xs: 13, md: 14 },
+          letterSpacing: "0.18em",
+          mb: 1
+        }}
+      >
+        {stage.code}
+      </Box>
+
+      {/* divider top */}
+      <Box sx={{ width: 28, height: "1px", background: DIM, mb: 1.4 }} />
+
+      {/* title */}
+      <Box
+        sx={{
+          color: "#F4F7FA",
+          fontWeight: 800,
+          fontSize: { xs: "0.95rem", md: "1.05rem" },
+          letterSpacing: "0.02em",
+          textTransform: "uppercase",
+          lineHeight: 1.15,
+          mb: 1.4
+        }}
+      >
+        {stage.title.map((t) => (
+          <Box key={t} component="span" sx={{ display: "block" }}>
+            {t}
+          </Box>
+        ))}
+      </Box>
+
+      {/* divider middle */}
+      <Box sx={{ width: 18, height: "1px", background: "rgba(59,255,124,0.22)", mb: 1.4 }} />
+
+      {/* bullets */}
+      <Box
+        sx={{
+          color: "#A7B0BA",
+          fontSize: { xs: 10.5, md: 11 },
+          letterSpacing: "0.06em",
+          lineHeight: 1.6,
+          flex: 1
+        }}
+      >
+        {stage.bullets.map((b) => (
+          <Box key={b} component="div">
+            {b}
+          </Box>
+        ))}
+      </Box>
+
+      {/* status pill at bottom */}
+      <Box
+        sx={{
+          mt: 1.4,
+          color: ACCENT,
+          fontFamily: "var(--mono)",
+          fontWeight: 700,
+          fontSize: { xs: 10, md: 10.5 },
+          letterSpacing: "0.16em",
+          borderTop: "1px dashed rgba(59,255,124,0.25)",
+          pt: 1,
+          width: "100%"
+        }}
+      >
+        {stage.status}
+      </Box>
+
+      {/* rail node under card */}
+      <Box
+        aria-hidden
+        sx={{
+          position: "absolute",
+          left: "50%",
+          bottom: -22,
+          transform: "translateX(-50%)",
+          width: 12,
+          height: 12,
+          borderRadius: "50%",
+          background: hover ? ACCENT : "#0a0d0b",
+          border: `1.5px solid ${ACCENT}`,
+          boxShadow: hover ? `0 0 14px ${ACCENT}` : "none",
+          transition: "all 280ms ease"
+        }}
+      />
+
+      {/* internal arrow to next */}
+      {!isLast && (
+        <Box
+          aria-hidden
+          sx={{
+            position: "absolute",
+            right: -8,
+            top: "50%",
+            transform: "translateY(-50%)",
+            color: ACCENT,
+            fontSize: 14,
+            opacity: 0.7,
+            display: { xs: "none", md: "block" }
+          }}
+        >
+          ›
+        </Box>
+      )}
+
+      {/* subtle index ornament */}
+      <Box
+        aria-hidden
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: ACCENT,
+          fontSize: 9,
+          letterSpacing: "0.18em",
+          opacity: hover ? 1 : 0.6,
+          transition: "opacity 280ms ease"
+        }}
+      >
+        {`0${index + 1}/08`}
+      </Box>
+    </Box>
+  );
+}
+
+function Brackets({ active }: { active: boolean }) {
+  const c = active ? ACCENT : "rgba(59,255,124,0.6)";
+  const s = { position: "absolute" as const, width: 10, height: 10, transition: "border-color 280ms ease" };
+  return (
+    <>
+      <Box sx={{ ...s, top: 4, left: 4, borderTop: `1.2px solid ${c}`, borderLeft: `1.2px solid ${c}` }} />
+      <Box sx={{ ...s, top: 4, right: 4, borderTop: `1.2px solid ${c}`, borderRight: `1.2px solid ${c}` }} />
+      <Box sx={{ ...s, bottom: 4, left: 4, borderBottom: `1.2px solid ${c}`, borderLeft: `1.2px solid ${c}` }} />
+      <Box sx={{ ...s, bottom: 4, right: 4, borderBottom: `1.2px solid ${c}`, borderRight: `1.2px solid ${c}` }} />
+    </>
   );
 }

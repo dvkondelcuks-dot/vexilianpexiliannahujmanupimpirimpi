@@ -61,7 +61,7 @@ export function FounderOperatorCard({ founder }: { founder: Founder }) {
 }
 
 function OperatorDiagram({ mode }: { mode: string }) {
-  const W = 520;
+  const W = 600;
   const H = 280;
   return (
     <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet" style={{ width: "100%", height: "auto", display: "block" }}>
@@ -88,17 +88,17 @@ function OperatorDiagram({ mode }: { mode: string }) {
 function Pill({ x, y, label, icon }: { x: number; y: number; label: string; icon: string }) {
   return (
     <g transform={`translate(${x},${y})`}>
-      <rect width="120" height="28" rx="14" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
+      <rect width="160" height="28" rx="14" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
       <text x="22" y="18" textAnchor="middle" fill={ACCENT} fontSize="11" fontWeight="700">{icon}</text>
       <line x1="38" y1="6" x2="38" y2="22" stroke="rgba(59,255,124,0.25)" />
-      <text x="46" y="18" fill={TEXT} fontSize="10" letterSpacing="0.1em" fontWeight="600">{label}</text>
+      <text x="46" y="18" fill={TEXT} fontSize="9.5" letterSpacing="0.08em" fontWeight="600">{label}</text>
     </g>
   );
 }
 
 // Dāvids — system architecture cube + 7 component pills
 function Architecture() {
-  const cx = 260;
+  const cx = 300;
   const cy = 142;
   const left = [
     { y: 38, label: "WEBSITE", icon: "⊕" },
@@ -113,35 +113,34 @@ function Architecture() {
   return (
     <g>
       <text x="40" y="22" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">SYSTEM ARCHITECTURE</text>
-      {left.map((it) => <Pill key={it.label} x={28} y={it.y} label={it.label} icon={it.icon} />)}
-      {right.map((it) => <Pill key={it.label} x={372} y={it.y} label={it.label} icon={it.icon} />)}
+      {left.map((it) => <Pill key={it.label} x={20} y={it.y} label={it.label} icon={it.icon} />)}
+      {right.map((it) => <Pill key={it.label} x={420} y={it.y} label={it.label} icon={it.icon} />)}
       {/* central cube */}
       <g transform={`translate(${cx},${cy})`}>
         <circle r="58" fill="url(#op-glow)" />
-        {/* isometric cube */}
         <path d="M-30 -22 L0 -36 L30 -22 L30 18 L0 32 L-30 18 Z" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.4" />
         <path d="M-30 -22 L0 -8 L30 -22 M0 -8 L0 32" stroke={ACCENT} strokeWidth="1.2" fill="none" />
         <text x="0" y="-46" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.18em" fontWeight="700">CORE SYSTEM</text>
       </g>
       {/* connectors from pills to cube */}
-      {[...left.map((it) => ({ x: 148, y: it.y + 14, dir: 1 })), ...right.map((it) => ({ x: 372, y: it.y + 14, dir: -1 }))].map((c, i) => (
+      {[...left.map((it) => ({ x: 180, y: it.y + 14, dir: 1 })), ...right.map((it) => ({ x: 420, y: it.y + 14, dir: -1 }))].map((c, i) => (
         <line key={i} x1={c.x} y1={c.y} x2={cx + (c.dir < 0 ? 30 : -30)} y2={cy} stroke={DIM} strokeWidth="1" strokeDasharray="3 3" />
       ))}
       {/* system logic gear at bottom */}
-      <g transform="translate(180,210)">
+      <g transform="translate(220,210)">
         <rect width="160" height="28" rx="14" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
         <circle cx="20" cy="14" r="7" fill="none" stroke={ACCENT} strokeWidth="1.2" />
         <circle cx="20" cy="14" r="2.5" fill={ACCENT} />
-        <text x="80" y="18" textAnchor="middle" fill={TEXT} fontSize="10" letterSpacing="0.1em" fontWeight="600">SYSTEM LOGIC</text>
+        <text x="90" y="18" textAnchor="middle" fill={TEXT} fontSize="10" letterSpacing="0.1em" fontWeight="600">SYSTEM LOGIC</text>
       </g>
-      <line x1="260" y1="184" x2="260" y2="210" stroke={DIM} strokeWidth="1" strokeDasharray="3 3" />
+      <line x1="300" y1="184" x2="300" y2="210" stroke={DIM} strokeWidth="1" strokeDasharray="3 3" />
     </g>
   );
 }
 
 // Miks — interpretation hub with 4 inputs + 4 outputs
 function Analysis() {
-  const cx = 260;
+  const cx = 300;
   const cy = 142;
   const inputs = [
     { y: 38, label: "SEARCH TRENDS", icon: "↗" },
@@ -157,10 +156,10 @@ function Analysis() {
   ];
   return (
     <g>
-      <text x="28" y="22" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">MARKET SIGNALS</text>
-      <text x="492" y="22" textAnchor="end" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">DIRECTION</text>
-      {inputs.map((it) => <Pill key={it.label} x={20} y={it.y} label={it.label} icon={it.icon} />)}
-      {outputs.map((it) => <Pill key={it.label} x={380} y={it.y} label={it.label} icon={it.icon} />)}
+      <text x="20" y="22" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">MARKET SIGNALS</text>
+      <text x="580" y="22" textAnchor="end" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">DIRECTION</text>
+      {inputs.map((it) => <Pill key={it.label} x={16} y={it.y} label={it.label} icon={it.icon} />)}
+      {outputs.map((it) => <Pill key={it.label} x={424} y={it.y} label={it.label} icon={it.icon} />)}
       {/* hub hex */}
       <g transform={`translate(${cx},${cy})`}>
         <circle r="56" fill="url(#op-glow)" />
@@ -171,10 +170,10 @@ function Analysis() {
         <text x="0" y="50" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.18em" fontWeight="700">LAYER</text>
       </g>
       {inputs.map((it, i) => (
-        <line key={`in-${i}`} x1="140" y1={it.y + 14} x2={cx - 30} y2={cy} stroke={DIM} strokeWidth="1" strokeDasharray="3 3" markerEnd="url(#op-arr)" />
+        <line key={`in-${i}`} x1="176" y1={it.y + 14} x2={cx - 30} y2={cy} stroke={DIM} strokeWidth="1" strokeDasharray="3 3" markerEnd="url(#op-arr)" />
       ))}
       {outputs.map((it, i) => (
-        <line key={`out-${i}`} x1={cx + 30} y1={cy} x2="380" y2={it.y + 14} stroke={DIM} strokeWidth="1" strokeDasharray="3 3" markerEnd="url(#op-arr)" />
+        <line key={`out-${i}`} x1={cx + 30} y1={cy} x2="424" y2={it.y + 14} stroke={DIM} strokeWidth="1" strokeDasharray="3 3" markerEnd="url(#op-arr)" />
       ))}
     </g>
   );
@@ -183,10 +182,10 @@ function Analysis() {
 // Edvards — message → trust → relationship → growth wave-cone
 function Communication() {
   const items = [
-    { x: 50, label: "MESSAGE", sub: "CLARITY", icon: "chat" },
-    { x: 165, label: "BUILDING", sub: "TRUST", icon: "shield" },
-    { x: 280, label: "STRONG", sub: "RELATIONSHIP", icon: "users" },
-    { x: 395, label: "DRIVING", sub: "GROWTH", icon: "rise" }
+    { x: 70, label: "MESSAGE", sub: "CLARITY", icon: "chat" },
+    { x: 200, label: "BUILDING", sub: "TRUST", icon: "shield" },
+    { x: 330, label: "STRONG", sub: "RELATIONSHIP", icon: "users" },
+    { x: 460, label: "DRIVING", sub: "GROWTH", icon: "rise" }
   ];
   return (
     <g>
@@ -199,12 +198,12 @@ function Communication() {
           <text x="36" y="92" textAnchor="middle" fill={TEXT} fontSize="10" letterSpacing="0.1em" fontWeight="700">{it.label}</text>
           <text x="36" y="106" textAnchor="middle" fill={MUTED} fontSize="9" letterSpacing="0.1em">{it.sub}</text>
           {i < items.length - 1 ? (
-            <path d={`M70 36 Q${82} 30 100 36 Q${110} 42 115 36`} stroke={ACCENT} strokeWidth="1.4" fill="none" markerEnd="url(#op-arr)" />
+            <path d={`M70 36 Q${88} 30 110 36 Q${122} 42 130 36`} stroke={ACCENT} strokeWidth="1.4" fill="none" markerEnd="url(#op-arr)" />
           ) : null}
         </g>
       ))}
       {/* expanding waves under final node */}
-      <g transform="translate(431,200)">
+      <g transform="translate(496,200)">
         {[14, 28, 42, 56].map((r, i) => (
           <path key={i} d={`M-${r} 0 a${r} ${r * 0.55} 0 0 1 ${r * 2} 0`} stroke={ACCENT} strokeWidth="1.1" strokeOpacity={1 - i * 0.2} fill="none" />
         ))}

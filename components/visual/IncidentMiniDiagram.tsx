@@ -10,8 +10,9 @@ const ACCENT = "#3BFF7C";
 const DIM = "rgba(59,255,124,0.45)";
 const TEXT = "#F4F7FA";
 const MUTED = "#A7B0BA";
-const W = 760;
+const W = 800;
 const H = 320;
+const PAD_X = 16;
 
 function Defs() {
   return (
@@ -284,9 +285,9 @@ export function IncidentMiniDiagram({ visual }: { visual: IncidentVisual }) {
   const Visual = VISUALS[visual];
   return (
     <Box sx={{ width: "100%" }}>
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" preserveAspectRatio="xMidYMid meet" style={{ width: "100%", height: "auto", display: "block" }}>
+      <svg viewBox={`${-PAD_X} 0 ${W + PAD_X * 2} ${H}`} role="img" preserveAspectRatio="xMidYMid meet" style={{ width: "100%", height: "auto", display: "block" }}>
         <Defs />
-        <rect x="0" y="0" width={W} height={H} fill="url(#inc-grid)" />
+        <rect x={-PAD_X} y="0" width={W + PAD_X * 2} height={H} fill="url(#inc-grid)" />
         <Visual />
       </svg>
     </Box>

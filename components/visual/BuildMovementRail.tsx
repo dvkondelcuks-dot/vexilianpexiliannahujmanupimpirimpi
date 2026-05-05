@@ -84,7 +84,7 @@ export function BuildMovementRail() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                minHeight: 160
+                minHeight: 220
               }}
             >
               <StepIllustration index={i} />
@@ -134,26 +134,46 @@ export function BuildMovementRail() {
 }
 
 function StepIllustration({ index }: { index: number }) {
+  const W = 760;
+  const H = 320;
+  const PAD = 16;
+  const BR = 14; // bracket size
   return (
     <svg
-      viewBox="0 0 360 160"
+      viewBox={`${-PAD} 0 ${W + PAD * 2} ${H}`}
       preserveAspectRatio="xMidYMid meet"
       style={{ width: "100%", height: "auto", display: "block" }}
     >
       <defs>
-        <pattern id={`proc-grid-${index}`} width="24" height="24" patternUnits="userSpaceOnUse">
-          <path d="M24 0H0V24" fill="none" stroke="rgba(59,255,124,0.06)" strokeWidth="0.6" />
+        <pattern id={`proc-grid-${index}`} width="32" height="32" patternUnits="userSpaceOnUse">
+          <path d="M32 0H0V32" fill="none" stroke="rgba(59,255,124,0.06)" strokeWidth="0.7" />
         </pattern>
         <marker id={`proc-arr-${index}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
           <path d="M0 0 L10 5 L0 10 Z" fill={ACCENT} />
         </marker>
+        <radialGradient id={`proc-glow-${index}`} cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stopColor="rgba(59,255,124,0.18)" />
+          <stop offset="100%" stopColor="rgba(8,12,10,0)" />
+        </radialGradient>
       </defs>
-      <rect width="360" height="160" fill={`url(#proc-grid-${index})`} />
-      {index === 0 && <AuditScene />}
-      {index === 1 && <BlueprintScene />}
-      {index === 2 && <BuildScene />}
-      {index === 3 && <HandoverScene />}
-      {index === 4 && <OptimizeScene />}
+
+      {/* full canvas grid */}
+      <rect x={-PAD} y={0} width={W + PAD * 2} height={H} fill={`url(#proc-grid-${index})`} />
+
+      {/* corner brackets */}
+      <path d={`M0 ${BR} V0 H${BR}`} stroke={ACCENT} strokeWidth="1.4" fill="none" />
+      <path d={`M${W - BR} 0 H${W} V${BR}`} stroke={ACCENT} strokeWidth="1.4" fill="none" />
+      <path d={`M0 ${H - BR} V${H} H${BR}`} stroke={ACCENT} strokeWidth="1.4" fill="none" />
+      <path d={`M${W - BR} ${H} H${W} V${H - BR}`} stroke={ACCENT} strokeWidth="1.4" fill="none" />
+
+      {/* inner illustration scaled 2× from original 360×160 = 720×320, centered with 20px gutter */}
+      <g transform="translate(20,0) scale(2,2)">
+        {index === 0 && <AuditScene />}
+        {index === 1 && <BlueprintScene />}
+        {index === 2 && <BuildScene />}
+        {index === 3 && <HandoverScene />}
+        {index === 4 && <OptimizeScene />}
+      </g>
     </svg>
   );
 }

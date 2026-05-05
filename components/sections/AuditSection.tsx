@@ -5,7 +5,6 @@ import { Button, Form, Input, Select } from "antd";
 import { SectionShell } from "@/components/layout/SectionShell";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 import { AuditFlowBackground } from "@/components/visual/AuditFlowBackground";
-import { CommercialTelemetryChart } from "@/components/visual/CommercialTelemetryChart";
 import { MetaLabel } from "@/components/ui/MetaLabel";
 import { SignalChip } from "@/components/ui/SignalChip";
 import { sectionCopy } from "@/data/pageCopy";
@@ -104,7 +103,6 @@ export function AuditSection() {
                   Pieteikt auditu →
                 </Button>
               </Form>
-              <CommercialTelemetryChart mode="audit" height={96} />
               <MetaLabel>Atbildam 24h laikā darba dienās · bez automātiskām ziņām · NDA pēc pieprasījuma</MetaLabel>
             </Stack>
           </Box>

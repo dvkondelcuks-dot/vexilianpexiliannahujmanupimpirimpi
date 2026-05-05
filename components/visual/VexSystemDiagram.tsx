@@ -9,7 +9,7 @@ const MUTED = "#A7B0BA";
 const AMBER = "#E6A84A";
 
 const W = 1280;
-const H = 700;
+const H = 560;
 
 export function VexSystemDiagram() {
   return (
@@ -58,7 +58,7 @@ export function VexSystemDiagram() {
 
 function KpiCard({ x, y, label, labelAccent, children }: { x: number; y: number; label: string; labelAccent?: boolean; children?: React.ReactNode }) {
   const w = 232;
-  const h = 360;
+  const h = 340;
   return (
     <g>
       <rect x={x} y={y} width={w} height={h} rx={10} fill="rgba(8,12,10,0.78)" stroke={ACCENT} strokeWidth="1.4" />
@@ -282,7 +282,7 @@ function ProgressCard({ x, y, label, sub, pct, icon }: { x: number; y: number; l
   const w = 380;
   const h = 130;
   const pctColor = pct >= 70 ? ACCENT : AMBER;
-  const segs = 24;
+  const segs = 22;
   const filled = Math.round((pct / 100) * segs);
   return (
     <g>
@@ -294,13 +294,13 @@ function ProgressCard({ x, y, label, sub, pct, icon }: { x: number; y: number; l
       </g>
       <text x={x + 78} y={y + 38} fill={TEXT} fontSize="13" letterSpacing="0.14em" fontWeight="700">{label}</text>
       <text x={x + 78} y={y + 58} fill={MUTED} fontSize="11">{sub}</text>
-      {/* segmented progress */}
+      {/* segmented progress + percent (percent reserved on the right) */}
       <g transform={`translate(${x + 78},${y + 80})`}>
         {Array.from({ length: segs }).map((_, i) => (
           <rect key={i} x={i * 11} y={0} width={8} height={14} rx={1.5} fill={i < filled ? pctColor : "rgba(255,255,255,0.08)"} />
         ))}
-        <text x={segs * 11 + 16} y={12} fill={pctColor} fontSize="14" fontWeight="700">{pct}%</text>
       </g>
+      <text x={x + w - 16} y={y + 92} textAnchor="end" fill={pctColor} fontSize="15" fontWeight="700">{pct}%</text>
     </g>
   );
 }

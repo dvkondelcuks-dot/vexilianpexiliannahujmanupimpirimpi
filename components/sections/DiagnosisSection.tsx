@@ -10,10 +10,8 @@ import { sectionCopy } from "@/data/pageCopy";
 export function DiagnosisSection() {
   return (
     <SectionShell id="diagnosis" sx={{ background: "linear-gradient(180deg, rgba(11,14,17,0.42), rgba(7,9,11,0.2))" }}>
-      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "minmax(280px, 360px) 1fr" }, gap: { xs: 4, lg: 6 } }}>
-        <Box sx={{ position: { lg: "sticky" }, top: { lg: 110 }, alignSelf: "start" }}>
-          <SectionHeader {...sectionCopy.diagnosis} />
-        </Box>
+      <Stack spacing={{ xs: 4, lg: 5 }}>
+        <SectionHeader {...sectionCopy.diagnosis} maxWidth={1400} />
         <Stack spacing={2}>
           {diagnosisEvents.map((event, index) => (
             <Box
@@ -47,7 +45,7 @@ export function DiagnosisSection() {
             </Box>
           ))}
         </Stack>
-      </Box>
+      </Stack>
     </SectionShell>
   );
 }

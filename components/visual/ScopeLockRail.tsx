@@ -102,35 +102,63 @@ function PhaseDiagram({ index }: { index: number }) {
   );
 }
 
-// Phase 01 — blueprint: scoping wireframe
+// Phase 01 — Discovery & Scoping: business inputs into a structured blueprint
 function ArchitectureScene() {
+  const inputs = [
+    { label: "GOALS", icon: "target" },
+    { label: "SOURCES", icon: "flow" },
+    { label: "PEOPLE", icon: "user" },
+    { label: "DATA", icon: "db" }
+  ];
   return (
     <g>
-      <text x="14" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">BLUEPRINT</text>
-      {/* document outline */}
-      <rect x="20" y="32" width="200" height="130" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
-      <line x1="20" y1="50" x2="220" y2="50" stroke={DIM} strokeWidth="0.8" />
-      {/* lines representing scope items */}
-      {[0, 1, 2, 3, 4].map((i) => (
-        <g key={i}>
-          <rect x="32" y={66 + i * 18} width="8" height="8" fill="none" stroke={ACCENT} strokeWidth="1" />
-          <line x1="46" y1={70 + i * 18} x2={i === 1 || i === 3 ? 180 : 200} y2={70 + i * 18} stroke={DIM} strokeWidth="1" />
-          {(i === 0 || i === 2 || i === 4) && (
-            <line x1="34" y1={70 + i * 18} x2="38" y2={70 + i * 18} stroke={ACCENT} strokeWidth="1.6" />
-          )}
-        </g>
-      ))}
-      {/* node graph on right */}
-      <g transform="translate(250,40)">
-        <circle cx="40" cy="20" r="14" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />
-        <text x="40" y="24" textAnchor="middle" fill={ACCENT} fontSize="9" fontWeight="700">A</text>
-        <circle cx="14" cy="70" r="10" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />
-        <circle cx="66" cy="70" r="10" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />
-        <circle cx="40" cy="110" r="10" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />
-        <line x1="40" y1="34" x2="14" y2="60" stroke={DIM} strokeWidth="1" strokeDasharray="2 2" />
-        <line x1="40" y1="34" x2="66" y2="60" stroke={DIM} strokeWidth="1" strokeDasharray="2 2" />
-        <line x1="14" y1="80" x2="40" y2="100" stroke={DIM} strokeWidth="1" strokeDasharray="2 2" />
-        <line x1="66" y1="80" x2="40" y2="100" stroke={DIM} strokeWidth="1" strokeDasharray="2 2" />
+      <text x="14" y="18" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">DISCOVERY → SCOPE</text>
+      {/* left input pills */}
+      {inputs.map((it, i) => {
+        const y = 38 + i * 28;
+        return (
+          <g key={it.label} transform={`translate(14,${y})`}>
+            <rect width="96" height="22" rx="4" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1" />
+            <circle cx="12" cy="11" r="6" fill="none" stroke={ACCENT} strokeWidth="1.1" />
+            {it.icon === "target" && <circle cx="12" cy="11" r="2" fill={ACCENT} />}
+            {it.icon === "flow" && <path d="M9 11 H15 M12 8 V14" stroke={ACCENT} strokeWidth="1" />}
+            {it.icon === "user" && <path d="M9 13 Q12 10 15 13" stroke={ACCENT} strokeWidth="1" fill="none" />}
+            {it.icon === "db" && <line x1="8" y1="11" x2="16" y2="11" stroke={ACCENT} strokeWidth="1" />}
+            <text x="24" y="15" fill={TEXT} fontSize="9" letterSpacing="0.14em" fontWeight="700">{it.label}</text>
+            <line x1="96" y1="11" x2="148" y2="90" stroke={DIM} strokeWidth="0.8" strokeDasharray="2 2" />
+          </g>
+        );
+      })}
+      {/* central blueprint card */}
+      <g transform="translate(148,38)">
+        <rect width="118" height="118" rx="4" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />
+        <text x="8" y="14" fill={ACCENT} fontSize="8" letterSpacing="0.18em" fontWeight="700">SCOPE.MAP</text>
+        {/* mini node graph */}
+        <circle cx="30" cy="38" r="6" fill="none" stroke={ACCENT} strokeWidth="1" />
+        <circle cx="60" cy="30" r="6" fill={ACCENT} />
+        <circle cx="90" cy="42" r="6" fill="none" stroke={ACCENT} strokeWidth="1" />
+        <circle cx="40" cy="68" r="6" fill="none" stroke={ACCENT} strokeWidth="1" />
+        <circle cx="82" cy="76" r="6" fill="none" stroke={ACCENT} strokeWidth="1" />
+        <line x1="30" y1="38" x2="60" y2="30" stroke={DIM} />
+        <line x1="60" y1="30" x2="90" y2="42" stroke={DIM} />
+        <line x1="30" y1="38" x2="40" y2="68" stroke={DIM} />
+        <line x1="40" y1="68" x2="82" y2="76" stroke={DIM} />
+        <line x1="82" y1="76" x2="90" y2="42" stroke={DIM} />
+        {/* annotation lines */}
+        <line x1="8" y1="96" x2="110" y2="96" stroke={DIM} strokeWidth="0.8" />
+        <line x1="8" y1="104" x2="86" y2="104" stroke={DIM} strokeWidth="0.8" />
+      </g>
+      {/* right outputs */}
+      <g transform="translate(282,42)">
+        <text x="0" y="0" fill={ACCENT} fontSize="8" letterSpacing="0.18em" fontWeight="700">DELIVERABLES</text>
+        {["BLUEPRINT", "PHASES", "TIMELINE", "PRICE"].map((l, i) => (
+          <g key={l} transform={`translate(0,${10 + i * 22})`}>
+            <rect width="68" height="18" rx="3" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="0.9" />
+            <line x1="4" y1="9" x2="8" y2="9" stroke={ACCENT} strokeWidth="1.6" />
+            <text x="14" y="12" fill={TEXT} fontSize="8" letterSpacing="0.12em" fontWeight="700">{l}</text>
+          </g>
+        ))}
+        <line x1="-16" y1="50" x2="-2" y2="50" stroke={ACCENT} strokeWidth="1.2" markerEnd="url(#phase-arr-0)" />
       </g>
     </g>
   );
@@ -149,14 +177,15 @@ function SetupScene() {
       <text x="14" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">CONNECTED BUILD</text>
       {modules.map((m, i) => {
         const y = 36 + i * 30;
-        const fullW = 280;
+        const fullW = 240;
+        const pctX = 20 + fullW + 14;
         return (
           <g key={m.label}>
             <rect x="20" y={y} width={fullW} height="20" fill="rgba(8,12,10,0.7)" stroke="rgba(59,255,124,0.25)" strokeWidth="0.8" />
             <rect x="20" y={y} width={fullW * m.w} height="20" fill="rgba(59,255,124,0.18)" />
             <rect x="20" y={y} width="3" height="20" fill={ACCENT} />
             <text x="30" y={y + 13} fill={TEXT} fontSize="9" letterSpacing="0.16em" fontWeight="700">{m.label}</text>
-            <text x={fullW + 12} y={y + 13} fill={ACCENT} fontSize="9" fontWeight="700">{Math.round(m.w * 100)}%</text>
+            <text x={pctX} y={y + 14} fill={ACCENT} fontSize="10" fontWeight="700">{Math.round(m.w * 100)}%</text>
           </g>
         );
       })}
@@ -167,39 +196,60 @@ function SetupScene() {
   );
 }
 
-// Phase 03 — handover with bidirectional arrows
+// Phase 03 — Handover & Cycle: training transfer + monthly optimization ring
 function HandoverScene() {
   return (
     <g>
-      <text x="14" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">HANDOVER + TUNE</text>
-      {/* left: VEX */}
-      <rect x="20" y="50" width="100" height="80" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
-      <text x="70" y="80" textAnchor="middle" fill={ACCENT} fontSize="11" fontWeight="700" letterSpacing="0.12em">VEX</text>
-      <text x="70" y="96" textAnchor="middle" fill={MUTED} fontSize="8" letterSpacing="0.18em">SYSTEM</text>
-      <text x="70" y="116" textAnchor="middle" fill={MUTED} fontSize="8" letterSpacing="0.18em">OWNERS</text>
-
-      {/* right: TEAM */}
-      <rect x="240" y="50" width="100" height="80" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
-      <text x="290" y="80" textAnchor="middle" fill={ACCENT} fontSize="11" fontWeight="700" letterSpacing="0.12em">KOMANDA</text>
-      <text x="290" y="96" textAnchor="middle" fill={MUTED} fontSize="8" letterSpacing="0.18em">DAILY</text>
-      <text x="290" y="116" textAnchor="middle" fill={MUTED} fontSize="8" letterSpacing="0.18em">OPERATORS</text>
-
-      {/* bidirectional arrows */}
-      <line x1="124" y1="74" x2="236" y2="74" stroke={ACCENT} strokeWidth="1.4" markerEnd="url(#phase-arr-2)" />
-      <text x="180" y="68" textAnchor="middle" fill={ACCENT} fontSize="8" fontWeight="700">DOCS · TRAINING</text>
-
-      <line x1="236" y1="106" x2="124" y2="106" stroke={AMBER} strokeWidth="1.4" strokeDasharray="4 3" />
-      <polygon points="124,106 130,103 130,109" fill={AMBER} />
-      <text x="180" y="120" textAnchor="middle" fill={AMBER} fontSize="8" fontWeight="700">REPORTS · TUNE</text>
-
-      {/* handshake icon between */}
-      <circle cx="180" cy="90" r="12" fill="rgba(8,12,10,0.95)" stroke={ACCENT} strokeWidth="1.2" />
-      <path d="M174 92 L178 88 L182 92 L186 88" fill="none" stroke={ACCENT} strokeWidth="1.4" strokeLinecap="round" />
-
-      {/* bottom monthly cycle */}
-      <text x="180" y="158" textAnchor="middle" fill={MUTED} fontSize="8" letterSpacing="0.22em">MONTHLY CYCLE</text>
-      <line x1="40" y1="148" x2="320" y2="148" stroke={DIM} strokeWidth="0.8" strokeDasharray="2 3" />
-      {[0, 1, 2, 3, 4, 5].map((i) => <circle key={i} cx={40 + i * 56} cy="148" r="2.5" fill={ACCENT} />)}
+      <text x="14" y="18" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">HANDOVER + CYCLE</text>
+      {/* left: VEX panel */}
+      <g transform="translate(14,32)">
+        <rect width="96" height="66" rx="4" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
+        <text x="48" y="22" textAnchor="middle" fill={ACCENT} fontSize="11" letterSpacing="0.18em" fontWeight="700">VEX</text>
+        <text x="48" y="36" textAnchor="middle" fill={MUTED} fontSize="7" letterSpacing="0.2em">SYSTEM OWNERS</text>
+        <line x1="14" y1="46" x2="82" y2="46" stroke={DIM} strokeWidth="0.8" />
+        <line x1="14" y1="54" x2="68" y2="54" stroke={DIM} strokeWidth="0.8" />
+      </g>
+      {/* right: TEAM panel */}
+      <g transform="translate(252,32)">
+        <rect width="96" height="66" rx="4" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
+        <text x="48" y="22" textAnchor="middle" fill={ACCENT} fontSize="11" letterSpacing="0.16em" fontWeight="700">KOMANDA</text>
+        <text x="48" y="36" textAnchor="middle" fill={MUTED} fontSize="7" letterSpacing="0.2em">DAILY OPERATORS</text>
+        {/* people icons */}
+        {[0, 1, 2].map((i) => {
+          const cx = 22 + i * 26;
+          return (
+            <g key={i} transform={`translate(${cx},48)`}>
+              <circle cx="0" cy="0" r="4" fill="none" stroke={ACCENT} strokeWidth="1" />
+              <path d="M-6 12 Q0 4 6 12" stroke={ACCENT} strokeWidth="1" fill="none" />
+            </g>
+          );
+        })}
+      </g>
+      {/* center: handshake + arrows */}
+      <g transform="translate(110,42)">
+        <line x1="6" y1="14" x2="136" y2="14" stroke={ACCENT} strokeWidth="1.2" markerEnd="url(#phase-arr-2)" />
+        <text x="71" y="10" textAnchor="middle" fill={ACCENT} fontSize="7" fontWeight="700" letterSpacing="0.16em">DOCS · TRAINING</text>
+        <circle cx="71" cy="30" r="14" fill="rgba(8,12,10,0.95)" stroke={ACCENT} strokeWidth="1.2" />
+        <path d="M62 32 L68 26 L74 32 L80 26" stroke={ACCENT} strokeWidth="1.4" fill="none" />
+        <line x1="136" y1="50" x2="6" y2="50" stroke={AMBER} strokeWidth="1.2" strokeDasharray="3 2" />
+        <polygon points="6,50 12,47 12,53" fill={AMBER} />
+        <text x="71" y="60" textAnchor="middle" fill={AMBER} fontSize="7" fontWeight="700" letterSpacing="0.16em">REPORTS · TUNE</text>
+      </g>
+      {/* monthly cycle ring at bottom */}
+      <g transform="translate(180,140)">
+        <circle r="20" fill="none" stroke={DIM} strokeWidth="1" strokeDasharray="3 2" />
+        {["R", "T", "S", "M"].map((l, i) => {
+          const a = (i * 90 - 90) * Math.PI / 180;
+          return (
+            <g key={l} transform={`translate(${Math.cos(a) * 20},${Math.sin(a) * 20})`}>
+              <circle r="6" fill="rgba(8,12,10,0.95)" stroke={ACCENT} strokeWidth="1" />
+              <text textAnchor="middle" y="3" fill={ACCENT} fontSize="7" fontWeight="700">{l}</text>
+            </g>
+          );
+        })}
+        <text x="40" y="4" fill={MUTED} fontSize="7" letterSpacing="0.18em">MONTHLY</text>
+        <text x="40" y="14" fill={MUTED} fontSize="7" letterSpacing="0.18em">CYCLE</text>
+      </g>
     </g>
   );
 }

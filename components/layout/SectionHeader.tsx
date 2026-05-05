@@ -2,7 +2,9 @@ import { Box, Stack, Typography } from "@mui/material";
 import { MetaLabel } from "@/components/ui/MetaLabel";
 
 export function SectionHeader({ eyebrow, headline, body, maxWidth = 820, align = "left" }: { eyebrow: string; headline: string; body?: string; maxWidth?: number; align?: "left" | "center" }) {
-  const [head, accent] = headline.includes("|") ? headline.split("|") : [headline, ""];
+  const parts = headline.split("|").map((p) => p.trim()).filter(Boolean);
+  const head = parts[0] ?? headline;
+  const accentLines = parts.slice(1);
   return (
     <Stack
       spacing={2}
@@ -23,10 +25,10 @@ export function SectionHeader({ eyebrow, headline, body, maxWidth = 820, align =
           letterSpacing: "-0.01em"
         }}
       >
-        {head.trim()}
-        {accent ? (
-          <Box component="span" sx={{ color: "var(--signal-blue)", display: "block" }}>{accent.trim()}</Box>
-        ) : null}
+        {head}
+        {accentLines.map((line) => (
+          <Box key={line} component="span" sx={{ color: "var(--signal-blue)", display: "block" }}>{line}</Box>
+        ))}
       </Typography>
       {body ? (
         <Box sx={{ maxWidth: 700 }}>
