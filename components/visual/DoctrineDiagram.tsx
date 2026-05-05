@@ -283,14 +283,15 @@ function Boundary() {
   const totalGatesW = gateW * gates.length + 36 * (gates.length - 1);
   const startX = (W - totalGatesW) / 2;
   const gatePos = (i: number) => startX + i * (gateW + 36);
+  const branchX = outX - 200;
 
   return (
     <g>
       <EyebrowTag x={36} y={36} label="ROBEŽAS · KVALIFIKĀCIJAS FILTRS" />
 
-      {/* main horizontal lane */}
-      <line x1={inX} y1={yMid} x2={outX} y2={yMid} stroke="rgba(59,255,124,0.18)" strokeWidth="20" strokeLinecap="round" />
-      <line x1={inX} y1={yMid} x2={outX} y2={yMid} stroke={ACCENT} strokeWidth="1.4" strokeDasharray="6 5" />
+      {/* main horizontal lane (terminates at branch split) */}
+      <line x1={inX} y1={yMid} x2={branchX} y2={yMid} stroke="rgba(59,255,124,0.18)" strokeWidth="20" strokeLinecap="round" />
+      <line x1={inX} y1={yMid} x2={branchX} y2={yMid} stroke={ACCENT} strokeWidth="1.4" strokeDasharray="6 5" />
 
       {/* INPUT badge on left */}
       <g transform={`translate(${inX - 36},${yMid - 22})`}>
@@ -325,40 +326,56 @@ function Boundary() {
 
       {/* split at right end: ACCEPTED branch (up) and DECLINED branch (down) */}
       {(() => {
-        const branchX = outX - 100;
+        const cardW = 132;
+        const cardH = 38;
         const acceptY = yMid - 56;
         const declineY = yMid + 56;
+        const cardX = branchX + 50;             // left edge of cards
+        const arrowEndX = cardX + 14;           // arrow lands 14px inside card
         return (
           <g>
-            {/* split lines */}
-            <path d={`M${branchX} ${yMid} C${branchX + 24} ${yMid}, ${branchX + 30} ${acceptY}, ${branchX + 60} ${acceptY}`} stroke={ACCENT} strokeWidth="1.4" fill="none" markerEnd="url(#dd-arr)" />
-            <path d={`M${branchX} ${yMid} C${branchX + 24} ${yMid}, ${branchX + 30} ${declineY}, ${branchX + 60} ${declineY}`} stroke={AMBER} strokeWidth="1.4" strokeDasharray="5 4" fill="none" markerEnd="url(#dd-arr-amber)" />
+            {/* ACCEPTED branch — solid green line, terminates inside PIEŅEMTS card */}
+            <path
+              d={`M${branchX} ${yMid} C${branchX + 28} ${yMid}, ${branchX + 30} ${acceptY}, ${arrowEndX} ${acceptY}`}
+              stroke={ACCENT}
+              strokeWidth="1.5"
+              fill="none"
+              markerEnd="url(#dd-arr)"
+            />
+            {/* DECLINED branch — solid amber line, terminates inside card */}
+            <path
+              d={`M${branchX} ${yMid} C${branchX + 28} ${yMid}, ${branchX + 30} ${declineY}, ${arrowEndX} ${declineY}`}
+              stroke={AMBER}
+              strokeWidth="1.5"
+              fill="none"
+              markerEnd="url(#dd-arr-amber)"
+            />
 
             {/* ACCEPTED card */}
-            <g transform={`translate(${branchX + 60},${acceptY - 18})`}>
-              <rect width="92" height="36" rx="6" fill="rgba(8,30,15,0.7)" stroke={ACCENT} strokeWidth="1.4" />
-              <circle cx="14" cy="18" r="6" fill={ACCENT} />
-              <path d="M11 18 L13.2 20.4 L17 16" stroke="#07090b" strokeWidth="1.6" fill="none" />
-              <text x="26" y="16" fill={ACCENT} fontSize="8" letterSpacing="0.18em" fontWeight="700">PIEŅEMTS</text>
-              <text x="26" y="26" fill={TEXT} fontSize="7.5" letterSpacing="0.1em">sistēma būvēta</text>
+            <g transform={`translate(${cardX},${acceptY - cardH / 2})`}>
+              <rect width={cardW} height={cardH} rx="6" fill="rgba(8,30,15,0.85)" stroke={ACCENT} strokeWidth="1.4" />
+              <circle cx="16" cy={cardH / 2} r="6.5" fill={ACCENT} />
+              <path d="M13 19 L15.4 21.6 L19.4 17" stroke="#07090b" strokeWidth="1.7" fill="none" />
+              <text x="30" y="16" fill={ACCENT} fontSize="8" letterSpacing="0.18em" fontWeight="700">PIEŅEMTS</text>
+              <text x="30" y="28" fill={TEXT} fontSize="8" letterSpacing="0.08em">sistēma būvēta</text>
             </g>
 
             {/* DECLINED card */}
-            <g transform={`translate(${branchX + 60},${declineY - 18})`}>
-              <rect width="92" height="36" rx="6" fill="rgba(38,22,10,0.55)" stroke={AMBER} strokeWidth="1.2" strokeDasharray="4 3" />
-              <g transform="translate(14,18)" stroke={AMBER} strokeWidth="1.6" fill="none">
-                <line x1="-4" y1="-4" x2="4" y2="4" />
-                <line x1="4" y1="-4" x2="-4" y2="4" />
+            <g transform={`translate(${cardX},${declineY - cardH / 2})`}>
+              <rect width={cardW} height={cardH} rx="6" fill="rgba(38,22,10,0.7)" stroke={AMBER} strokeWidth="1.2" />
+              <g transform={`translate(16,${cardH / 2})`} stroke={AMBER} strokeWidth="1.7" fill="none">
+                <line x1="-4.5" y1="-4.5" x2="4.5" y2="4.5" />
+                <line x1="4.5" y1="-4.5" x2="-4.5" y2="4.5" />
               </g>
-              <text x="26" y="16" fill={AMBER} fontSize="8" letterSpacing="0.18em" fontWeight="700">NORAIDĪTS</text>
-              <text x="26" y="26" fill={MUTED} fontSize="7.5" letterSpacing="0.1em">cita ekspertīze</text>
+              <text x="30" y="16" fill={AMBER} fontSize="8" letterSpacing="0.18em" fontWeight="700">NORAIDĪTS</text>
+              <text x="30" y="28" fill={MUTED} fontSize="8" letterSpacing="0.08em">cita ekspertīze</text>
             </g>
           </g>
         );
       })()}
 
       {/* footer microcopy */}
-      <text x={W / 2} y={H - 28} textAnchor="middle" fill={MUTED} fontSize="9" letterSpacing="0.22em" fontWeight="700">VEXILIAN STRĀDĀ → SISTĒMA TIEK BŪVĒTA</text>
+      <text x={W / 2} y={H - 28} textAnchor="middle" fill={MUTED} fontSize="9" letterSpacing="0.22em" fontWeight="700">VEXILLIAN STRĀDĀ → SISTĒMA TIEK BŪVĒTA</text>
     </g>
   );
 }

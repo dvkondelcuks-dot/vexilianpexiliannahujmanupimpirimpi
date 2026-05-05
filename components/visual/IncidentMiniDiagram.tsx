@@ -189,169 +189,161 @@ function LeadSilence() {
 }
 
 function AttributionGap() {
-  const sources = [
-    { label: "META", icon: "M" },
-    { label: "GOOGLE", icon: "G" },
-    { label: "EMAIL", icon: "@" },
-    { label: "REFERRAL", icon: "P" },
-    { label: "ORGANIC", icon: "O" },
-    { label: "CRM", icon: "C" },
-    { label: "DIRECT", icon: "D" }
+  // Rebuilt to match the PageBlindness composition: a single dashboard-style panel
+  // on the left (attribution report mockup with channel rows whose source column is "?"),
+  // an arrow to a question-mark bubble on the right, and a closing footer microcopy.
+  const channels = [
+    { label: "META",       spend: "€1 240", clicks: "412" },
+    { label: "GOOGLE",     spend: "€  980", clicks: "287" },
+    { label: "INSTAGRAM",  spend: "€  640", clicks: "194" },
+    { label: "ORGĀNISKAIS",spend: "€    0", clicks: "121" },
+    { label: "REKOMEND.",  spend: "€    0", clicks: " 56" },
+    { label: "E-PASTS",    spend: "€  120", clicks: " 38" },
+    { label: "TIEŠAIS",    spend: "€    0", clicks: " 22" }
   ];
-  const startY = 28;
-  const stepY = 38;
+  const rowH = 22;
+  const rowsY = 64;
   return (
     <g>
-      {sources.map((s, i) => {
-        const y = startY + i * stepY;
-        return (
-          <g key={s.label}>
-            <g transform={`translate(40, ${y})`}>
-              <rect width="170" height="28" rx="14" fill="rgba(8,12,10,0.65)" stroke={ACCENT} strokeWidth="1.2" />
-              <circle cx="18" cy="14" r="9" fill="none" stroke={ACCENT} strokeWidth="1.2" />
-              <text x="18" y="18" textAnchor="middle" fill={ACCENT} fontSize="11" fontWeight="700">{s.icon}</text>
-              <text x="40" y="18" fill={TEXT} fontSize="11" letterSpacing="0.1em" fontWeight="600">{s.label}</text>
+      {/* dashboard panel */}
+      <g transform="translate(40,40)">
+        <rect width="500" height="240" rx="12" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.5" />
+        {/* window chrome */}
+        <circle cx="22" cy="22" r="11" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+        <path d="M27 18 L19 22 L27 26" stroke={ACCENT} strokeWidth="1.3" fill="none" />
+        <circle cx="464" cy="22" r="2.5" fill={DIM} />
+        <circle cx="474" cy="22" r="2.5" fill={DIM} />
+        <circle cx="484" cy="22" r="2.5" fill={DIM} />
+        {/* report title */}
+        <text x="46" y="26" fill={ACCENT} fontSize="10" letterSpacing="0.22em" fontWeight="700">ATRIBŪCIJAS ATSKAITE · 14D</text>
+        {/* column headers */}
+        <text x="22"  y="50" fill={MUTED} fontSize="8.5" letterSpacing="0.18em">KANĀLS</text>
+        <text x="220" y="50" fill={MUTED} fontSize="8.5" letterSpacing="0.18em" textAnchor="end">IZMAKSAS</text>
+        <text x="320" y="50" fill={MUTED} fontSize="8.5" letterSpacing="0.18em" textAnchor="end">KLIKI</text>
+        <text x="478" y="50" fill={MUTED} fontSize="8.5" letterSpacing="0.18em" textAnchor="end">PIEŠĶIRTS AVOTS</text>
+        <line x1="14" y1="56" x2="486" y2="56" stroke={DIM} strokeWidth="0.9" />
+        {/* rows */}
+        {channels.map((c, i) => {
+          const y = rowsY + i * rowH;
+          return (
+            <g key={c.label}>
+              <line x1="14" y1={y + rowH - 2} x2="486" y2={y + rowH - 2} stroke="rgba(59,255,124,0.08)" strokeWidth="0.8" />
+              {/* channel dot */}
+              <circle cx="22" cy={y + 8} r="3" fill={ACCENT} />
+              <text x="32"  y={y + 11} fill={TEXT}  fontSize="10" letterSpacing="0.08em" fontWeight="600">{c.label}</text>
+              <text x="220" y={y + 11} fill={TEXT}  fontSize="10" textAnchor="end" fontFamily="var(--mono)">{c.spend}</text>
+              <text x="320" y={y + 11} fill={TEXT}  fontSize="10" textAnchor="end" fontFamily="var(--mono)">{c.clicks}</text>
+              {/* assigned source — all "?" — the visual punchline */}
+              <g transform={`translate(420,${y - 2})`}>
+                <rect width="62" height="14" rx="3" fill="rgba(38,18,8,0.55)" stroke="#E6A84A" strokeWidth="0.9" strokeDasharray="3 2" />
+                <text x="31" y="10.5" textAnchor="middle" fill="#E6A84A" fontSize="9" fontWeight="700">? ? ?</text>
+              </g>
             </g>
-            <path d={`M210 ${y + 14} Q 320 ${y + 14} 450 160`} stroke={DIM} strokeWidth="1" fill="none" strokeDasharray="3 3" />
-          </g>
-        );
-      })}
-      <g transform="translate(450,116)">
-        <circle cx="50" cy="40" r="44" fill="url(#inc-glow)" />
-        <circle cx="50" cy="40" r="36" fill="none" stroke={ACCENT} strokeWidth="1.4" />
-        <circle cx="50" cy="32" r="10" fill={ACCENT} />
-        <path d="M30 56 Q50 38 70 56" stroke={ACCENT} strokeWidth="1.5" fill={ACCENT} fillOpacity="0.4" />
-        <text x="50" y="106" textAnchor="middle" fill={TEXT} fontSize="11" letterSpacing="0.12em" fontWeight="700">KLIENTS</text>
+          );
+        })}
       </g>
-      <path d="M560 156 L630 156" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="5 4" markerEnd="url(#arr-lime)" />
-      <g transform="translate(630,108)">
-        <circle cx="50" cy="50" r="48" fill="url(#inc-glow)" />
-        <circle cx="50" cy="50" r="38" fill="none" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="6 4" />
-        <text x="50" y="64" textAnchor="middle" fill={ACCENT} fontSize="40" fontWeight="700">?</text>
-        <text x="50" y="124" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">AVOTS</text>
-        <text x="50" y="138" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">NEZINĀMS</text>
+
+      {/* arrow to "?" diagnostic bubble */}
+      <path d="M550 120 L620 120" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="5 4" markerEnd="url(#arr-lime)" />
+
+      {/* big question bubble (matches PageBlindness composition) */}
+      <g transform="translate(620,52)">
+        <circle cx="60" cy="60" r="58" fill="url(#inc-glow)" />
+        <circle cx="60" cy="60" r="46" fill="none" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="6 4" />
+        <text x="60" y="76" textAnchor="middle" fill={ACCENT} fontSize="44" fontWeight="700">?</text>
+      </g>
+
+      {/* footer microcopy with eye-with-slash */}
+      <g transform="translate(644,210)">
+        <path d="M0 22 Q26 -6 52 22 Q26 50 0 22 Z" fill="none" stroke={MUTED} strokeWidth="1.3" />
+        <circle cx="26" cy="22" r="8" fill="none" stroke={MUTED} strokeWidth="1.3" />
+        <line x1="-4" y1="-4" x2="56" y2="48" stroke={MUTED} strokeWidth="1.5" />
+        <text x="26" y="74" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">NAV REDZAMS,</text>
+        <text x="26" y="88" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">KAS ATVEDA KLIENTU.</text>
       </g>
     </g>
   );
 }
 
 function NoRecovery() {
-  // Open-loop cycle metaphor — three nodes forming what SHOULD be a closed cycle,
-  // but the return arc is missing. Centered. The story: contact → no answer →
-  // marked lost → (no recovery loop back to re-engage) → permanent loss.
-  const cx = 400;
-  const cy = 168;
-  const radius = 108;
-  // node positions on the circle (top, bottom-right, bottom-left)
-  const nodes = [
-    { angle: -90, label: "KONTAKTS",   sub: "leads ienāk",     icon: "in"  },
-    { angle:  30, label: "NEATBILDE",  sub: "klusums",         icon: "mute"},
-    { angle: 150, label: "ZAUDĒTS",    sub: "marķēts par lost", icon: "out" }
+  // Rebuilt to match the AttributionGap / PageBlindness composition:
+  // a single dashboard-style panel on the left listing dropped-off contacts
+  // whose "next touch" column is empty, an arrow to a diagnostic bubble showing
+  // a broken-loop icon, and a closing footer microcopy.
+  const drops = [
+    { name: "ANNA B.",    last: "PIRMS 18D", next: "—" },
+    { name: "K\u0100RLIS L.",  last: "PIRMS 22D", next: "—" },
+    { name: "JANIS \u0132.",   last: "PIRMS 28D", next: "—" },
+    { name: "LIENE M.",   last: "PIRMS 34D", next: "—" },
+    { name: "ANDR\u0136S T.",  last: "PIRMS 41D", next: "—" },
+    { name: "SANTA O.",   last: "PIRMS 47D", next: "—" },
+    { name: "EDGARS V.",  last: "PIRMS 56D", next: "—" }
   ];
-  const pos = (a: number) => ({
-    x: +(cx + Math.cos((a * Math.PI) / 180) * radius).toFixed(3),
-    y: +(cy + Math.sin((a * Math.PI) / 180) * radius).toFixed(3)
-  });
-
-  // helper: arc from node a→b along the circle (short way clockwise)
-  const arcPath = (a1: number, a2: number, color: string, dashed: boolean) => {
-    const p1 = pos(a1);
-    const p2 = pos(a2);
-    return (
-      <path
-        d={`M${p1.x} ${p1.y} A${radius} ${radius} 0 0 1 ${p2.x} ${p2.y}`}
-        stroke={color}
-        strokeWidth="1.6"
-        fill="none"
-        strokeDasharray={dashed ? "5 5" : undefined}
-        markerEnd={dashed ? undefined : "url(#arr-lime)"}
-      />
-    );
-  };
-
-  // node icon switch
-  const NodeIcon = ({ kind }: { kind: string }) => {
-    if (kind === "in") {
-      return (
-        <g fill="none" stroke={ACCENT} strokeWidth="1.5">
-          <path d="M-12 0 L8 0" />
-          <path d="M2 -6 L8 0 L2 6" />
-          <circle cx="12" cy="0" r="4" fill={ACCENT} />
-        </g>
-      );
-    }
-    if (kind === "mute") {
-      return (
-        <g fill="none" stroke="#E6A84A" strokeWidth="1.5">
-          {/* speaker silenced */}
-          <path d="M-10 -5 L-4 -5 L2 -10 L2 10 L-4 5 L-10 5 Z" fill="rgba(230,168,74,0.18)" />
-          <line x1="6" y1="-7" x2="14" y2="7" />
-          <line x1="14" y1="-7" x2="6" y2="7" />
-        </g>
-      );
-    }
-    // out — gravestone-style flag
-    return (
-      <g fill="none" stroke="#E6A84A" strokeWidth="1.5">
-        <line x1="-8" y1="-10" x2="-8" y2="10" />
-        <path d="M-8 -10 L8 -10 L4 -6 L8 -2 L-8 -2 Z" fill="rgba(230,168,74,0.22)" />
-      </g>
-    );
-  };
-
+  const rowH = 22;
+  const rowsY = 64;
   return (
     <g>
-      {/* eyebrow above */}
-      <text x={cx} y="34" textAnchor="middle" fill={ACCENT} fontSize="10" letterSpacing="0.22em" fontWeight="700">ATGŪŠANAS CIKLS · ATVĒRTS</text>
-
-      {/* faint full circle to suggest the intended cycle */}
-      <circle cx={cx} cy={cy} r={radius} fill="none" stroke="rgba(59,255,124,0.08)" strokeWidth="1" strokeDasharray="2 6" />
-
-      {/* TWO present arcs (KONTAKTS → NEATBILDE → ZAUDĒTS) — solid green */}
-      {arcPath(-90, 30, ACCENT, false)}
-      {arcPath(30, 150, ACCENT, false)}
-
-      {/* MISSING return arc (ZAUDĒTS → KONTAKTS) — faint amber dashed with broken-link X */}
-      {arcPath(150, 270, "#E6A84A", true)}
-
-      {/* the broken-link badge that interrupts the missing arc */}
-      <g transform={`translate(${cx - 132},${cy + 38})`}>
-        <rect x="-46" y="-12" width="92" height="24" rx="12" fill="rgba(8,12,10,0.96)" stroke="#E6A84A" strokeWidth="1.2" />
-        <g transform="translate(-32,0)" stroke="#E6A84A" strokeWidth="1.4" fill="none">
-          {/* broken chain link icon */}
-          <path d="M-6 -4 a4 4 0 0 1 4 -4 h2" />
-          <path d="M6 4 a4 4 0 0 1 -4 4 h-2" />
-          <line x1="-9" y1="-7" x2="9" y2="7" />
-        </g>
-        <text x="6" y="3.5" textAnchor="middle" fill="#E6A84A" fontSize="7.5" letterSpacing="0.18em" fontWeight="700">NAV CIKLA</text>
+      {/* dashboard panel */}
+      <g transform="translate(40,40)">
+        <rect width="500" height="240" rx="12" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.5" />
+        {/* window chrome */}
+        <circle cx="22" cy="22" r="11" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+        <path d="M27 18 L19 22 L27 26" stroke={ACCENT} strokeWidth="1.3" fill="none" />
+        <circle cx="464" cy="22" r="2.5" fill={DIM} />
+        <circle cx="474" cy="22" r="2.5" fill={DIM} />
+        <circle cx="484" cy="22" r="2.5" fill={DIM} />
+        {/* report title */}
+        <text x="46" y="26" fill={ACCENT} fontSize="10" letterSpacing="0.22em" fontWeight="700">ZAUD\u0112TIE KONTAKTI \u00b7 60D</text>
+        {/* column headers */}
+        <text x="22"  y="50" fill={MUTED} fontSize="8.5" letterSpacing="0.18em">KONTAKTS</text>
+        <text x="240" y="50" fill={MUTED} fontSize="8.5" letterSpacing="0.18em" textAnchor="end">P\u0112D\u0112JAIS PIESK\u0100RIENS</text>
+        <text x="478" y="50" fill={MUTED} fontSize="8.5" letterSpacing="0.18em" textAnchor="end">N\u0100KAMAIS SOLIS</text>
+        <line x1="14" y1="56" x2="486" y2="56" stroke={DIM} strokeWidth="0.9" />
+        {/* rows */}
+        {drops.map((d, i) => {
+          const y = rowsY + i * rowH;
+          return (
+            <g key={d.name}>
+              <line x1="14" y1={y + rowH - 2} x2="486" y2={y + rowH - 2} stroke="rgba(59,255,124,0.08)" strokeWidth="0.8" />
+              {/* status dot — amber to signal abandonment */}
+              <circle cx="22" cy={y + 8} r="3" fill="#E6A84A" />
+              <text x="32"  y={y + 11} fill={TEXT}  fontSize="10" letterSpacing="0.08em" fontWeight="600">{d.name}</text>
+              <text x="240" y={y + 11} fill={MUTED} fontSize="10" textAnchor="end" fontFamily="var(--mono)">{d.last}</text>
+              {/* "next step" pill — amber dashed empty */}
+              <g transform={`translate(420,${y - 2})`}>
+                <rect width="62" height="14" rx="3" fill="rgba(38,18,8,0.55)" stroke="#E6A84A" strokeWidth="0.9" strokeDasharray="3 2" />
+                <text x="31" y="10.5" textAnchor="middle" fill="#E6A84A" fontSize="9" fontWeight="700">{d.next}</text>
+              </g>
+            </g>
+          );
+        })}
       </g>
 
-      {/* nodes */}
-      {nodes.map((n, i) => {
-        const p = pos(n.angle);
-        return (
-          <g key={n.label} transform={`translate(${p.x},${p.y})`}>
-            {/* outer halo */}
-            <circle r="34" fill="url(#inc-glow)" />
-            {/* node disc */}
-            <circle r="26" fill="rgba(8,12,10,0.92)" stroke={i === 0 ? ACCENT : "#E6A84A"} strokeWidth="1.6" />
-            {/* number */}
-            <text x="0" y="-32" textAnchor="middle" fill={i === 0 ? ACCENT : "#E6A84A"} fontSize="8" letterSpacing="0.2em" fontWeight="700">0{i + 1}</text>
-            {/* icon */}
-            <NodeIcon kind={n.icon} />
-            {/* label below node */}
-            <text x="0" y="46" textAnchor="middle" fill={TEXT} fontSize="11" letterSpacing="0.16em" fontWeight="700">{n.label}</text>
-            <text x="0" y="60" textAnchor="middle" fill={MUTED} fontSize="9" letterSpacing="0.06em">{n.sub}</text>
-          </g>
-        );
-      })}
+      {/* arrow to diagnostic bubble */}
+      <path d="M550 120 L620 120" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="5 4" markerEnd="url(#arr-lime)" />
 
-      {/* CENTER stamp — the diagnosis */}
-      <g transform={`translate(${cx},${cy})`}>
-        <circle r="46" fill="rgba(8,12,10,0.88)" stroke="rgba(230,168,74,0.55)" strokeWidth="1.1" strokeDasharray="3 4" />
-        <text x="0" y="-6" textAnchor="middle" fill="#E6A84A" fontSize="9" letterSpacing="0.24em" fontWeight="700">ATGŪŠANA</text>
-        <text x="0" y="10" textAnchor="middle" fill={TEXT} fontSize="13" letterSpacing="0.18em" fontWeight="700">TRŪKST</text>
-        <text x="0" y="24" textAnchor="middle" fill={MUTED} fontSize="7" letterSpacing="0.16em">nav atgriešanas mehānisma</text>
+      {/* big diagnostic bubble — broken-loop icon */}
+      <g transform="translate(620,52)">
+        <circle cx="60" cy="60" r="58" fill="url(#inc-glow)" />
+        <circle cx="60" cy="60" r="46" fill="none" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="6 4" />
+        {/* broken cycle arrows */}
+        <g transform="translate(60,60)" stroke={ACCENT} strokeWidth="2" fill="none" strokeLinecap="round">
+          <path d="M-20 -8 a22 22 0 0 1 38 -6" />
+          <path d="M14 -16 L20 -14 L18 -8" />
+          <path d="M20 8 a22 22 0 0 1 -38 6" stroke="#E6A84A" strokeDasharray="3 3" />
+        </g>
+        <text x="60" y="84" textAnchor="middle" fill="#E6A84A" fontSize="9" letterSpacing="0.22em" fontWeight="700">CIKLS LAUSTS</text>
+      </g>
+
+      {/* footer microcopy with broken-link icon */}
+      <g transform="translate(644,210)">
+        <g transform="translate(0,18)" stroke={MUTED} strokeWidth="1.4" fill="none">
+          <path d="M-4 0 a6 6 0 0 1 6 -6 h6" />
+          <path d="M28 8 a6 6 0 0 1 -6 6 h-6" />
+          <line x1="-2" y1="14" x2="30" y2="-6" />
+        </g>
+        <text x="26" y="74" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">NAV ATG\u016a\u0160ANAS,</text>
+        <text x="26" y="88" textAnchor="middle" fill={MUTED} fontSize="10" letterSpacing="0.1em">KONTAKTS PALIEK ZAUD\u0112TS.</text>
       </g>
     </g>
   );

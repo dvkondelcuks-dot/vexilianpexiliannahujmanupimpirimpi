@@ -30,7 +30,7 @@ export const diagnosisEvents = [
     number: "04/05",
     layer: "Atgūšana",
     severity: "NAV CIKLA",
-    title: "Klients neatbild — un viss. Pazaudēts paliek pazaudēts, kaut neviens neko nedarīja, lai tā būtu.",
+    title: "Klients neatbild — un viss. Pazaudēts paliek pazaudēts, kaut neviens neko nedarīja, lai tā nebūtu.",
     status: "ATGŪŠANA TRŪKST",
     lossType: "Nav atgriešanas mehānisma",
     visual: "noRecovery"

@@ -1,22 +1,22 @@
 export const navItems = [
-  { id: "manifest", label: "00 Manifests" },
-  { id: "diagnosis", label: "01 Diagnoze" },
-  { id: "approach", label: "02 Pieeja" },
-  { id: "founders", label: "03 Par mums" },
-  { id: "system", label: "04 Sistēma" },
-  { id: "diagnostics", label: "05 Diagnostika" },
-  { id: "collaboration", label: "06 Sadarbība" },
-  { id: "process", label: "07 Process" },
-  { id: "cases", label: "08 Darbi" },
-  { id: "clarity", label: "09 Skaidrība" },
-  { id: "audits", label: "10 Audits" }
+  { id: "manifest", label: "Manifests" },
+  { id: "diagnosis", label: "Diagnoze" },
+  { id: "approach", label: "Pieeja" },
+  { id: "founders", label: "Par mums" },
+  { id: "system", label: "Sistēma" },
+  { id: "diagnostics", label: "Diagnostika" },
+  { id: "collaboration", label: "Sadarbība" },
+  { id: "process", label: "Process" },
+  { id: "cases", label: "Darbi" },
+  { id: "clarity", label: "Skaidrība" },
+  { id: "audits", label: "Audits" }
 ];
 
 export const heroCopy = {
   eyebrow: "VEX / 2026 · KOMERCIĀLĀS SISTĒMAS",
   headline: "Klienti nepazūd.|Viņi iekrīt sistēmā.",
   body: [
-    "Vexilian uzbūvē komerciālo sistēmu Latvijas mazajiem un vidējiem uzņēmumiem — vienu savienotu plūsmu no pirmā kontakta līdz noslēgtam darījumam.",
+    "Vexillian uzbūvē komerciālo sistēmu Latvijas mazajiem un vidējiem uzņēmumiem — vienu savienotu plūsmu no pirmā kontakta līdz noslēgtam darījumam.",
     "Mēs neuztaisām tikai lapu. Mēs savienojam vietni, formas, CRM, atribūciju, atgūšanu un vadības skatu vienā sistēmā, kuru var redzēt, vadīt un uzlabot."
   ],
   secondaryBody: [
@@ -31,7 +31,7 @@ export const heroCopy = {
 export const sectionCopy = {
   diagnosis: {
     eyebrow: "01 · DIAGNOZE",
-    headline: "Pieci klusi lūzuma punkti, kur|Latvijas MVŪ zaudē klientus.",
+    headline: "Pieci klusi lūzuma punkti, kur|Latvijas MVU zaudē klientus.",
     body:
       "Tie nav dramatiski notikumi. Tie notiek katru dienu: cilvēks nospiež reklāmu, atver lapu, uzraksta, pazūd, neatbild, atgriežas vēlāk vai nopērk citur. Problēma nav tikai tajā, ka klients pazuda. Problēma ir tajā, ka uzņēmums nezina, kur tas notika."
   },
@@ -39,13 +39,13 @@ export const sectionCopy = {
     eyebrow: "02 · PIEEJA",
     headline: "Mēs neuzlabojam fragmentus.|Mēs savienojam plūsmu.",
     body:
-      "Vexilian sāk tur, kur lielākā daļa projektu beidzas: pie jautājuma, kas notiek pēc tam, kad cilvēks ir izrādījis interesi."
+      "Vexillian sāk tur, kur lielākā daļa projektu beidzas: pie jautājuma, kas notiek pēc tam, kad cilvēks ir izrādījis interesi."
   },
   founders: {
     eyebrow: "03 · DIBINĀTĀJU SISTĒMAS",
     headline: "Trīs cilvēki. Viena sistēmas galva.|Atbildība bez slāņiem pa vidu.",
     body:
-      "Vexilian nav liela aģentūra ar pieciem starpniekiem starp klientu un darbu. Sistēmu veido cilvēki, kuri saprot arhitektūru, analīzi, mārketingu, komunikāciju un izaugsmi kā vienu kopēju plūsmu.",
+      "Vexillian nav liela aģentūra ar pieciem starpniekiem starp klientu un darbu. Sistēmu veido cilvēki, kuri saprot arhitektūru, analīzi, mārketingu, komunikāciju un izaugsmi kā vienu kopēju plūsmu.",
     closing:
       "Viena sistēma nav tikai kods, dizains vai reklāma. Tā ir kopīga atbildība par to, lai klienta kustība kļūst redzama."
   },
@@ -93,10 +93,10 @@ export const sectionCopy = {
 };
 
 export const footerCopy = {
-  brand: "Vexı́lian",
-  body: "Komerciālās sistēmas Latvijas mazajiem un vidējiem uzņēmumiem. Studio bāzēta Rīgā, V/2026.",
-  contact: "hello@vexilian.lv",
+  brand: "Vexı́llian",
+  body: "Komerciālās sistēmas Latvijas mazajiem un vidējiem uzņēmumiem. Studio bāzēta Rīgā.",
+  contact: "hello@vexillian.lv",
   location: "Rīga, Latvija",
-  status: "Pieņemam 2 jaunus auditus V/2026",
-  bottom: ["© 2026 Vexilian — Rīga, LV", "Komerciālās sistēmas · MVU", "V/2026 · build 0001"]
+  status: "Pieņemam 4 jaunus auditus V/2026",
+  bottom: ["© 2026 Vexillian — Rīga, LV", "Komerciālās sistēmas · MVU"]
 };

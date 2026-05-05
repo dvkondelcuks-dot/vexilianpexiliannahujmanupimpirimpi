@@ -20,9 +20,9 @@ const chakra = Chakra_Petch({
 });
 
 export const metadata: Metadata = {
-  title: "Vexilian — Komerciālās sistēmas Latvijas MVU",
+  title: "Vexillian — Komerciālās sistēmas Latvijas MVU",
   description:
-    "Vexilian uzbūvē komerciālo sistēmu Latvijas mazajiem un vidējiem uzņēmumiem: vietne, CRM, atribūcija, atgūšana un vadības skats vienā plūsmā.",
+    "Vexillian uzbūvē komerciālo sistēmu Latvijas mazajiem un vidējiem uzņēmumiem: vietne, CRM, atribūcija, atgūšana un vadības skats vienā plūsmā.",
   openGraph: {
     title: "Kur pazūd tavi klienti?",
     description:

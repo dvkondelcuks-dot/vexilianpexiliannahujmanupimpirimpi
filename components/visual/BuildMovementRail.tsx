@@ -24,10 +24,13 @@ export function BuildMovementRail() {
           background: `linear-gradient(180deg, transparent, ${DIM} 12%, ${DIM} 88%, transparent)`
         }}
       />
-      <Stack spacing={2.4}>
+      <Stack spacing={2.4} data-reveal-stagger data-reveal-stagger-step="160">
         {processSteps.map((step, i) => (
           <Box
             key={step.number}
+            className="industrial-card vex-illu"
+            data-reveal={i % 2 === 0 ? "right" : "left"}
+            data-reveal-exit={i % 2 === 0 ? "left" : "right"}
             sx={{
               display: "grid",
               gridTemplateColumns: { xs: "1fr", md: "120px 1fr 1fr" },
@@ -292,15 +295,15 @@ function BuildScene() {
   );
 }
 
-// 04 — Handover: Vexilian zone → key transfer → Klients zone (docs, training, access)
+// 04 — Handover: Vexillian zone → key transfer → Klients zone (docs, training, access)
 function HandoverScene() {
   return (
     <g>
       <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">NODOŠANA · KOMANDAI</text>
 
-      {/* LEFT zone — VEXILIAN */}
+      {/* LEFT zone — VEXILLIAN */}
       <rect x="18" y="34" width="116" height="116" rx="6" fill="rgba(8,12,10,0.55)" stroke={DIM} strokeWidth="0.9" strokeDasharray="3 3" />
-      <text x="76" y="48" textAnchor="middle" fill={ACCENT} fontSize="7.5" letterSpacing="0.22em" fontWeight="700">VEXILIAN</text>
+      <text x="76" y="48" textAnchor="middle" fill={ACCENT} fontSize="7.5" letterSpacing="0.22em" fontWeight="700">VEXILLIAN</text>
       {/* stacked sealed package */}
       <g transform="translate(40,62)">
         <rect width="72" height="72" rx="4" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />

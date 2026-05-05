@@ -14,7 +14,7 @@ const MUTED = "#A7B0BA";
 export function FounderOperatorCard({ founder }: { founder: Founder }) {
   return (
     <Box
-      className="industrial-card"
+      className="industrial-card vex-illu"
       sx={{
         border: "1px solid var(--border)",
         borderRadius: "var(--radius)",

@@ -22,19 +22,6 @@ export function Footer() {
       />
 
       <Container maxWidth={false} sx={{ maxWidth: "var(--grid-max)", px: { xs: 2, md: 4 }, py: { xs: 6, md: 9 }, position: "relative" }}>
-        {/* status banner */}
-        <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ md: "center" }} justifyContent="space-between" sx={{ pb: 4, borderBottom: "1px solid var(--border)" }}>
-          <Stack direction="row" spacing={1.2} alignItems="center">
-            <StatusDot tone="green" />
-            <Typography sx={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.22em", color: "var(--text-3)", textTransform: "uppercase" }}>SISTĒMA · LIVE</Typography>
-            <Box sx={{ width: 24, height: 1, background: "var(--border)" }} />
-            <Typography sx={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.22em", color: ACCENT, textTransform: "uppercase" }}>{footerCopy.status}</Typography>
-          </Stack>
-          <Typography sx={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.22em", color: "var(--text-3)", textTransform: "uppercase" }}>
-            VEIDOTS RĪGĀ · REGULĒTS IKMĒNESI
-          </Typography>
-        </Stack>
-
         {/* DISPLAY MARK */}
         <Box sx={{ py: { xs: 5, md: 7 }, textAlign: "center" }}>
           <Typography
@@ -52,7 +39,7 @@ export function Footer() {
               WebkitTextFillColor: "transparent"
             }}
           >
-            VEXı́LIAN
+            VEXILLIAN
           </Typography>
           <Typography sx={{ mt: 2, fontFamily: "var(--mono)", fontSize: { xs: 11, md: 13 }, letterSpacing: "0.32em", color: "var(--text-3)", textTransform: "uppercase" }}>
             KOMERCIĀLĀ · DIAGNOSTIKAS · SISTĒMA
@@ -60,7 +47,7 @@ export function Footer() {
         </Box>
 
         {/* link grid */}
-        <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", md: "1.4fr 1fr 1fr 1fr" }, gap: { xs: 4, md: 5 }, pt: 5, borderTop: "1px solid var(--border)" }}>
+        <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", md: "1.6fr 1fr 1fr" }, gap: { xs: 4, md: 5 }, pt: 5, borderTop: "1px solid var(--border)" }}>
           <Stack spacing={1.6}>
             <MetaLabel>Manifests</MetaLabel>
             <Typography sx={{ color: "var(--text-2)", maxWidth: 380, lineHeight: 1.6, fontSize: 14 }}>{footerCopy.body}</Typography>
@@ -73,17 +60,8 @@ export function Footer() {
           </Stack>
 
           <Stack spacing={1}>
-            <MetaLabel>Sistēma</MetaLabel>
-            {["Manifests", "Diagnostika", "Pieeja", "Sistēma"].map((label, i) => (
-              <Typography key={label} component="a" href={`#${["manifest", "diagnosis", "approach", "system"][i]}`} sx={{ color: "var(--text-3)", fontFamily: "var(--mono)", fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", "&:hover": { color: ACCENT } }}>
-                {label}
-              </Typography>
-            ))}
-          </Stack>
-
-          <Stack spacing={1}>
             <MetaLabel>Navigācija</MetaLabel>
-            {navItems.map((item, i) => (
+            {navItems.map((item) => (
               <Typography
                 key={item.id}
                 component="a"
@@ -101,7 +79,6 @@ export function Footer() {
                   "&:hover": { color: ACCENT }
                 }}
               >
-                <Box component="span" sx={{ color: "rgba(167,176,186,0.45)", fontSize: 10 }}>{String(i).padStart(2, "0")}</Box>
                 {item.label}
               </Typography>
             ))}

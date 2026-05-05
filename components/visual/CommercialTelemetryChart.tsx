@@ -107,7 +107,7 @@ export function CommercialTelemetryChart({ mode, variant = "area", height = 152 
   }, [reduced]);
 
   return (
-    <Box ref={rootRef} className="industrial-card" sx={{ border: "1px solid rgba(59,255,124,0.14)", borderRadius: "var(--radius)", background: "rgba(7,9,11,0.78)", p: 1.25, minHeight: height + 64 }}>
+    <Box ref={rootRef} className="industrial-card vex-illu" sx={{ border: "1px solid rgba(59,255,124,0.14)", borderRadius: "var(--radius)", background: "rgba(7,9,11,0.78)", p: 1.25, minHeight: height + 64 }}>
       <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: 0.75 }}>
         <MetaLabel sx={{ color: "var(--signal-blue)" }}>{title.eyebrow}</MetaLabel>
         <Typography sx={{ color: "var(--text-3)", fontFamily: "var(--mono)", fontSize: 10, textTransform: "uppercase" }}>{title.title}</Typography>

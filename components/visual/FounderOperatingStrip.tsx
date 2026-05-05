@@ -7,7 +7,7 @@ const stripItems = [
   ["BŪVĒŠANA", "21–35D"],
   ["SLĀŅI", "6"],
   ["REĠIONS", "BALTIJA"],
-  ["STATUSS", "2 AUDITI"]
+  ["STATUSS", "4 AUDITI"]
 ] as const;
 
 export function FounderOperatingStrip() {

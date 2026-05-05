@@ -61,19 +61,18 @@ export function Header() {
       <Container maxWidth={false} sx={{ maxWidth: "var(--grid-max)", px: { xs: 2, md: 4 } }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2} sx={{ minHeight: 80 }}>
           {/* BRAND — large mark + svg dot */}
-          <Stack direction="row" spacing={1.4} alignItems="center" component="a" href="#manifest" aria-label="Vexilian sākums" sx={{ minWidth: { md: 240 } }}>
+          <Stack direction="row" spacing={1.4} alignItems="center" component="a" href="#manifest" aria-label="Vexillian sākums" sx={{ minWidth: { md: 240 } }}>
             <Box
-              component="svg"
-              viewBox="0 0 28 28"
-              sx={{ width: 26, height: 26, color: "var(--signal-blue)" }}
-            >
-              <circle cx="14" cy="14" r="13" fill="none" stroke="currentColor" strokeWidth="1.4" />
-              <circle cx="14" cy="14" r="5" fill="currentColor" />
-              <path d="M14 1 V6 M14 22 V27 M1 14 H6 M22 14 H27" stroke="currentColor" strokeWidth="1.4" />
-            </Box>
+              component="img"
+              src="/images/logo.png"
+              alt=""
+              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+              sx={{ width: 28, height: 28, objectFit: "contain", display: "block" }}
+            />
             <Box>
-              <Box sx={{ fontFamily: "var(--mono)", fontSize: 16, color: "var(--text)", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, lineHeight: 1 }}>VEXı́LIAN</Box>
-              <Box sx={{ display: { xs: "none", sm: "block" }, color: "var(--text-3)", fontFamily: "var(--mono)", fontSize: 9.5, textTransform: "uppercase", mt: 0.4, letterSpacing: "0.22em" }}>KOMERCIĀLĀ · DIAGNOSTIKAS · SISTĒMA</Box>
+              <Box sx={{ fontFamily: "var(--mono)", fontSize: 16, color: "var(--text)", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, lineHeight: 1 }}>
+                VEXI<Box component="span" sx={{ color: "var(--signal-blue)" }}>LL</Box>IAN
+              </Box>
             </Box>
           </Stack>
 
@@ -121,7 +120,7 @@ export function Header() {
                     }
                   }}
                 >
-                  <Box component="span" sx={{ color: active ? "var(--signal-blue)" : "rgba(167,176,186,0.55)", fontSize: 9.5 }}>
+                  <Box component="span" sx={{ color: active ? "var(--signal-blue)" : "rgba(167,176,186,0.55)", fontSize: 9.5, display: "none" }}>
                     {String(i).padStart(2, "0")}
                   </Box>
                   {item.label}

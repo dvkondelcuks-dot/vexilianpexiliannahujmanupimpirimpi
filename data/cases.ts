@@ -4,7 +4,7 @@ export const cases = [
     name: "Purgaiļi",
     headline: "No piezīmju blociņa un zvaniem līdz automatizētai rezervāciju un komercsistēmai.",
     body:
-      "Pirms Vexilian rezervācijas tika rakstītas piezīmju blociņā un kārtotas pa telefonu — katrs pieprasījums atkarīgs no tā, kurš atcerējās zvanīt atpakaļ. Mēs uzbūvējām vienotu rezervāciju un komercsistēmu: viesis aizpilda formu, dati nonāk CRM, kalendārs atjaunojas reālā laikā, īpašnieks redz visus aktīvos pieprasījumus vienā skatā un nekas vairs nepazūd starp piezīmēm un zvaniem.",
+      "Pirms Vexillian rezervācijas tika rakstītas piezīmju blociņā un kārtotas pa telefonu — katrs pieprasījums bija atkarīgs no tā, kurš atcerējās zvanīt atpakaļ. Avoti, valodas un sezonas pieprasījumi netika fiksēti, un divreiz rezervēti termiņi bija ikdiena. Mēs no nulles uzbūvējām vienotu rezervāciju un komercsistēmu: jauna piecu valodu īpašuma lapa, automatizēta rezervāciju forma, klientu kartoteka iekšējā CRM, atribūcijas slānis kas marķē avotu (Booking, Meta, organika, ieteikums), kalendāra sinhronizācija reālā laikā un atgūšanas trigeri kas atsāk sarunu ar nepabeigtajiem pieprasījumiem. Īpašnieks vienā vadības panelī redz aktīvos pieprasījumus, apstiprinātos datumus, kanāla ieguldījumu un nākamo ierašanos — bez piezīmju blociņa, bez aizmirstiem zvaniem, bez dubultām rezervācijām.",
     layers: ["Plūsma", "CRM", "Atribūcija", "Atgūšana", "Skats"],
     industry: "Lauku viesmīlība",
     location: "Latvija",
@@ -21,7 +21,7 @@ export const cases = [
     name: "La Perla",
     headline: "30 gadus veca atsevišķa datubāze, pārbūvēta par jaunu digitalizētu komercsistēmu.",
     body:
-      "La Perla 30 gadus glabāja klientu datus vecā, atsevišķā datubāzē, kas nebija savienota ne ar vietni, ne ar saturu, ne ar veikalu. Mēs to pilnībā pārbūvējām par jaunu, digitalizētu komercsistēmu — vienota klientu kartoteka, satura plūsma kas savienota ar pieprasījumiem, kampaņu signāli un skaidrs ceļš no Instagram līdz veikala apmeklējumam un pārdošanai.",
+      "La Perla 30 gadus glabāja klientu datus vecā, atsevišķā datubāzē, kas nebija savienota ne ar vietni, ne ar saturu, ne ar veikalu. Saziņa ar klientiem notika manuāli — Instagram ziņas, telefona zvani, papīra kartītes — un neviens nezināja, kurš saturs vai kampaņa atved cilvēku uz veikalu TC SAGA. Mēs to pilnībā pārbūvējām par jaunu, digitalizētu komercsistēmu: migrēta un sakopta klientu kartoteka jaunā CRM, satura darbgrāmata kas saista publikāciju ar avotu un produktu, atribūcijas slānis no Instagram pieprasījuma līdz veikala apmeklējumam, automatizēti atgūšanas trigeri silto kontaktu atkārtotai uzrunai un kampaņu signāli kas saliek pārdošanas plūsmu pa nedēļām. Īpašnieks tagad redz, kura publikācija atvedusi kontaktu, kurš kontakts atnācis uz veikalu un kurš pirkums no kāda avota — viens skats, viena patiesība, viena sistēma.",
     layers: ["Saturs", "CRM", "Atribūcija", "Atgūšana", "Skats"],
     industry: "Rotaslietas, retail",
     location: "TC SAGA · Rīga",

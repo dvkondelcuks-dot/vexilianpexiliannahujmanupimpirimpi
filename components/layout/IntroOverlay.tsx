@@ -66,11 +66,11 @@ export function IntroOverlay() {
 
       {/* center mark */}
       <div className="vex-intro__center">
-        <svg width="84" height="84" viewBox="0 0 84 84" className="vex-intro__mark" role="img" aria-label="Vexilian">
+        <svg width="84" height="84" viewBox="0 0 84 84" className="vex-intro__mark" role="img" aria-label="Vexillian">
           <path d="M14 14 L42 70 L70 14" fill="none" stroke="#3BFF7C" strokeWidth="2.4" strokeLinecap="square" />
           <circle cx="42" cy="42" r="34" fill="none" stroke="#3BFF7C" strokeOpacity="0.55" strokeDasharray="3 5" />
         </svg>
-        <div className="vex-intro__brand">VEXILIAN</div>
+        <div className="vex-intro__brand">VEXILLIAN</div>
         <div className="vex-intro__sub">SISTĒMU INICIALIZĀCIJA</div>
       </div>
 

@@ -149,13 +149,57 @@ function HealthGauge({ x, y }: { x: number; y: number }) {
 }
 
 function UpwardChart({ x, y }: { x: number; y: number }) {
-  // card width 232 - inner padding 26 each side -> safe inner = 180
+  // Card inner area: width 232 - padding -> safe inner 196 wide x 200 tall
+  // Coordinate frame: local (0,0) is bottom-left of plot area.
+  const W2 = 184;
+  const H2 = 196;
+  const pts: Array<[number, number]> = [
+    [0, 16],
+    [28, 28],
+    [56, 50],
+    [84, 78],
+    [112, 112],
+    [140, 150],
+    [168, 178]
+  ];
+  // map local (px, value) -> svg coord, value=0 at bottom
+  const toSvg = (p: [number, number]): [number, number] => [p[0], H2 - p[1]];
+  const path = pts.map(toSvg).reduce((acc, [px, py], i) => acc + (i === 0 ? `M${px} ${py}` : ` L${px} ${py}`), "");
+  const area = `${path} L${pts[pts.length - 1][0]} ${H2} L0 ${H2} Z`;
+  const last = toSvg(pts[pts.length - 1]);
+  const prev = toSvg(pts[pts.length - 2]);
+  // arrow heading vector (from prev -> last)
+  const dx = last[0] - prev[0];
+  const dy = last[1] - prev[1];
+  const mag = Math.sqrt(dx * dx + dy * dy);
+  const ux = dx / mag;
+  const uy = dy / mag;
+  // arrowhead points a small triangle pointing in (ux,uy)
+  const tip: [number, number] = [last[0] + ux * 8, last[1] + uy * 8];
+  const baseL: [number, number] = [last[0] - uy * 6, last[1] + ux * 6];
+  const baseR: [number, number] = [last[0] + uy * 6, last[1] - ux * 6];
   return (
-    <g transform={`translate(${x + 26},${y + 60})`}>
-      <path d="M0 160 Q36 130 72 110 T144 56 L176 22" stroke={ACCENT} strokeWidth="2.4" fill="none" />
-      <path d="M0 160 Q36 130 72 110 T144 56 L176 22 L176 160 Z" fill={ACCENT} fillOpacity="0.18" />
-      {/* arrowhead — kept fully inside the card */}
-      <path d="M170 26 L182 18 L178 32 Z" fill={ACCENT} stroke={ACCENT} strokeWidth="1.4" strokeLinejoin="round" />
+    <g transform={`translate(${x + 24},${y + 60})`}>
+      {/* y-axis ticks */}
+      {[0, 0.25, 0.5, 0.75, 1].map((t, i) => (
+        <line key={i} x1="-4" y1={H2 - t * H2} x2={W2} y2={H2 - t * H2} stroke="rgba(59,255,124,0.06)" strokeWidth="0.8" />
+      ))}
+      {/* trend area */}
+      <path d={area} fill={ACCENT} fillOpacity="0.16" />
+      {/* trend line */}
+      <path d={path} stroke={ACCENT} strokeWidth="2.2" fill="none" strokeLinejoin="round" strokeLinecap="round" />
+      {/* dot markers */}
+      {pts.slice(0, -1).map((p, i) => {
+        const [sx, sy] = toSvg(p);
+        return <circle key={i} cx={sx} cy={sy} r="2" fill={ACCENT} />;
+      })}
+      {/* arrowhead at tip — properly aligned to slope */}
+      <polygon points={`${tip[0]},${tip[1]} ${baseL[0]},${baseL[1]} ${baseR[0]},${baseR[1]}`} fill={ACCENT} />
+      {/* delta badge */}
+      <g transform={`translate(${last[0] - 60},${last[1] - 14})`}>
+        <rect x="0" y="-10" width="48" height="16" rx="3" fill="rgba(8,30,15,0.9)" stroke={ACCENT} strokeWidth="1" />
+        <text x="24" y="2" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.12em" fontWeight="700">+38%</text>
+      </g>
     </g>
   );
 }
@@ -210,38 +254,67 @@ function OutcomeIcon({ name }: { name: string }) {
 }
 
 function RecoveryLoop({ x, y }: { x: number; y: number }) {
-  // 4 nodes in a circle: email, person, cart, euro
-  const r = 60;
+  // 4 nodes in a clean diamond layout, with curved connector arrows that
+  // visibly close the cycle. Centered at (x,y).
+  const r = 64;
   const nodes = [
-    { angle: -90, icon: "mail" },
-    { angle: 0, icon: "user" },
-    { angle: 90, icon: "cart" },
-    { angle: 180, icon: "euro" }
+    { angle: -90, icon: "mail", label: "PIESK\u0100R." },
+    { angle:   0, icon: "user", label: "ATBILDE"  },
+    { angle:  90, icon: "cart", label: "PIRKUMS"  },
+    { angle: 180, icon: "euro", label: "ATG\u016aTS" }
   ];
+  const pos = (deg: number) => {
+    const a = (deg * Math.PI) / 180;
+    return { cx: Math.cos(a) * r, cy: Math.sin(a) * r };
+  };
   return (
     <g transform={`translate(${x},${y})`}>
+      {/* faint backing ring */}
+      <circle cx="0" cy="0" r={r} fill="none" stroke="rgba(59,255,124,0.10)" strokeWidth="1" strokeDasharray="2 4" />
+
+      {/* connector arcs with arrowheads */}
       {nodes.map((n, i) => {
-        const ang = (n.angle * Math.PI) / 180;
-        const cx = Math.cos(ang) * r;
-        const cy = Math.sin(ang) * r;
+        const a = pos(n.angle);
         const next = nodes[(i + 1) % nodes.length];
-        const ang2 = (next.angle * Math.PI) / 180;
-        const cx2 = Math.cos(ang2) * r;
-        const cy2 = Math.sin(ang2) * r;
-        // arc between nodes
+        const b = pos(next.angle);
+        // shorten endpoints so they don't overlap circles (radius 18)
+        const v = { x: b.cx - a.cx, y: b.cy - a.cy };
+        const m = Math.sqrt(v.x * v.x + v.y * v.y);
+        const ux = v.x / m, uy = v.y / m;
+        const ax = a.cx + ux * 20;
+        const ay = a.cy + uy * 20;
+        const bx = b.cx - ux * 22;
+        const by = b.cy - uy * 22;
+        // tangent at end -> arrowhead
+        const tipX = bx;
+        const tipY = by;
+        const baseLx = bx - ux * 6 - uy * 4;
+        const baseLy = by - uy * 6 + ux * 4;
+        const baseRx = bx - ux * 6 + uy * 4;
+        const baseRy = by - uy * 6 - ux * 4;
         return (
           <g key={i}>
-            <path d={`M${cx} ${cy} A${r} ${r} 0 0 1 ${cx2} ${cy2}`} stroke={DIM} strokeWidth="1.4" fill="none" />
-            <circle cx={cx} cy={cy} r="22" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.4" />
-            <RecIcon name={n.icon} cx={cx} cy={cy} />
+            <path d={`M${ax} ${ay} A${r * 1.05} ${r * 1.05} 0 0 1 ${bx} ${by}`} stroke={ACCENT} strokeWidth="1.4" fill="none" />
+            <polygon points={`${tipX},${tipY} ${baseLx},${baseLy} ${baseRx},${baseRy}`} fill={ACCENT} />
           </g>
         );
       })}
-      {/* arrowheads on arcs */}
-      <path d="M22 -52 L28 -56 L26 -48" fill={ACCENT} />
-      <path d="M52 22 L56 28 L48 26" fill={ACCENT} />
-      <path d="M-22 52 L-28 56 L-26 48" fill={ACCENT} />
-      <path d="M-52 -22 L-56 -28 L-48 -26" fill={ACCENT} />
+
+      {/* nodes */}
+      {nodes.map((n, i) => {
+        const a = pos(n.angle);
+        return (
+          <g key={`n-${i}`} transform={`translate(${a.cx},${a.cy})`}>
+            <circle r="20" fill="rgba(8,12,10,0.92)" stroke={ACCENT} strokeWidth="1.4" />
+            <RecIcon name={n.icon} cx={0} cy={0} />
+            <text x="0" y="33" textAnchor="middle" fill={MUTED} fontSize="7.5" letterSpacing="0.18em" fontWeight="700">{n.label}</text>
+          </g>
+        );
+      })}
+
+      {/* center % */}
+      <text x="0" y="-2" textAnchor="middle" fill={ACCENT} fontSize="14" fontWeight="700" letterSpacing="0.06em">68%</text>
+      <text x="0" y="10" textAnchor="middle" fill={MUTED} fontSize="7" letterSpacing="0.2em">ATG\u016aTI</text>
     </g>
   );
 }

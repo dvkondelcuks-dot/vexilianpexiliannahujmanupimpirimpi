@@ -223,10 +223,10 @@ html.vex-booting body {
 
 [data-reveal],
 .vex-reveal {
-  --vex-reveal-duration: 760ms;
+  --vex-reveal-duration: 1200ms;
   --vex-reveal-delay: 0ms;
   --vex-reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --vex-reveal-shift: 28px;
+  --vex-reveal-shift: 56px;
   opacity: 0;
   transform: translate3d(0, var(--vex-reveal-shift), 0);
   transition:
@@ -235,21 +235,39 @@ html.vex-booting body {
     filter var(--vex-reveal-duration) var(--vex-reveal-ease);
   transition-delay: var(--vex-reveal-delay);
   will-change: transform, opacity;
-  filter: blur(2px);
+  filter: blur(3px);
 }
 
 [data-reveal="down"]  { transform: translate3d(0, calc(var(--vex-reveal-shift) * -1), 0); }
 [data-reveal="left"]  { transform: translate3d(calc(var(--vex-reveal-shift) * -1), 0, 0); }
 [data-reveal="right"] { transform: translate3d(var(--vex-reveal-shift), 0, 0); }
 [data-reveal="fade"]  { transform: none; }
-[data-reveal="zoom"]  { transform: scale(0.94); filter: blur(3px); }
+[data-reveal="zoom"]  { transform: scale(0.92); filter: blur(3px); }
+[data-reveal="tilt"]  { transform: perspective(900px) rotateX(10deg) translate3d(0, 18px, 0); transform-origin: 50% 100%; }
+[data-reveal="rise"]  { transform: translate3d(0, 48px, 0) scale(0.97); filter: blur(4px); }
 
 [data-reveal].vex-reveal--in,
 .vex-reveal--in {
   opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
+  transform: translate3d(0, 0, 0) scale(1) perspective(900px) rotateX(0deg);
   filter: none;
 }
+
+/* EXIT (scrolled past) — element fades away in a per-direction motion
+   so the user gets a tight enter/exit envelope as they scroll up & down. */
+[data-reveal].vex-reveal--out,
+.vex-reveal--out {
+  opacity: 0;
+  filter: blur(2px);
+  transform: translate3d(0, calc(var(--vex-reveal-shift) * -1), 0);
+}
+[data-reveal-exit="up"].vex-reveal--out    { transform: translate3d(0, calc(var(--vex-reveal-shift) * -1), 0); }
+[data-reveal-exit="down"].vex-reveal--out  { transform: translate3d(0, var(--vex-reveal-shift), 0); }
+[data-reveal-exit="left"].vex-reveal--out  { transform: translate3d(calc(var(--vex-reveal-shift) * -1), 0, 0); }
+[data-reveal-exit="right"].vex-reveal--out { transform: translate3d(var(--vex-reveal-shift), 0, 0); }
+[data-reveal-exit="zoom"].vex-reveal--out  { transform: scale(0.94); filter: blur(3px); }
+[data-reveal-exit="fade"].vex-reveal--out  { transform: none; }
+[data-reveal-exit="tilt"].vex-reveal--out  { transform: perspective(900px) rotateX(-10deg) translate3d(0, -14px, 0); }
 
 /* Children of a fully booted page get a tiny ambient drift so the page
    feels alive even after the reveal finishes. Affects only structural cards. */
@@ -257,9 +275,29 @@ html.vex-booted .industrial-card {
   transition: transform 320ms ease, border-color 320ms ease, box-shadow 320ms ease;
 }
 
+/* Hoverable illustrations — apply via class="vex-illu". Not clickable, just
+   responds to pointer hover with a subtle lift, glow and accent border. */
+.vex-illu {
+  transition: transform 380ms cubic-bezier(0.2, 0.7, 0.2, 1),
+              border-color 380ms ease,
+              box-shadow 380ms ease,
+              filter 380ms ease;
+  will-change: transform;
+}
+@media (hover: hover) and (pointer: fine) {
+  .vex-illu:hover {
+    transform: translateY(-3px) scale(1.006);
+    border-color: rgba(59, 255, 124, 0.55) !important;
+    box-shadow: 0 22px 60px -28px rgba(59, 255, 124, 0.45),
+                0 0 0 1px rgba(59, 255, 124, 0.25) inset;
+    filter: brightness(1.04);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .vex-reveal,
-  .vex-reveal--in {
+  .vex-reveal--in,
+  .vex-reveal--out {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;

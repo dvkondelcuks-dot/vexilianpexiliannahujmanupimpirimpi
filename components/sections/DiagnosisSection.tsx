@@ -39,7 +39,7 @@ export function DiagnosisSection() {
                 <SignalChip tone="amber">{event.status}</SignalChip>
                 <SignalChip>{event.lossType}</SignalChip>
               </Stack>
-              <Box sx={{ border: "1px solid rgba(59,255,124,0.18)", borderRadius: 2, background: "rgba(7,9,11,0.55)", overflow: "hidden" }}>
+              <Box className="vex-illu" sx={{ border: "1px solid rgba(59,255,124,0.18)", borderRadius: 2, background: "rgba(7,9,11,0.55)", overflow: "hidden" }}>
                 <IncidentMiniDiagram visual={event.visual} />
               </Box>
             </Box>
