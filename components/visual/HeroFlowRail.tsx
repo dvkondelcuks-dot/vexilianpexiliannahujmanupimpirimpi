@@ -19,30 +19,17 @@ const DIM = "rgba(59,255,124,0.45)";
 
 export function HeroFlowRail() {
   return (
-    <Box sx={{ width: "100%", overflowX: "auto", pb: 1 }}>
+    <Box sx={{ width: "100%" }}>
       <Box
         sx={{
-          minWidth: { xs: 1180, md: "100%" },
+          width: "100%",
           display: "grid",
-          gridTemplateColumns: "repeat(8, 1fr)",
-          gap: { xs: 1.2, md: 1.6 },
+          gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(4, 1fr)", md: "repeat(8, 1fr)" },
+          gap: { xs: 1, md: 1.2 },
           position: "relative",
-          py: 2
+          py: 1
         }}
       >
-        {/* connecting rail behind cards */}
-        <Box
-          aria-hidden
-          sx={{
-            position: "absolute",
-            left: "4%",
-            right: "4%",
-            top: "calc(100% - 14px)",
-            height: 1,
-            background: `linear-gradient(90deg, transparent, ${DIM} 6%, ${DIM} 94%, transparent)`,
-            zIndex: 0
-          }}
-        />
         {STAGES.map((s, i) => (
           <FlowCard key={s.code} stage={s} index={i} isLast={i === STAGES.length - 1} />
         ))}
@@ -67,20 +54,18 @@ function FlowCard({
       onMouseLeave={() => setHover(false)}
       sx={{
         position: "relative",
-        zIndex: 1,
         cursor: "pointer",
-        transition: "transform 280ms cubic-bezier(.2,.7,.2,1), box-shadow 280ms ease, border-color 280ms ease, background 280ms ease",
-        transform: hover ? "translateY(-6px)" : "translateY(0)",
+        transition: "border-color 220ms ease, background 220ms ease",
         background: hover ? "rgba(12,18,14,0.95)" : "rgba(8,12,10,0.85)",
         border: `1.2px solid ${hover ? ACCENT : "rgba(59,255,124,0.45)"}`,
         borderRadius: 1.2,
-        boxShadow: hover ? `0 18px 48px -20px rgba(59,255,124,0.55), 0 0 0 1px rgba(59,255,124,0.12) inset` : "none",
-        minHeight: { xs: 280, md: 300 },
-        p: { xs: 1.4, md: 1.8 },
+        height: { xs: 260, md: 300 },
+        p: { xs: 1.2, md: 1.6 },
         display: "flex",
         flexDirection: "column",
         textAlign: "center",
-        alignItems: "center"
+        alignItems: "center",
+        boxSizing: "border-box"
       }}
     >
       {/* corner brackets */}
@@ -129,10 +114,11 @@ function FlowCard({
       <Box
         sx={{
           color: "#A7B0BA",
-          fontSize: { xs: 10.5, md: 11 },
-          letterSpacing: "0.06em",
-          lineHeight: 1.6,
-          flex: 1
+          fontSize: { xs: 9.5, md: 10.5 },
+          letterSpacing: "0.04em",
+          lineHeight: 1.55,
+          flex: 1,
+          overflow: "hidden"
         }}
       >
         {stage.bullets.map((b) => (
@@ -165,15 +151,14 @@ function FlowCard({
         sx={{
           position: "absolute",
           left: "50%",
-          bottom: -22,
+          bottom: -8,
           transform: "translateX(-50%)",
-          width: 12,
-          height: 12,
+          width: 8,
+          height: 8,
           borderRadius: "50%",
           background: hover ? ACCENT : "#0a0d0b",
-          border: `1.5px solid ${ACCENT}`,
-          boxShadow: hover ? `0 0 14px ${ACCENT}` : "none",
-          transition: "all 280ms ease"
+          border: `1.2px solid ${ACCENT}`,
+          transition: "background 220ms ease"
         }}
       />
 

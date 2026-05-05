@@ -134,15 +134,15 @@ function HealthGauge({ x, y }: { x: number; y: number }) {
       {/* heartbeat line inside */}
       <path d="M-32 0 L-18 0 L-12 -16 L-6 14 L0 -8 L8 4 L18 -2 L32 -2" stroke={ACCENT} strokeWidth="2" fill="none" />
       {/* legend */}
-      <g transform="translate(-66,108)">
+      <g transform="translate(-90,108)">
         <circle cx="6" cy="6" r="5" fill={ACCENT} />
         <text x="18" y="10" fill={TEXT} fontSize="11">Veselīgi</text>
-        <text x="120" y="10" textAnchor="end" fill={ACCENT} fontSize="12" fontWeight="700">85%</text>
+        <text x="180" y="10" textAnchor="end" fill={ACCENT} fontSize="12" fontWeight="700">85%</text>
       </g>
-      <g transform="translate(-66,128)">
+      <g transform="translate(-90,128)">
         <circle cx="6" cy="6" r="5" fill={AMBER} />
-        <text x="18" y="10" fill={TEXT} fontSize="11">Kalibrēšanas režīmā</text>
-        <text x="120" y="10" textAnchor="end" fill={AMBER} fontSize="12" fontWeight="700">15%</text>
+        <text x="18" y="10" fill={TEXT} fontSize="11">Kalibrēšanā</text>
+        <text x="180" y="10" textAnchor="end" fill={AMBER} fontSize="12" fontWeight="700">15%</text>
       </g>
     </g>
   );

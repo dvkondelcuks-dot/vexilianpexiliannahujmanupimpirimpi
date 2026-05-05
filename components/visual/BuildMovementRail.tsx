@@ -70,7 +70,7 @@ export function BuildMovementRail() {
                 {step.number}
               </Box>
               <Typography sx={{ color: MUTED, fontSize: "0.7rem", letterSpacing: "0.22em", mt: 1, textTransform: "uppercase" }}>
-                STEP
+                POSMS
               </Typography>
             </Box>
 
@@ -182,7 +182,7 @@ function StepIllustration({ index }: { index: number }) {
 function AuditScene() {
   return (
     <g>
-      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">AUDIT MAP</text>
+      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">AUDITA KARTE</text>
       {/* tangled paths */}
       <path d="M30 60 C70 40 110 90 150 70 S220 50 250 80 S320 60 340 90" fill="none" stroke={DIM} strokeWidth="1" />
       <path d="M30 100 C80 110 130 70 180 100 S260 120 340 100" fill="none" stroke={DIM} strokeWidth="1" strokeDasharray="3 2" />
@@ -210,7 +210,7 @@ function AuditScene() {
 function BlueprintScene() {
   return (
     <g>
-      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">BLUEPRINT</text>
+      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">PLĀNS</text>
       {/* 3x2 module grid */}
       {[0, 1, 2].map((c) =>
         [0, 1].map((r) => (
@@ -228,7 +228,7 @@ function BlueprintScene() {
       <line x1="225" y1="56" x2="240" y2="56" stroke={ACCENT} strokeWidth="1" markerEnd={`url(#proc-arr-1)`} />
       <line x1="120" y1="106" x2="135" y2="106" stroke={ACCENT} strokeWidth="1" markerEnd={`url(#proc-arr-1)`} />
       <line x1="225" y1="106" x2="240" y2="106" stroke={ACCENT} strokeWidth="1" markerEnd={`url(#proc-arr-1)`} />
-      <text x="16" y="148" fill={MUTED} fontSize="8" letterSpacing="0.22em">6 MODULES · WIRED</text>
+      <text x="16" y="148" fill={MUTED} fontSize="8" letterSpacing="0.22em">6 MODUĻI · SAVIENOTI</text>
     </g>
   );
 }
@@ -238,7 +238,7 @@ function BuildScene() {
   const blocks = ["VIETNE", "FORMAS", "CRM", "ATRIBŪCIJA", "PANELIS"];
   return (
     <g>
-      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">CONNECT</text>
+      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">SAVIENOT</text>
       {blocks.map((b, i) => {
         const x = 20 + i * 66;
         return (
@@ -264,14 +264,14 @@ function BuildScene() {
 function HandoverScene() {
   return (
     <g>
-      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">HANDOVER</text>
+      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">NODOŠANA</text>
       {/* manual */}
       <rect x="30" y="40" width="120" height="100" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
       <line x1="30" y1="56" x2="150" y2="56" stroke={DIM} strokeWidth="0.8" />
       {[0, 1, 2, 3, 4].map((i) => (
         <line key={i} x1="42" y1={70 + i * 14} x2={i === 1 ? 124 : 138} y2={70 + i * 14} stroke={DIM} strokeWidth="0.8" />
       ))}
-      <text x="38" y="50" fill={ACCENT} fontSize="8" letterSpacing="0.16em" fontWeight="700">SOP · DOCS</text>
+      <text x="38" y="50" fill={ACCENT} fontSize="8" letterSpacing="0.16em" fontWeight="700">SOP · DOKUMENTI</text>
 
       {/* arrow to team */}
       <line x1="160" y1="90" x2="200" y2="90" stroke={ACCENT} strokeWidth="1.4" markerEnd={`url(#proc-arr-3)`} />
@@ -295,16 +295,16 @@ function HandoverScene() {
 function OptimizeScene() {
   return (
     <g>
-      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">MONTHLY LOOP</text>
+      <text x="16" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">IKMĒNEŠA CIKLS</text>
       <g transform="translate(180,82)">
         {/* outer loop */}
         <circle r="56" fill="none" stroke={DIM} strokeWidth="1" strokeDasharray="3 3" />
         {/* 4 nodes */}
         {[
-          { a: -90, label: "READ" },
-          { a: 0, label: "TUNE" },
-          { a: 90, label: "SHIP" },
-          { a: 180, label: "MEASURE" }
+          { a: -90, label: "LASĪT" },
+          { a: 0, label: "REGULĒT" },
+          { a: 90, label: "PIEGĀDĀT" },
+          { a: 180, label: "MĒRĪT" }
         ].map((n) => {
           const r = 56;
           const x = Math.cos((n.a * Math.PI) / 180) * r;

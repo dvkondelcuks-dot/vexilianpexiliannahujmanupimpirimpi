@@ -62,7 +62,7 @@ export function CaseStudiesSection() {
                       color: "var(--signal-blue)"
                     }}
                   >
-                    CASE {String(idx + 1).padStart(2, "0")} / {String(cases.length).padStart(2, "0")}
+                    GADĪJUMS {String(idx + 1).padStart(2, "0")} / {String(cases.length).padStart(2, "0")}
                   </Box>
                   {/* corner brackets */}
                   {[
@@ -86,13 +86,13 @@ export function CaseStudiesSection() {
               <Grid size={{ xs: 12, lg: 5 }}>
                 <Stack spacing={2.4} sx={{ p: { xs: 2.5, md: 3.5 }, minHeight: "100%", justifyContent: "space-between" }}>
                   <Stack spacing={1.6}>
-                    <MetaLabel>SIGNAL CASE · {String(idx + 1).padStart(2, "0")}</MetaLabel>
+                    <MetaLabel>SIGNĀLA GADĪJUMS · {String(idx + 1).padStart(2, "0")}</MetaLabel>
                     <Typography sx={{ color: "var(--text)", fontSize: { xs: 19, md: 21 }, lineHeight: 1.32, fontWeight: 600 }}>{item.headline}</Typography>
                     <Typography sx={{ color: "var(--text-2)", lineHeight: 1.65, fontSize: 15 }}>{item.body}</Typography>
 
                     {/* layer chips */}
                     <Box>
-                      <Box sx={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.22em", color: "var(--text-3)", mb: 0.8 }}>SLĀŅI · WIRED</Box>
+                      <Box sx={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.22em", color: "var(--text-3)", mb: 0.8 }}>SLĀŅI · SAVIENOTI</Box>
                       <Stack direction="row" useFlexGap flexWrap="wrap" spacing={0.8}>
                         {item.layers.map((layer) => <SignalChip key={layer} tone="blue">{layer}</SignalChip>)}
                       </Stack>
@@ -101,9 +101,9 @@ export function CaseStudiesSection() {
                     {/* clean KPI strip replaces broken overlay */}
                     <Stack direction="row" sx={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", py: 1.4 }}>
                       {[
-                        { k: "QUALIFIED", v: "+62%" },
-                        { k: "RESPONSE", v: "<1h" },
-                        { k: "RECOVERY", v: "ON" }
+                        { k: "KVALIFICĒTI", v: "+62%" },
+                        { k: "ATBILDE", v: "<1h" },
+                        { k: "ATGŪŠANA", v: "ON" }
                       ].map((kpi) => (
                         <Box key={kpi.k} sx={{ flex: 1, textAlign: "center", borderRight: "1px solid var(--border)", "&:last-child": { borderRight: "none" } }}>
                           <Box sx={{ fontFamily: "var(--mono)", fontSize: 9.5, letterSpacing: "0.22em", color: "var(--text-3)" }}>{kpi.k}</Box>

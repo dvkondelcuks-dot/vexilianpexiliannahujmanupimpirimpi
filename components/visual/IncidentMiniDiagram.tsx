@@ -58,7 +58,7 @@ function PostClickUnknown() {
         <line x1="14" y1="124" x2="120" y2="124" stroke={DIM} strokeWidth="1" />
         <text x="90" y="178" textAnchor="middle" fill={MUTED} fontSize="11" letterSpacing="0.12em">LAPA ATVĒRTA</text>
       </g>
-      <path d="M460 160 Q540 90 600 130 T680 160" stroke={ACCENT} strokeWidth="1.4" strokeDasharray="5 5" fill="none" markerEnd="url(#arr-lime)" />
+      <path d="M450 160 L612 160" stroke={ACCENT} strokeWidth="1.5" strokeDasharray="5 5" fill="none" markerEnd="url(#arr-lime)" />
       <g transform="translate(620,90)">
         <circle cx="60" cy="60" r="62" fill="url(#inc-glow)" />
         <circle cx="60" cy="60" r="50" fill="none" stroke={ACCENT} strokeWidth="1.5" strokeDasharray="6 5" />
@@ -82,12 +82,14 @@ function LeadSilence() {
         <text x="58" y="30" fill={TEXT} fontSize="13" fontWeight="700" letterSpacing="0.06em">JAUNS LEADS</text>
         <text x="58" y="46" fill={MUTED} fontSize="10">info@piemers.lv</text>
         <g transform="translate(14,72)">
-          <circle cx="14" cy="14" r="14" fill="none" stroke={ACCENT} strokeWidth="1.2" />
-          <path d="M6 11 L14 17 L22 11" stroke={ACCENT} strokeWidth="1.2" fill="none" />
-          <circle cx="50" cy="14" r="14" fill="none" stroke={ACCENT} strokeWidth="1.2" />
-          <path d="M44 8 Q44 14 50 16 Q56 14 56 8" stroke={ACCENT} strokeWidth="1.2" fill="none" />
-          <circle cx="86" cy="14" r="14" fill="none" stroke={ACCENT} strokeWidth="1.2" />
-          <path d="M78 10 H94 V18 H86 L82 22 L84 18 H78 Z" stroke={ACCENT} strokeWidth="1.2" fill="none" />
+          {/* envelope icon */}
+          <rect x="0" y="3" width="28" height="22" rx="3" fill="none" stroke={ACCENT} strokeWidth="1.3" />
+          <path d="M0 6 L14 18 L28 6" stroke={ACCENT} strokeWidth="1.3" fill="none" />
+          {/* phone icon */}
+          <path d="M40 4 L48 4 L52 10 L48 14 Q52 22 60 26 L64 22 L70 26 L70 32 Q62 34 54 28 Q44 22 40 12 Z" fill="none" stroke={ACCENT} strokeWidth="1.3" />
+          {/* clock icon */}
+          <circle cx="86" cy="15" r="12" fill="none" stroke={ACCENT} strokeWidth="1.3" />
+          <path d="M86 9 L86 15 L92 19" stroke={ACCENT} strokeWidth="1.3" fill="none" />
         </g>
       </g>
       <path d="M212 158 L240 158" stroke={ACCENT} strokeWidth="1.5" markerEnd="url(#arr-lime)" />
@@ -105,7 +107,7 @@ function LeadSilence() {
             </g>
           );
         })}
-        <text x="190" y="108" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.1em" fontWeight="700">NAV PĀRŅEMEA</text>
+        <text x="190" y="108" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.1em" fontWeight="700">NAV PĀRŅĒMĒJA</text>
       </g>
       <path d="M640 160 L670 160" stroke={ACCENT} strokeWidth="1.5" markerEnd="url(#arr-lime)" />
       <g transform="translate(672,118)">
@@ -171,22 +173,32 @@ function NoRecovery() {
   return (
     <g>
       <g transform="translate(28,110)">
-        <rect width="156" height="100" rx="10" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.5" />
-        <circle cx="32" cy="32" r="14" fill="none" stroke={ACCENT} strokeWidth="1.4" />
-        <circle cx="32" cy="28" r="5" fill={ACCENT} />
-        <path d="M20 42 Q32 30 44 42" stroke={ACCENT} strokeWidth="1.4" fill="none" />
-        <text x="56" y="28" fill={TEXT} fontSize="12" fontWeight="700" letterSpacing="0.04em">JAUNS LEADS</text>
-        <text x="56" y="44" fill={MUTED} fontSize="9.5">info@piemers.lv</text>
-        <g transform="translate(14,60)">
-          <circle cx="12" cy="12" r="11" fill="none" stroke={ACCENT} strokeWidth="1.1" />
-          <path d="M5 9 L12 14 L19 9" stroke={ACCENT} strokeWidth="1.1" fill="none" />
-          <circle cx="42" cy="12" r="11" fill="none" stroke={ACCENT} strokeWidth="1.1" />
-          <path d="M37 7 Q37 12 42 14 Q47 12 47 7" stroke={ACCENT} strokeWidth="1.1" fill="none" />
-          <circle cx="72" cy="12" r="11" fill="none" stroke={ACCENT} strokeWidth="1.1" />
-          <path d="M65 9 H79 V15 H72 L69 18 L70 15 H65 Z" stroke={ACCENT} strokeWidth="1.1" fill="none" />
+        <rect width="176" height="100" rx="10" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.5" />
+        {/* avatar */}
+        <circle cx="30" cy="34" r="14" fill="none" stroke={ACCENT} strokeWidth="1.4" />
+        <circle cx="30" cy="30" r="5" fill={ACCENT} />
+        <path d="M18 44 Q30 32 42 44" stroke={ACCENT} strokeWidth="1.4" fill="none" />
+        {/* name + email */}
+        <text x="54" y="28" fill={TEXT} fontSize="12" fontWeight="700" letterSpacing="0.04em">JAUNS LEADS</text>
+        <text x="54" y="42" fill={MUTED} fontSize="9.5">info@piemers.lv</text>
+        {/* status badge top right */}
+        <g transform="translate(118,18)">
+          <rect width="50" height="16" rx="8" fill="rgba(59,255,124,0.12)" stroke={ACCENT} strokeWidth="0.8" />
+          <circle cx="8" cy="8" r="3" fill={ACCENT} />
+          <text x="16" y="11" fill={ACCENT} fontSize="8" letterSpacing="0.08em" fontWeight="700">JAUNS</text>
+        </g>
+        {/* contact action icons */}
+        <g transform="translate(14,64)">
+          <rect x="0" y="3" width="24" height="18" rx="3" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+          <path d="M0 6 L12 16 L24 6" stroke={ACCENT} strokeWidth="1.2" fill="none" />
+          <path d="M36 4 L42 4 L46 10 L42 14 Q46 20 52 24 L56 20 L62 24 L62 30 Q56 32 50 28 Q42 22 38 14 Z" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+          <circle cx="82" cy="15" r="11" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+          <path d="M82 9 L82 15 L88 18" stroke={ACCENT} strokeWidth="1.2" fill="none" />
+          <rect x="108" y="4" width="22" height="22" rx="3" fill="none" stroke={ACCENT} strokeWidth="1.2" />
+          <path d="M114 14 L118 18 L126 10" stroke={ACCENT} strokeWidth="1.4" fill="none" />
         </g>
       </g>
-      <path d="M188 160 Q220 160 240 140" stroke={ACCENT} strokeWidth="1.5" fill="none" markerEnd="url(#arr-lime)" />
+      <path d="M204 160 L260 160" stroke={ACCENT} strokeWidth="1.5" fill="none" markerEnd="url(#arr-lime)" />
       {["SAZIŅA", "SEKOŠANA", "GAIDA"].map((label, i) => {
         const x = 260 + i * 90;
         return (

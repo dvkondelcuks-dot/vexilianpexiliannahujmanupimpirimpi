@@ -15,6 +15,7 @@
   --signal-red: #d96c5f;
   --grid-max: 1360px;
   --radius: 8px;
-  --mono: var(--font-geist-mono), "IBM Plex Mono", Consolas, monospace;
-  --sans: var(--font-geist-sans), Inter, Arial, sans-serif;
+  --mono: var(--font-body), "Chakra Petch", Consolas, monospace;
+  --sans: var(--font-body), "Chakra Petch", Inter, Arial, sans-serif;
+  --display: var(--font-display), "Michroma", "Chakra Petch", Inter, Arial, sans-serif;
 }

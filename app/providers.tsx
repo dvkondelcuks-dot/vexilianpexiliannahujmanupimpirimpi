@@ -22,7 +22,7 @@ export function Providers({ children }: { children: ReactNode }) {
             colorSuccess: "#8FD18A",
             colorError: "#D96C5F",
             borderRadius: 8,
-            fontFamily: "var(--font-geist-sans), Inter, Arial, sans-serif"
+            fontFamily: "var(--font-body), 'Chakra Petch', Inter, Arial, sans-serif"
           }
         }}
       >

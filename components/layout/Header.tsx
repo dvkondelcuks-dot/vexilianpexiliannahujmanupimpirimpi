@@ -8,11 +8,11 @@ import { VexButton } from "@/components/ui/VexButton";
 import { StatusDot } from "@/components/ui/StatusDot";
 
 const commandNav = [
-  { id: "manifest", label: "Manifest" },
-  { id: "diagnosis", label: "Leakage" },
-  { id: "system", label: "System" },
-  { id: "diagnostics", label: "Map" },
-  { id: "cases", label: "Proof" }
+  { id: "manifest", label: "Manifests" },
+  { id: "diagnosis", label: "Noplūde" },
+  { id: "system", label: "Sistēma" },
+  { id: "diagnostics", label: "Karte" },
+  { id: "cases", label: "Pierādījumi" }
 ];
 
 export function Header() {
@@ -73,7 +73,7 @@ export function Header() {
             </Box>
             <Box>
               <Box sx={{ fontFamily: "var(--mono)", fontSize: 16, color: "var(--text)", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, lineHeight: 1 }}>VEXı́LIAN</Box>
-              <Box sx={{ display: { xs: "none", sm: "block" }, color: "var(--text-3)", fontFamily: "var(--mono)", fontSize: 9.5, textTransform: "uppercase", mt: 0.4, letterSpacing: "0.22em" }}>COMMERCIAL · DIAGNOSTIC · SYSTEM</Box>
+              <Box sx={{ display: { xs: "none", sm: "block" }, color: "var(--text-3)", fontFamily: "var(--mono)", fontSize: 9.5, textTransform: "uppercase", mt: 0.4, letterSpacing: "0.22em" }}>KOMERCIĀLĀ · DIAGNOSTIKAS · SISTĒMA</Box>
             </Box>
           </Stack>
 
@@ -134,7 +134,7 @@ export function Header() {
           <Stack direction="row" spacing={1.2} alignItems="center">
             <Box sx={{ display: { xs: "none", lg: "flex" }, alignItems: "center", gap: 0.8, border: "1px solid rgba(59,255,124,0.16)", borderRadius: "999px", px: 1.4, py: 0.7 }}>
               <StatusDot tone="green" />
-              <Box sx={{ color: "var(--text-3)", fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.2em" }}>RIGA</Box>
+              <Box sx={{ color: "var(--text-3)", fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.2em" }}>RĪGA</Box>
               <Box sx={{ color: "var(--signal-blue)", fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.1em", minWidth: 64, textAlign: "right" }}>{time || "--:--:--"}</Box>
             </Box>
             <VexButton href="#audits" size="small">Pieteikt auditu</VexButton>

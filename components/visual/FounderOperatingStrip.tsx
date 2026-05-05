@@ -2,12 +2,12 @@ import { Box, Stack } from "@mui/material";
 import { StatusDot } from "@/components/ui/StatusDot";
 
 const stripItems = [
-  ["TEAM", "3"],
-  ["BASE", "RĪGA"],
-  ["BUILD", "21–35D"],
-  ["LAYERS", "6"],
-  ["REGION", "BALTICS"],
-  ["STATUS", "2 AUDITS"]
+  ["KOMANDA", "3"],
+  ["BĀZE", "RĪGA"],
+  ["BŪVĒŠANA", "21–35D"],
+  ["SLĀŅI", "6"],
+  ["REĠIONS", "BALTIJA"],
+  ["STATUSS", "2 AUDITI"]
 ] as const;
 
 export function FounderOperatingStrip() {
@@ -40,9 +40,9 @@ export function FounderOperatingStrip() {
               whiteSpace: "nowrap"
             }}
           >
-            {label === "STATUS" ? <StatusDot tone="blue" /> : null}
+            {label === "STATUSS" ? <StatusDot tone="blue" /> : null}
             <Box sx={{ color: "var(--text-3)" }}>{label} /</Box>
-            <Box sx={{ color: label === "STATUS" ? "var(--signal-blue)" : "var(--text)" }}>{value}</Box>
+            <Box sx={{ color: label === "STATUSS" ? "var(--signal-blue)" : "var(--text)" }}>{value}</Box>
           </Stack>
         ))}
       </Stack>

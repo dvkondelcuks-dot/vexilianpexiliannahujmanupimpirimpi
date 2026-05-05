@@ -29,7 +29,7 @@ export function ScopeLockRail() {
           <CornerBrackets />
           <Stack spacing={1.6}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
-              <MetaLabel>PHASE {phase.number}</MetaLabel>
+              <MetaLabel>POSMS {phase.number}</MetaLabel>
               <SignalChip tone="green">{phase.acceptance}</SignalChip>
             </Stack>
             <Typography
@@ -105,14 +105,14 @@ function PhaseDiagram({ index }: { index: number }) {
 // Phase 01 — Discovery & Scoping: business inputs into a structured blueprint
 function ArchitectureScene() {
   const inputs = [
-    { label: "GOALS", icon: "target" },
-    { label: "SOURCES", icon: "flow" },
-    { label: "PEOPLE", icon: "user" },
-    { label: "DATA", icon: "db" }
+    { label: "MĒRĶI", icon: "target" },
+    { label: "AVOTI", icon: "flow" },
+    { label: "CILVĒKI", icon: "user" },
+    { label: "DATI", icon: "db" }
   ];
   return (
     <g>
-      <text x="14" y="18" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">DISCOVERY → SCOPE</text>
+      <text x="14" y="18" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">IZPĒTE → APJOMS</text>
       {/* left input pills */}
       {inputs.map((it, i) => {
         const y = 38 + i * 28;
@@ -125,14 +125,20 @@ function ArchitectureScene() {
             {it.icon === "user" && <path d="M9 13 Q12 10 15 13" stroke={ACCENT} strokeWidth="1" fill="none" />}
             {it.icon === "db" && <line x1="8" y1="11" x2="16" y2="11" stroke={ACCENT} strokeWidth="1" />}
             <text x="24" y="15" fill={TEXT} fontSize="9" letterSpacing="0.14em" fontWeight="700">{it.label}</text>
-            <line x1="96" y1="11" x2="148" y2="90" stroke={DIM} strokeWidth="0.8" strokeDasharray="2 2" />
           </g>
+        );
+      })}
+      {/* connector lines from each pill to central card left edge */}
+      {inputs.map((it, i) => {
+        const y = 38 + i * 28 + 11;
+        return (
+          <line key={`conn-${it.label}`} x1={110} y1={y} x2={148} y2={97} stroke={DIM} strokeWidth="0.9" strokeDasharray="3 2" />
         );
       })}
       {/* central blueprint card */}
       <g transform="translate(148,38)">
         <rect width="118" height="118" rx="4" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.2" />
-        <text x="8" y="14" fill={ACCENT} fontSize="8" letterSpacing="0.18em" fontWeight="700">SCOPE.MAP</text>
+        <text x="8" y="14" fill={ACCENT} fontSize="8" letterSpacing="0.18em" fontWeight="700">APJOMA.KARTE</text>
         {/* mini node graph */}
         <circle cx="30" cy="38" r="6" fill="none" stroke={ACCENT} strokeWidth="1" />
         <circle cx="60" cy="30" r="6" fill={ACCENT} />
@@ -150,8 +156,8 @@ function ArchitectureScene() {
       </g>
       {/* right outputs */}
       <g transform="translate(282,42)">
-        <text x="0" y="0" fill={ACCENT} fontSize="8" letterSpacing="0.18em" fontWeight="700">DELIVERABLES</text>
-        {["BLUEPRINT", "PHASES", "TIMELINE", "PRICE"].map((l, i) => (
+        <text x="0" y="0" fill={ACCENT} fontSize="8" letterSpacing="0.18em" fontWeight="700">REZULTĀTI</text>
+        {["PLĀNS", "POSMI", "TERMIŅI", "CENA"].map((l, i) => (
           <g key={l} transform={`translate(0,${10 + i * 22})`}>
             <rect width="68" height="18" rx="3" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="0.9" />
             <line x1="4" y1="9" x2="8" y2="9" stroke={ACCENT} strokeWidth="1.6" />
@@ -167,14 +173,14 @@ function ArchitectureScene() {
 // Phase 02 — connected modules being built
 function SetupScene() {
   const modules = [
-    { label: "WEBSITE", w: 0.85 },
+    { label: "MĀJASLAPA", w: 0.85 },
     { label: "CRM", w: 1 },
-    { label: "AUTOMATION", w: 0.7 },
-    { label: "DASHBOARD", w: 0.55 }
+    { label: "AUTOMATIZĀCIJA", w: 0.7 },
+    { label: "VADĪBAS PANELIS", w: 0.55 }
   ];
   return (
     <g>
-      <text x="14" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">CONNECTED BUILD</text>
+      <text x="14" y="20" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">SAVIENOTA BŪVĒŠANA</text>
       {modules.map((m, i) => {
         const y = 36 + i * 30;
         const fullW = 240;
@@ -200,12 +206,12 @@ function SetupScene() {
 function HandoverScene() {
   return (
     <g>
-      <text x="14" y="18" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">HANDOVER + CYCLE</text>
+      <text x="14" y="18" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">NODOŠANA + CIKLS</text>
       {/* left: VEX panel */}
       <g transform="translate(14,32)">
         <rect width="96" height="66" rx="4" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
         <text x="48" y="22" textAnchor="middle" fill={ACCENT} fontSize="11" letterSpacing="0.18em" fontWeight="700">VEX</text>
-        <text x="48" y="36" textAnchor="middle" fill={MUTED} fontSize="7" letterSpacing="0.2em">SYSTEM OWNERS</text>
+        <text x="48" y="36" textAnchor="middle" fill={MUTED} fontSize="7" letterSpacing="0.2em">SISTĒMAS ĪPAŠNIEKI</text>
         <line x1="14" y1="46" x2="82" y2="46" stroke={DIM} strokeWidth="0.8" />
         <line x1="14" y1="54" x2="68" y2="54" stroke={DIM} strokeWidth="0.8" />
       </g>
@@ -213,7 +219,7 @@ function HandoverScene() {
       <g transform="translate(252,32)">
         <rect width="96" height="66" rx="4" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
         <text x="48" y="22" textAnchor="middle" fill={ACCENT} fontSize="11" letterSpacing="0.16em" fontWeight="700">KOMANDA</text>
-        <text x="48" y="36" textAnchor="middle" fill={MUTED} fontSize="7" letterSpacing="0.2em">DAILY OPERATORS</text>
+        <text x="48" y="36" textAnchor="middle" fill={MUTED} fontSize="7" letterSpacing="0.2em">IKDIENAS OPERATORI</text>
         {/* people icons */}
         {[0, 1, 2].map((i) => {
           const cx = 22 + i * 26;
@@ -228,12 +234,12 @@ function HandoverScene() {
       {/* center: handshake + arrows */}
       <g transform="translate(110,42)">
         <line x1="6" y1="14" x2="136" y2="14" stroke={ACCENT} strokeWidth="1.2" markerEnd="url(#phase-arr-2)" />
-        <text x="71" y="10" textAnchor="middle" fill={ACCENT} fontSize="7" fontWeight="700" letterSpacing="0.16em">DOCS · TRAINING</text>
+        <text x="71" y="10" textAnchor="middle" fill={ACCENT} fontSize="7" fontWeight="700" letterSpacing="0.16em">DOKUMENTI · APMĀCĪBA</text>
         <circle cx="71" cy="30" r="14" fill="rgba(8,12,10,0.95)" stroke={ACCENT} strokeWidth="1.2" />
         <path d="M62 32 L68 26 L74 32 L80 26" stroke={ACCENT} strokeWidth="1.4" fill="none" />
         <line x1="136" y1="50" x2="6" y2="50" stroke={AMBER} strokeWidth="1.2" strokeDasharray="3 2" />
         <polygon points="6,50 12,47 12,53" fill={AMBER} />
-        <text x="71" y="60" textAnchor="middle" fill={AMBER} fontSize="7" fontWeight="700" letterSpacing="0.16em">REPORTS · TUNE</text>
+        <text x="71" y="60" textAnchor="middle" fill={AMBER} fontSize="7" fontWeight="700" letterSpacing="0.16em">ATSKAITES · REGULĒT</text>
       </g>
       {/* monthly cycle ring at bottom */}
       <g transform="translate(180,140)">
@@ -247,8 +253,8 @@ function HandoverScene() {
             </g>
           );
         })}
-        <text x="40" y="4" fill={MUTED} fontSize="7" letterSpacing="0.18em">MONTHLY</text>
-        <text x="40" y="14" fill={MUTED} fontSize="7" letterSpacing="0.18em">CYCLE</text>
+        <text x="40" y="4" fill={MUTED} fontSize="7" letterSpacing="0.18em">IKMĒNEŠA</text>
+        <text x="40" y="14" fill={MUTED} fontSize="7" letterSpacing="0.18em">CIKLS</text>
       </g>
     </g>
   );

@@ -31,7 +31,7 @@ export function Footer() {
             <Typography sx={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.22em", color: ACCENT, textTransform: "uppercase" }}>{footerCopy.status}</Typography>
           </Stack>
           <Typography sx={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.22em", color: "var(--text-3)", textTransform: "uppercase" }}>
-            BUILT IN RIGA · TUNED MONTHLY
+            VEIDOTS RĪGĀ · REGULĒTS IKMĒNESI
           </Typography>
         </Stack>
 
@@ -55,7 +55,7 @@ export function Footer() {
             VEXı́LIAN
           </Typography>
           <Typography sx={{ mt: 2, fontFamily: "var(--mono)", fontSize: { xs: 11, md: 13 }, letterSpacing: "0.32em", color: "var(--text-3)", textTransform: "uppercase" }}>
-            COMMERCIAL · DIAGNOSTIC · SYSTEM
+            KOMERCIĀLĀ · DIAGNOSTIKAS · SISTĒMA
           </Typography>
         </Box>
 
@@ -74,7 +74,7 @@ export function Footer() {
 
           <Stack spacing={1}>
             <MetaLabel>Sistēma</MetaLabel>
-            {["Manifest", "Diagnostika", "Pieeja", "Sistēma"].map((label, i) => (
+            {["Manifests", "Diagnostika", "Pieeja", "Sistēma"].map((label, i) => (
               <Typography key={label} component="a" href={`#${["manifest", "diagnosis", "approach", "system"][i]}`} sx={{ color: "var(--text-3)", fontFamily: "var(--mono)", fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", "&:hover": { color: ACCENT } }}>
                 {label}
               </Typography>

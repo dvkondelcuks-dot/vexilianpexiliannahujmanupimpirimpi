@@ -28,24 +28,26 @@ export const vexTheme = createTheme({
     borderRadius: 8
   },
   typography: {
-    fontFamily: "var(--font-geist-sans), Inter, Arial, sans-serif",
+    fontFamily: "var(--font-body), 'Chakra Petch', Inter, Arial, sans-serif",
     h1: {
+      fontFamily: "var(--font-display), 'Michroma', 'Chakra Petch', sans-serif",
       fontSize: "4.5rem",
       lineHeight: 0.95,
       letterSpacing: 0,
-      fontWeight: 560
+      fontWeight: 400
     },
     h2: {
+      fontFamily: "var(--font-display), 'Michroma', 'Chakra Petch', sans-serif",
       fontSize: "3rem",
       lineHeight: 1.05,
       letterSpacing: 0,
-      fontWeight: 560
+      fontWeight: 400
     },
     h3: {
       fontSize: "1.5rem",
       lineHeight: 1.2,
       letterSpacing: 0,
-      fontWeight: 560
+      fontWeight: 600
     },
     body1: {
       fontSize: "1.0625rem",

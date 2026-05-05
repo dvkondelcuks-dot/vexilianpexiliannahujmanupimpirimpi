@@ -101,18 +101,18 @@ function Architecture() {
   const cx = 300;
   const cy = 142;
   const left = [
-    { y: 38, label: "WEBSITE", icon: "⊕" },
-    { y: 88, label: "FORMS", icon: "≡" },
+    { y: 38, label: "MĀJASLAPA", icon: "⊕" },
+    { y: 88, label: "FORMAS", icon: "≡" },
     { y: 138, label: "CRM", icon: "◉" }
   ];
   const right = [
-    { y: 38, label: "DATA STRUCTURE", icon: "▤" },
-    { y: 88, label: "INTEGRATIONS", icon: "⇌" },
-    { y: 138, label: "DASHBOARD", icon: "▮" }
+    { y: 38, label: "DATU STRUKTŪRA", icon: "▤" },
+    { y: 88, label: "INTEGRĀCIJAS", icon: "⇌" },
+    { y: 138, label: "VADĪBAS PANELIS", icon: "▮" }
   ];
   return (
     <g>
-      <text x="40" y="22" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">SYSTEM ARCHITECTURE</text>
+      <text x="40" y="22" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">SISTĒMAS ARHITEKTŪRA</text>
       {left.map((it) => <Pill key={it.label} x={20} y={it.y} label={it.label} icon={it.icon} />)}
       {right.map((it) => <Pill key={it.label} x={420} y={it.y} label={it.label} icon={it.icon} />)}
       {/* central cube */}
@@ -120,7 +120,7 @@ function Architecture() {
         <circle r="58" fill="url(#op-glow)" />
         <path d="M-30 -22 L0 -36 L30 -22 L30 18 L0 32 L-30 18 Z" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.4" />
         <path d="M-30 -22 L0 -8 L30 -22 M0 -8 L0 32" stroke={ACCENT} strokeWidth="1.2" fill="none" />
-        <text x="0" y="-46" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.18em" fontWeight="700">CORE SYSTEM</text>
+        <text x="0" y="-46" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.18em" fontWeight="700">SISTĒMAS KODOLS</text>
       </g>
       {/* connectors from pills to cube */}
       {[...left.map((it) => ({ x: 180, y: it.y + 14, dir: 1 })), ...right.map((it) => ({ x: 420, y: it.y + 14, dir: -1 }))].map((c, i) => (
@@ -131,7 +131,7 @@ function Architecture() {
         <rect width="160" height="28" rx="14" fill="rgba(8,12,10,0.7)" stroke={ACCENT} strokeWidth="1.2" />
         <circle cx="20" cy="14" r="7" fill="none" stroke={ACCENT} strokeWidth="1.2" />
         <circle cx="20" cy="14" r="2.5" fill={ACCENT} />
-        <text x="90" y="18" textAnchor="middle" fill={TEXT} fontSize="10" letterSpacing="0.1em" fontWeight="600">SYSTEM LOGIC</text>
+        <text x="90" y="18" textAnchor="middle" fill={TEXT} fontSize="10" letterSpacing="0.1em" fontWeight="600">SISTĒMAS LOĠIKA</text>
       </g>
       <line x1="300" y1="184" x2="300" y2="210" stroke={DIM} strokeWidth="1" strokeDasharray="3 3" />
     </g>
@@ -143,21 +143,21 @@ function Analysis() {
   const cx = 300;
   const cy = 142;
   const inputs = [
-    { y: 38, label: "SEARCH TRENDS", icon: "↗" },
-    { y: 88, label: "COMPETITORS", icon: "▲" },
-    { y: 138, label: "INDUSTRY DATA", icon: "▮" },
-    { y: 188, label: "SOCIAL SIGNALS", icon: "◌" }
+    { y: 38, label: "MEKLĒŠANAS TRENDI", icon: "↗" },
+    { y: 88, label: "KONKURENTI", icon: "▲" },
+    { y: 138, label: "NOZARES DATI", icon: "▮" },
+    { y: 188, label: "SOCIĀLIE SIGNĀLI", icon: "◌" }
   ];
   const outputs = [
-    { y: 38, label: "AUDIENCE INSIGHTS", icon: "◉" },
-    { y: 88, label: "OFFER ANALYSIS", icon: "≡" },
-    { y: 138, label: "POSITIONING", icon: "⊕" },
-    { y: 188, label: "MARKETING FOCUS", icon: "✦" }
+    { y: 38, label: "AUDITORIJAS IESKATI", icon: "◉" },
+    { y: 88, label: "PIEDĀVĀJUMA ANALĪZE", icon: "≡" },
+    { y: 138, label: "POZICIONĒŠANA", icon: "⊕" },
+    { y: 188, label: "MĀRKETINGA FOKUSS", icon: "✦" }
   ];
   return (
     <g>
-      <text x="20" y="22" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">MARKET SIGNALS</text>
-      <text x="580" y="22" textAnchor="end" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">DIRECTION</text>
+      <text x="20" y="22" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">TIRGUS SIGNĀLI</text>
+      <text x="580" y="22" textAnchor="end" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">VIRZIENS</text>
       {inputs.map((it) => <Pill key={it.label} x={16} y={it.y} label={it.label} icon={it.icon} />)}
       {outputs.map((it) => <Pill key={it.label} x={424} y={it.y} label={it.label} icon={it.icon} />)}
       {/* hub hex */}
@@ -166,8 +166,8 @@ function Analysis() {
         <polygon points="0,-34 30,-17 30,17 0,34 -30,17 -30,-17" fill="rgba(8,12,10,0.85)" stroke={ACCENT} strokeWidth="1.4" />
         <polygon points="0,-20 18,-10 18,10 0,20 -18,10 -18,-10" fill="none" stroke={ACCENT} strokeWidth="1.2" />
         <circle r="6" fill={ACCENT} />
-        <text x="0" y="-46" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.18em" fontWeight="700">INTERPRETATION</text>
-        <text x="0" y="50" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.18em" fontWeight="700">LAYER</text>
+        <text x="0" y="-46" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.18em" fontWeight="700">INTERPRETĀCIJAS</text>
+        <text x="0" y="50" textAnchor="middle" fill={ACCENT} fontSize="9" letterSpacing="0.18em" fontWeight="700">SLĀNIS</text>
       </g>
       {inputs.map((it, i) => (
         <line key={`in-${i}`} x1="176" y1={it.y + 14} x2={cx - 30} y2={cy} stroke={DIM} strokeWidth="1" strokeDasharray="3 3" markerEnd="url(#op-arr)" />
@@ -182,14 +182,14 @@ function Analysis() {
 // Edvards — message → trust → relationship → growth wave-cone
 function Communication() {
   const items = [
-    { x: 70, label: "MESSAGE", sub: "CLARITY", icon: "chat" },
-    { x: 200, label: "BUILDING", sub: "TRUST", icon: "shield" },
-    { x: 330, label: "STRONG", sub: "RELATIONSHIP", icon: "users" },
-    { x: 460, label: "DRIVING", sub: "GROWTH", icon: "rise" }
+    { x: 70, label: "ZIŅOJUMS", sub: "SKAIDRĪBA", icon: "chat" },
+    { x: 200, label: "VEIDOJOT", sub: "UZTICĒŠANOS", icon: "shield" },
+    { x: 330, label: "STIPRAS", sub: "ATTIECĪBAS", icon: "users" },
+    { x: 460, label: "VIRZA", sub: "IZAUGSMI", icon: "rise" }
   ];
   return (
     <g>
-      <text x="28" y="22" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">SIGNAL → ACTION</text>
+      <text x="28" y="22" fill={ACCENT} fontSize="9" letterSpacing="0.2em" fontWeight="700">SIGNĀLS → DARBĪBA</text>
       {items.map((it, i) => (
         <g key={i} transform={`translate(${it.x},${110})`}>
           <circle cx="36" cy="36" r="34" fill="url(#op-glow)" />

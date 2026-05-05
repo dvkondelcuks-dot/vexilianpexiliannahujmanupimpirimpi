@@ -1,19 +1,21 @@
 import "antd/dist/reset.css";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Michroma, Chakra_Petch } from "next/font/google";
 import type { ReactNode } from "react";
 import { Providers } from "./providers";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const michroma = Michroma({
+  variable: "--font-display",
   subsets: ["latin", "latin-ext"],
+  weight: ["400"],
   display: "swap"
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const chakra = Chakra_Petch({
+  variable: "--font-body",
   subsets: ["latin", "latin-ext"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap"
 });
 
@@ -32,7 +34,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="lv" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="lv" className={`${michroma.variable} ${chakra.variable}`}>
       <body>
         <Providers>{children}</Providers>
       </body>

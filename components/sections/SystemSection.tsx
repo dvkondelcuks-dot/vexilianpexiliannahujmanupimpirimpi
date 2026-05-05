@@ -54,9 +54,9 @@ export function SystemSection() {
           >
             <Stack spacing={0.6} alignItems="center">
               <Box sx={{ fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.24em", color: ACCENT }}>VEX</Box>
-              <Box sx={{ fontFamily: "var(--mono)", fontSize: 18, letterSpacing: "0.18em", color: "var(--text)", fontWeight: 700 }}>CORE</Box>
+              <Box sx={{ fontFamily: "var(--mono)", fontSize: 18, letterSpacing: "0.18em", color: "var(--text)", fontWeight: 700 }}>KODOLS</Box>
               <Box sx={{ width: 36, height: 1, background: ACCENT, opacity: 0.6 }} />
-              <Box sx={{ fontFamily: "var(--mono)", fontSize: 9, letterSpacing: "0.2em", color: "var(--text-3)" }}>{count} LAYERS</Box>
+              <Box sx={{ fontFamily: "var(--mono)", fontSize: 9, letterSpacing: "0.2em", color: "var(--text-3)" }}>{count} SLĀŅI</Box>
             </Stack>
           </Box>
 
@@ -123,7 +123,7 @@ export function SystemSection() {
               </Box>
             </Stack>
           ) : (
-            <Typography sx={{ color: "var(--text-3)", fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.2em" }}>HOVER LAYER · READ DETAIL</Typography>
+            <Typography sx={{ color: "var(--text-3)", fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.2em" }}>PĀRBRAUC SLĀNI · LASĪT DETAĻAS</Typography>
           )}
         </Box>
       </Stack>

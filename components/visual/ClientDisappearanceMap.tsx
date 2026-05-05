@@ -24,17 +24,17 @@ const funnelStages = [
 const sourceLoss = [
   { label: "GOOGLE ADS", inflow: 38, lost: 22 },
   { label: "META · IG",  inflow: 29, lost: 19 },
-  { label: "ORGANIC",    inflow: 17, lost: 9 },
-  { label: "DIRECT",     inflow: 9,  lost: 4 },
-  { label: "REFERRAL",   inflow: 7,  lost: 3 }
+  { label: "ORGĀNISKAIS",    inflow: 17, lost: 9 },
+  { label: "TIEŠAIS",     inflow: 9,  lost: 4 },
+  { label: "REKOMEND.",   inflow: 7,  lost: 3 }
 ] as const;
 
 const visibilityLog = [
-  { label: "OWNER",     value: "missing",   tone: "amber" as const },
-  { label: "SLA",       value: "none",      tone: "amber" as const },
-  { label: "RECOVERY",  value: "0 trig.",   tone: "amber" as const },
-  { label: "ATTRIBUT.", value: "partial",   tone: "amber" as const },
-  { label: "REPORT",    value: "weekly · static", tone: "amber" as const }
+  { label: "ĪPAŠNIEKS", value: "nav noteikts", tone: "amber" as const },
+  { label: "SLA",       value: "nav",          tone: "amber" as const },
+  { label: "ATGŪŠANA",  value: "0 trig.",     tone: "amber" as const },
+  { label: "ATRIBŪC.",  value: "daļuēja",      tone: "amber" as const },
+  { label: "ATSKAITE",  value: "nedj. · stat.", tone: "amber" as const }
 ] as const;
 
 const FUNNEL_BOX = { x: 78, y: 84, w: 540, h: 220 };
@@ -43,42 +43,42 @@ const MAX_FUNNEL = 100;
 const MAX_SOURCE = 40;
 
 const zoneHeaders = [
-  { code: "01", label: "ACQUISITION", sub: "where clients enter", x: 38, w: 168 },
-  { code: "02", label: "CONTACT", sub: "first owned action", x: 238, w: 178 },
-  { code: "03", label: "UNSTRUCTURED OPS", sub: "where ownership breaks", x: 456, w: 206 },
-  { code: "04", label: "OUTCOME LEDGER", sub: "what the owner sees", x: 708, w: 154 }
+  { code: "01", label: "PIESAISTE", sub: "kur klienti ienāk", x: 38, w: 168 },
+  { code: "02", label: "KONTAKTS", sub: "pirmā atbildība", x: 238, w: 178 },
+  { code: "03", label: "NESTRUKTURĒTĀ OPERĀCIJA", sub: "kur īpašniecība lūzt", x: 456, w: 206 },
+  { code: "04", label: "REZULTĀTU ŽURNĀLS", sub: "kādus rezultātus redz", x: 708, w: 154 }
 ] as const;
 
 const sources = [
-  { label: "GOOGLE ADS", x: 58, y: 122, value: "38 in" },
-  { label: "META · IG", x: 58, y: 202, value: "29 in" },
-  { label: "ORGANIC", x: 58, y: 282, value: "17 in" },
-  { label: "DIRECT", x: 58, y: 362, value: "09 in" },
-  { label: "REFERRAL", x: 58, y: 442, value: "07 in" }
+  { label: "GOOGLE ADS", x: 58, y: 122, value: "38 ien." },
+  { label: "META · IG", x: 58, y: 202, value: "29 ien." },
+  { label: "ORGĀNISKAIS", x: 58, y: 282, value: "17 ien." },
+  { label: "TIEŠAIS", x: 58, y: 362, value: "09 ien." },
+  { label: "REKOMEND.", x: 58, y: 442, value: "07 ien." }
 ] as const;
 
 const touchpoints = [
-  { label: "LANDING PAGE", x: 254, y: 104, value: "cta 12%" },
-  { label: "FORM", x: 266, y: 188, value: "submit 6%" },
+  { label: "GALVENĀ LAPA", x: 254, y: 104, value: "cta 12%" },
+  { label: "FORMA", x: 266, y: 188, value: "iesn. 6%" },
   { label: "INSTAGRAM DM", x: 248, y: 272, value: "dm 14" },
-  { label: "CALL", x: 278, y: 356, value: "calls 8" },
-  { label: "EMAIL", x: 272, y: 440, value: "mail 5" }
+  { label: "ZVANS", x: 278, y: 356, value: "zvani 8" },
+  { label: "E-PASTS", x: 272, y: 440, value: "vēst. 5" }
 ] as const;
 
 const chaos = [
-  { label: "EXCEL", x: 470, y: 94, value: "owner ?", tone: "chaos" as const },
-  { label: "WHATSAPP", x: 496, y: 178, value: "thread split", tone: "chaos" as const },
-  { label: "MEMORY", x: 452, y: 266, value: "not stored", tone: "lost" as const },
-  { label: "UNASSIGNED", x: 500, y: 350, value: "no owner", tone: "lost" as const },
-  { label: "NO FOLLOW-UP", x: 464, y: 432, value: "sla none", tone: "lost" as const }
+  { label: "EXCEL", x: 470, y: 94, value: "īpašn. ?", tone: "chaos" as const },
+  { label: "WHATSAPP", x: 496, y: 178, value: "sašķelts", tone: "chaos" as const },
+  { label: "ATMIŅA", x: 452, y: 266, value: "nav saglab.", tone: "lost" as const },
+  { label: "BEZ ĪPAŠN.", x: 500, y: 350, value: "nav īpašn.", tone: "lost" as const },
+  { label: "NAV SEKOŠANAS", x: 464, y: 432, value: "sla nav", tone: "lost" as const }
 ] as const;
 
 const outcomes = [
-  { label: "BOOKING", x: 724, y: 106, value: "visible", tone: "success" as const },
-  { label: "PURCHASE", x: 724, y: 186, value: "visible", tone: "success" as const },
-  { label: "UNKNOWN", x: 724, y: 274, value: "not traced", tone: "lost" as const },
-  { label: "LOST", x: 724, y: 362, value: "not recovered", tone: "lost" as const },
-  { label: "REPORT", x: 724, y: 444, value: "weekly", tone: "report" as const }
+  { label: "REZERVĀCIJA", x: 724, y: 106, value: "redzams", tone: "success" as const },
+  { label: "PIRKUMS", x: 724, y: 186, value: "redzams", tone: "success" as const },
+  { label: "NEZINĀMS", x: 724, y: 274, value: "nav izsekots", tone: "lost" as const },
+  { label: "ZAUDĒTS", x: 724, y: 362, value: "nav atgūts", tone: "lost" as const },
+  { label: "ATSKAITE", x: 724, y: 444, value: "nedj.", tone: "report" as const }
 ] as const;
 
 export function ClientDisappearanceMap() {
